@@ -640,6 +640,105 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <!-- SECTION 3 -->
     <h2>How Engram Works: The Architecture</h2>
 
+    <!-- HAND-DRAWN DIAGRAM -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <div style="margin:2.5rem 0;background:#fdfcfb;border:1.5px solid var(--border);border-radius:12px;padding:1.5rem;overflow-x:auto;">
+      <svg viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;font-family:'Caveat',cursive;">
+
+        <!-- title -->
+        <text x="340" y="28" text-anchor="middle" font-size="17" fill="#1a1a1a" font-weight="700">Engram: How It Fits Inside a Transformer</text>
+
+        <!-- ── INPUT TOKENS ── -->
+        <rect x="200" y="48" width="280" height="44" rx="8" fill="#ffffff" stroke="#c7c7c3" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="340" y="68" text-anchor="middle" font-size="14" fill="#555">Input Tokens</text>
+        <text x="340" y="84" text-anchor="middle" font-size="12" fill="#999">[the]  [patient]  [has]  [a]  [fever]</text>
+
+        <!-- arrow down from tokens -->
+        <line x1="340" y1="92" x2="340" y2="118" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- ── N-GRAM HASH ── -->
+        <rect x="245" y="118" width="190" height="40" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+        <text x="340" y="135" text-anchor="middle" font-size="14" fill="#2563eb" font-weight="600">n-gram hash address</text>
+        <text x="340" y="151" text-anchor="middle" font-size="11" fill="#6b9fe4">O(1) · computed before forward pass</text>
+
+        <!-- arrow left to CPU DRAM -->
+        <path d="M 245 138 Q 150 138 130 200" stroke="#2563eb" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrblu)"/>
+        <!-- arrow down to GPU -->
+        <line x1="340" y1="158" x2="340" y2="192" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- ── CPU DRAM BOX ── -->
+        <rect x="18" y="190" width="185" height="110" rx="10" fill="#f0fdf4" stroke="#6ee7b7" stroke-width="1.5"/>
+        <text x="110" y="212" text-anchor="middle" font-size="13" fill="#059669" font-weight="700">CPU DRAM</text>
+        <text x="110" y="230" text-anchor="middle" font-size="12" fill="#555">Engram Table</text>
+        <text x="110" y="248" text-anchor="middle" font-size="11" fill="#888">billions of embeddings</text>
+        <text x="110" y="265" text-anchor="middle" font-size="11" fill="#888">cheap · large · static</text>
+        <text x="110" y="283" text-anchor="middle" font-size="11" fill="#059669">prefetched in parallel ↗</text>
+
+        <!-- arrow right from CPU to residual inject -->
+        <path d="M 203 245 Q 260 245 260 310" stroke="#059669" stroke-width="1.5" fill="none" marker-end="url(#arrgrn)"/>
+        <text x="218" y="282" font-size="11" fill="#059669">e_engram</text>
+
+        <!-- ── GPU HBM BOX ── -->
+        <rect x="220" y="192" width="240" height="110" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+        <text x="340" y="214" text-anchor="middle" font-size="13" fill="#c2410c" font-weight="700">GPU HBM</text>
+        <text x="340" y="232" text-anchor="middle" font-size="12" fill="#555">Transformer Layers</text>
+        <text x="340" y="250" text-anchor="middle" font-size="11" fill="#888">Attention  ·  MoE Experts</text>
+        <text x="340" y="268" text-anchor="middle" font-size="11" fill="#888">KV Cache  ·  MLP weights</text>
+        <text x="340" y="286" text-anchor="middle" font-size="11" fill="#c2410c">expensive · limited · dynamic</text>
+
+        <!-- arrow right side label — no Engram table here -->
+        <rect x="478" y="210" width="180" height="76" rx="8" fill="#fafaf9" stroke="#e8e8e5" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <text x="568" y="232" text-anchor="middle" font-size="12" fill="#999">static patterns no</text>
+        <text x="568" y="249" text-anchor="middle" font-size="12" fill="#999">longer stored here</text>
+        <text x="568" y="266" text-anchor="middle" font-size="12" fill="#6b9fe4">→ freed capacity</text>
+        <text x="568" y="280" text-anchor="middle" font-size="12" fill="#6b9fe4">for reasoning</text>
+        <!-- dashed arrow from GPU to freed -->
+        <line x1="460" y1="248" x2="478" y2="248" stroke="#ccc" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arrgry)"/>
+
+        <!-- ── RESIDUAL INJECTION ── -->
+        <rect x="220" y="326" width="240" height="44" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+        <text x="340" y="346" text-anchor="middle" font-size="13" fill="#2563eb" font-weight="600">Residual Stream Injection</text>
+        <text x="340" y="362" text-anchor="middle" font-size="11" fill="#6b9fe4">h = TransformerLayer(h) + α · e_engram</text>
+
+        <!-- arrow down from GPU to injection -->
+        <line x1="340" y1="302" x2="340" y2="326" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- arrow down from injection to output -->
+        <line x1="340" y1="370" x2="340" y2="400" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- ── OUTPUT ── -->
+        <rect x="245" y="400" width="190" height="40" rx="8" fill="#ffffff" stroke="#c7c7c3" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="340" y="418" text-anchor="middle" font-size="14" fill="#1a1a1a" font-weight="600">Output</text>
+        <text x="340" y="434" text-anchor="middle" font-size="11" fill="#999">richer knowledge · zero added latency</text>
+
+        <!-- ── LEGEND ── -->
+        <line x1="30" y1="456" x2="55" y2="456" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="62" y="460" font-size="11" fill="#555">lookup / prefetch path</text>
+        <line x1="200" y1="456" x2="225" y2="456" stroke="#059669" stroke-width="1.5"/>
+        <text x="232" y="460" font-size="11" fill="#555">embedding injection</text>
+        <line x1="380" y1="456" x2="405" y2="456" stroke="#aaa" stroke-width="1.5"/>
+        <text x="412" y="460" font-size="11" fill="#555">forward pass flow</text>
+
+        <!-- ARROWHEAD MARKERS -->
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#aaa"/>
+          </marker>
+          <marker id="arrblu" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+          </marker>
+          <marker id="arrgrn" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#059669"/>
+          </marker>
+          <marker id="arrgry" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#ccc"/>
+          </marker>
+        </defs>
+
+      </svg>
+      <p style="text-align:center;font-size:0.72rem;color:var(--text-muted);margin-top:0.75rem;margin-bottom:0;font-family:var(--mono);letter-spacing:0.05em;">FIGURE 1 — Engram module: n-gram hash → CPU DRAM lookup → residual injection into transformer</p>
+    </div>
+
     <p>At its core, Engram modernizes the classical n-gram language model — an approach largely abandoned when neural networks proved more flexible — and integrates it into the transformer architecture as a complementary module rather than a replacement.</p>
 
     <h3>The Sparsity Formulation</h3>
@@ -890,44 +989,50 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
       <div class="industry-item">
         <div class="industry-name">Healthcare & Life Sciences</div>
         <div class="industry-detail">
-          <p><strong>Engram:</strong> Clinical knowledge, drug interactions, diagnostic criteria, treatment protocols — static, high-accuracy knowledge that Engram stores deterministically. No hallucination on drug dosages or contraindications.</p>
-          <p><strong>Zep:</strong> Patient longitudinal history, prior conversations with care navigators, noted preferences and concerns — the episodic memory that makes a care AI feel like a continuous relationship rather than a reset each session.</p>
-          <p><strong>Letta:</strong> Long-running clinical research agents, multi-session care planning workflows, autonomous literature review processes that run over days.</p>
+          <p><strong>Engram:</strong> Clinical knowledge, drug interactions, diagnostic criteria, treatment protocols — static, high-accuracy knowledge stored deterministically. Eliminates hallucination on drug dosages, contraindications, and ICD codes where errors have direct patient safety consequences.</p>
+          <p><strong>Zep:</strong> Patient longitudinal history, prior care conversations, flagged conditions, and noted concerns — with full temporal audit trails required for HIPAA compliance. Zep's SOC 2 Type II and HIPAA certification makes it the right fit here over other memory layers. Tracks how patient conditions evolve over time rather than storing a static snapshot.</p>
+          <p><strong>Mem0:</strong> Patient communication preferences, care team interaction styles, chronic condition profiles that update as health status changes. Mem0's conflict resolution is particularly useful here — when a patient's medication list or allergy record is updated, the prior state needs to be cleanly superseded, not accumulated.</p>
+          <p><strong>Letta:</strong> Long-running clinical research agents, multi-session care planning workflows, autonomous literature review processes that run over days. Well-suited to Letta V1's native reasoning for complex multi-step clinical decision support.</p>
         </div>
       </div>
 
       <div class="industry-item">
         <div class="industry-name">Financial Services</div>
         <div class="industry-detail">
-          <p><strong>Engram:</strong> Regulatory frameworks, accounting standards, market structure knowledge, product specifications — dense factual content that changes slowly and where accuracy is non-negotiable.</p>
-          <p><strong>Mem0:</strong> Client preference profiles, communication style preferences, prior investment discussions — the personalization layer that makes AI-assisted advising feel individualized rather than generic.</p>
-          <p><strong>Letta:</strong> Autonomous financial analysis agents that process hundreds of documents over an extended session, maintaining context across an entire research workflow.</p>
+          <p><strong>Engram:</strong> Regulatory frameworks, accounting standards, market structure knowledge, product specifications — dense factual content that changes on regulatory cycles and where accuracy is non-negotiable for compliance.</p>
+          <p><strong>Zep:</strong> Client relationship history, temporal tracking of investment advice given, evolving risk appetite over time, compliance audit trails. Zep's dual-timeline model — tracking both when advice was given and when facts changed — is critical for regulatory defensibility in wealth management and advisory contexts.</p>
+          <p><strong>Mem0:</strong> Client communication style preferences, investment thesis preferences, portfolio constraint profiles. Mem0's multi-cloud support (AWS Bedrock, Azure AI Foundry) makes it practical for financial institutions with strict cloud residency requirements who may need to run across environments.</p>
+          <p><strong>Letta:</strong> Autonomous financial analysis agents processing hundreds of filings over extended sessions, multi-day due diligence workflows, earnings research pipelines that maintain context across an entire investment thesis development cycle.</p>
         </div>
       </div>
 
       <div class="industry-item">
         <div class="industry-name">Legal & Compliance</div>
         <div class="industry-detail">
-          <p><strong>Engram:</strong> Case law, statutory text, regulatory requirements — enormous bodies of text that change on legislative cycles and require near-perfect retrieval accuracy. Engram's deterministic lookup eliminates the retrieval hallucination problem that has made RAG-based legal AI unreliable.</p>
-          <p><strong>Zep:</strong> Matter history, client communication records, prior legal advice given — the longitudinal context that makes AI legal assistants useful across the full lifecycle of a matter.</p>
-          <p><strong>Letta:</strong> Document review agents processing thousands of files, contract analysis workflows, due diligence processes spanning days of autonomous work.</p>
+          <p><strong>Engram:</strong> Case law, statutory text, regulatory requirements — enormous bodies of text that change on legislative cycles and require near-perfect retrieval accuracy. Engram's deterministic lookup eliminates the retrieval hallucination problem that has made RAG-based legal AI unreliable in practice.</p>
+          <p><strong>Zep:</strong> Matter history, client communication records, prior legal advice given, and the full temporal lineage of how positions evolved. The ability to trace exactly what was known when is essential for malpractice defense and privilege documentation — Zep's audit trail architecture is uniquely suited to this.</p>
+          <p><strong>Mem0:</strong> Attorney-client communication preferences, matter-specific context per client, jurisdiction and practice area profiles. Less critical here than Zep given the compliance emphasis, but valuable for large firms managing hundreds of client relationships simultaneously.</p>
+          <p><strong>Letta:</strong> Document review agents processing thousands of files across multi-day engagements, contract analysis workflows, M&amp;A due diligence pipelines. Letta's Context Repositories (git-based memory versioning) are particularly valuable for legal review where the state of the agent's analysis at any point in time may need to be reproduced.</p>
         </div>
       </div>
 
       <div class="industry-item">
         <div class="industry-name">Autonomous Systems & Robotics</div>
         <div class="industry-detail">
-          <p><strong>Engram:</strong> World model knowledge — physics priors, object affordances, environment semantics — stored as static lookup patterns that can be retrieved at O(1) speed during real-time inference. The latency advantage of Engram is particularly valuable in control loop applications.</p>
-          <p><strong>HITL + Letta:</strong> Long-running autonomous agents managing complex multi-step tasks in dynamic environments, with human oversight checkpoints managed through Letta's memory hierarchy.</p>
+          <p><strong>Engram:</strong> World model knowledge — physics priors, object affordances, environment semantics — stored as static lookup patterns retrieved at O(1) speed during real-time inference. The latency advantage is particularly critical in control loop applications where memory retrieval cannot add to the critical path.</p>
+          <p><strong>Zep:</strong> Operational history and incident logs with temporal tracking — how did this environment change over time, what anomalies were observed in prior sessions, what interventions were taken and when. Relevant for systems that operate in semi-static environments where accumulated operational knowledge improves future performance.</p>
+          <p><strong>Mem0:</strong> Less applicable here — autonomous systems typically don't require user-level personalization. However, in human-robot collaboration contexts, Mem0 can maintain operator preference profiles and team-specific interaction patterns across sessions.</p>
+          <p><strong>Letta:</strong> Long-running autonomous agents managing complex multi-step tasks in dynamic environments, with human oversight checkpoints managed through Letta's memory hierarchy. Particularly relevant for inspection, maintenance, and logistics robots operating over extended multi-session deployments.</p>
         </div>
       </div>
 
       <div class="industry-item">
         <div class="industry-name">Enterprise Software & DevOps</div>
         <div class="industry-detail">
-          <p><strong>Engram:</strong> API documentation, code patterns, architectural best practices — the static knowledge base that makes code generation and technical AI assistants accurate across large, complex software ecosystems.</p>
-          <p><strong>Mem0:</strong> Developer preferences, codebase conventions, team-specific patterns — the personalization layer that makes AI coding assistants adapt to how a specific team works rather than producing generic code.</p>
-          <p><strong>Letta:</strong> SRE agents running autonomous incident investigation workflows, multi-step debugging agents that maintain context across an entire debugging session, autonomous code review pipelines.</p>
+          <p><strong>Engram:</strong> API documentation, code patterns, architectural best practices, internal SDK knowledge — the static foundation that makes code generation and technical AI assistants accurate across large, complex software ecosystems without hallucinating APIs that don't exist.</p>
+          <p><strong>Zep:</strong> Team incident history, runbook evolution over time, system topology changes, post-mortem knowledge. Zep's temporal graph tracks how the system and its failure modes have changed — invaluable for SRE agents that need to understand not just what the current state is but how it got there.</p>
+          <p><strong>Mem0:</strong> Developer preferences, codebase conventions, team-specific patterns and standards. Mem0's Microsoft Agent Framework integration makes it a natural fit for organizations already using Azure DevOps or GitHub Copilot infrastructure, personalizing AI coding assistants to individual developer and team contexts.</p>
+          <p><strong>Letta:</strong> SRE agents running autonomous incident investigation workflows, multi-step debugging agents that maintain context across an entire debugging session, Letta Code for persistent-state autonomous coding agents. Letta's Context Repositories enable version-controlled rollback of agent knowledge state — useful when a bad deployment corrupts an agent's operational understanding.</p>
         </div>
       </div>
 
