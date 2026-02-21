@@ -928,10 +928,13 @@ footer p {
 <section class="subscribe reveal">
   <h2>Stay in the loop</h2>
   <p>New posts on enterprise cloud architecture, AI/ML systems, and applied research. No spam, just technical depth.</p>
-  <div class="subscribe-form">
-    <input type="email" id="subscribe-email" placeholder="your@email.com">
-    <button type="button" onclick="handleSubscribe()">Subscribe</button>
-  </div>
+  <form class="subscribe-form" action="https://us1.list-manage.com/subscribe/post?u=3d3eda9caaed2c475dba44126&amp;id=16912a443c" method="post" target="_blank" novalidate>
+    <input type="email" name="EMAIL" placeholder="your@email.com" required>
+    <div style="position:absolute;left:-5000px" aria-hidden="true">
+      <input type="text" name="b_3d3eda9caaed2c475dba44126_16912a443c" tabindex="-1" value="">
+    </div>
+    <button type="submit">Subscribe</button>
+  </form>
 </section>
 
 <!-- FOOTER -->
@@ -957,30 +960,6 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-function handleSubscribe() {
-  const email = document.getElementById('subscribe-email').value.trim();
-  if (!email || !email.includes('@')) {
-    alert('Please enter a valid email address.');
-    return;
-  }
-
-  const url = 'https://us1.list-manage.com/subscribe/post-json?u=3d3eda9caaed2c475dba44126&id=16912a443c&EMAIL='
-    + encodeURIComponent(email) + '&c=mcCallback';
-
-  window.mcCallback = function(data) {
-    const form = document.querySelector('.subscribe-form');
-    if (data.result === 'success') {
-      form.innerHTML = '<p style="color:var(--accent);font-weight:500;font-size:0.95rem;">You\'re in! Check your inbox to confirm.</p>';
-    } else {
-      const msg = data.msg ? data.msg.replace(/^\d+ - /, '') : 'Something went wrong. Please try again.';
-      form.innerHTML += '<p style="color:#c0392b;font-size:0.82rem;margin-top:0.5rem;">' + msg + '</p>';
-    }
-  };
-
-  const script = document.createElement('script');
-  script.src = url;
-  document.body.appendChild(script);
-}
 </script>
 
 </body>
