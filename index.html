@@ -963,8 +963,23 @@ function handleSubscribe() {
     alert('Please enter a valid email address.');
     return;
   }
-  const base = 'http://eepurl.com/jz1zyI';
-  window.open(base + '&EMAIL=' + encodeURIComponent(email), '_blank');
+
+  const url = 'https://us1.list-manage.com/subscribe/post-json?u=3d3eda9caaed2c475dba44126&id=16912a443c&EMAIL='
+    + encodeURIComponent(email) + '&c=mcCallback';
+
+  window.mcCallback = function(data) {
+    const form = document.querySelector('.subscribe-form');
+    if (data.result === 'success') {
+      form.innerHTML = '<p style="color:var(--accent);font-weight:500;font-size:0.95rem;">You\'re in! Check your inbox to confirm.</p>';
+    } else {
+      const msg = data.msg ? data.msg.replace(/^\d+ - /, '') : 'Something went wrong. Please try again.';
+      form.innerHTML += '<p style="color:#c0392b;font-size:0.82rem;margin-top:0.5rem;">' + msg + '</p>';
+    }
+  };
+
+  const script = document.createElement('script');
+  script.src = url;
+  document.body.appendChild(script);
 }
 </script>
 
