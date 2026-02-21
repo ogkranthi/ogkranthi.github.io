@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kranthi Manchikanti | Enterprise Cloud Architecture & AI</title>
+<meta name="description" content="Technical deep-dives on enterprise cloud architecture, AI/ML systems, reinforcement learning, HITL frameworks, and AI safety. By Kranthi Manchikanti.">
+<meta property="og:title" content="Kranthi Manchikanti | Enterprise Cloud Architecture & AI">
+<meta property="og:description" content="Enterprise cloud architecture, AI/ML, reinforcement learning, HITL systems, and AI safety.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fafaf9;
+  --bg-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #999999;
+  --accent: #2563eb;
+  --accent-dim: #1d4ed8;
+  --accent-light: #eff6ff;
+  --border: #e8e8e5;
+  --border-hover: #d4d4d0;
+  --tag-cloud: #2563eb;
+  --tag-llm: #c2410c;
+  --tag-robotics: #7c3aed;
+  --tag-safety: #059669;
+  --tag-hitl: #b45309;
+  --serif: 'Newsreader', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── HEADER ── */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(250, 250, 249, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.logo {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.logo span { color: var(--accent); }
+
+nav { display: flex; gap: 2rem; align-items: center; }
+
+nav a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  position: relative;
+}
+
+nav a:hover { color: var(--accent); }
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after { width: 100%; }
+
+.nav-cta {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.nav-cta:hover { background: var(--accent-dim); }
+.nav-cta::after { display: none; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 2.5rem 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.hero-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  max-width: 850px;
+  font-weight: 400;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.4s forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 580px;
+  margin-top: 2rem;
+  line-height: 1.75;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.6s forwards;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 2.5rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.8s forwards;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-stat-value {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  color: var(--text-primary);
+}
+
+.hero-stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* ── TOPIC PILLS ── */
+.topics {
+  padding: 0 2.5rem;
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 1s forwards;
+}
+
+.topics-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.topic-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  transition: all 0.25s;
+  cursor: default;
+}
+
+.topic-pill:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.topic-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── SECTION HEADERS ── */
+.section-header {
+  padding: 4rem 2.5rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid var(--border);
+}
+
+.section-header h2 {
+  font-family: var(--serif);
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+
+.section-header .count {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ── POST GRID ── */
+.posts-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2.5rem 4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.post-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.post-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.post-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+
+.post-card:hover::before { opacity: 1; }
+
+.post-card[data-category="cloud"]::before { background: var(--tag-cloud); }
+.post-card[data-category="llm"]::before { background: var(--tag-llm); }
+.post-card[data-category="robotics"]::before { background: var(--tag-robotics); }
+.post-card[data-category="safety"]::before { background: var(--tag-safety); }
+
+.post-tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 0.85rem;
+}
+
+.post-tag.cloud { color: var(--tag-cloud); }
+.post-tag.llm { color: var(--tag-llm); }
+.post-tag.robotics { color: var(--tag-robotics); }
+.post-tag.safety { color: var(--tag-safety); }
+
+.post-card h3 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.65rem;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.post-excerpt {
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  flex: 1;
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.post-date {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.post-read {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: gap 0.2s;
+}
+
+.post-card:hover .post-read { gap: 0.6rem; }
+
+/* ── FEATURED / HERO POST ── */
+.featured {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2.5rem 3rem;
+}
+
+.featured-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--tag-cloud), var(--accent));
+}
+
+.featured-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+}
+
+.featured-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.85rem;
+}
+
+.featured-card h3 {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.85rem;
+  font-weight: 400;
+}
+
+.featured-excerpt {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.featured-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.featured-takeaway {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.9rem 1rem;
+  background: var(--accent-light);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+
+.featured-takeaway-num {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.featured-takeaway p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── ABOUT SECTION ── */
+.about {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2.5rem;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 4rem;
+}
+
+.about h2 {
+  font-family: var(--serif);
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+
+.about-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.about-text {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  padding: 0.35rem 0.8rem;
+  background: var(--accent-light);
+  color: var(--accent);
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+}
+
+.about-industries {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-industry {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.about-industry::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.about-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.about-archs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.about-arch {
+  font-size: 0.76rem;
+  padding: 0.4rem 0.85rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  transition: all 0.2s;
+}
+
+.about-arch:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.about-link {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.about-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ── SUBSCRIBE ── */
+.subscribe {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.subscribe h2 {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  margin-bottom: 0.65rem;
+  font-weight: 400;
+}
+
+.subscribe p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.subscribe-form {
+  display: flex;
+  gap: 0.65rem;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.subscribe-form input {
+  flex: 1;
+  padding: 0.7rem 1.1rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.subscribe-form input:focus { border-color: var(--accent); }
+
+.subscribe-form input::placeholder { color: var(--text-muted); }
+
+.subscribe-form button {
+  padding: 0.7rem 1.75rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.subscribe-form button:hover { background: var(--accent-dim); }
+
+/* ── FOOTER ── */
+footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-links a {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--accent); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: all 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 1rem 1.5rem; }
+  nav { gap: 1rem; }
+  nav a:not(.nav-cta) { display: none; }
+  .hero { padding: 7rem 1.5rem 3rem; min-height: auto; }
+  .hero-meta { flex-wrap: wrap; gap: 1.5rem; }
+  .topics { padding: 0 1.5rem; }
+  .section-header { padding: 3rem 1.5rem 1.5rem; }
+  .posts-grid { padding: 0 1.5rem 3rem; grid-template-columns: 1fr; }
+  .featured { padding: 0 1.5rem 2rem; }
+  .featured-card { grid-template-columns: 1fr; padding: 1.75rem; gap: 1.75rem; }
+  .about { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2rem; }
+  .about-industries { flex-wrap: wrap; gap: 1rem; }
+  .subscribe { padding: 3rem 1.5rem; }
+  .subscribe-form { flex-direction: column; }
+  footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="#" class="logo">KM<span>.</span></a>
+  <nav>
+    <a href="#writing">Writing</a>
+    <a href="#about">About</a>
+    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="nav-cta">LinkedIn →</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Applied Research · Enterprise Cloud Architecture · AI/ML</div>
+  <h1>Bridging <em>cloud architecture</em> and AI to solve real enterprise problems</h1>
+  <p class="hero-sub">Technical deep-dives on enterprise cloud architecture, AI/ML systems, reinforcement learning, human-in-the-loop frameworks, and AI safety. Written from experience across high tech, finance, and healthcare.</p>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <span class="hero-stat-value">6</span>
+      <span class="hero-stat-label">Focus Areas</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-value">Deep</span>
+      <span class="hero-stat-label">Technical Depth</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-value">Weekly</span>
+      <span class="hero-stat-label">Publishing</span>
+    </div>
+  </div>
+</section>
+
+<!-- TOPIC PILLS -->
+<div class="topics">
+  <div class="topics-row">
+    <span class="topic-pill"><span class="topic-dot" style="background:var(--accent)"></span>Applied Research</span>
+    <span class="topic-pill"><span class="topic-dot" style="background:var(--tag-cloud)"></span>Enterprise Cloud Architecture</span>
+    <span class="topic-pill"><span class="topic-dot" style="background:var(--tag-llm)"></span>AI & Machine Learning</span>
+    <span class="topic-pill"><span class="topic-dot" style="background:var(--tag-robotics)"></span>Reinforcement Learning</span>
+    <span class="topic-pill"><span class="topic-dot" style="background:var(--tag-safety)"></span>AI Safety & Advancements</span>
+    <span class="topic-pill"><span class="topic-dot" style="background:var(--tag-hitl)"></span>Human-in-the-Loop Systems</span>
+  </div>
+</div>
+
+<!-- FEATURED POST -->
+<section class="featured reveal" id="writing">
+  <div class="featured-card" onclick="window.location.href='#'">
+    <div class="featured-left">
+      <div class="featured-label">Featured Essay</div>
+      <h3>Why Your Annotation Pipeline Is the Real Bottleneck in Clinical AI</h3>
+      <p class="featured-excerpt">After building a prior authorization system that processed thousands of clinical documents, I learned that model architecture matters far less than annotation quality. Here's the data infrastructure playbook I wish I had from day one.</p>
+      <div class="post-footer" style="margin-top:1.5rem">
+        <span class="post-date">Feb 2026 · 12 min read</span>
+        <span class="post-read">Read essay →</span>
+      </div>
+    </div>
+    <div class="featured-right">
+      <div class="featured-takeaway">
+        <span class="featured-takeaway-num">01</span>
+        <p>Confidence-based routing reduced human review from 100% to 30% while improving accuracy</p>
+      </div>
+      <div class="featured-takeaway">
+        <span class="featured-takeaway-num">02</span>
+        <p>Inter-annotator agreement below 0.80 κ signals taxonomy problems, not annotator problems</p>
+      </div>
+      <div class="featured-takeaway">
+        <span class="featured-takeaway-num">03</span>
+        <p>The data flywheel pattern: corrections → retraining → fewer corrections → compounding quality</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POSTS GRID -->
+<div class="section-header reveal">
+  <h2>Recent Writing</h2>
+  <span class="count">08 Posts</span>
+</div>
+
+<div class="posts-grid">
+
+  <article class="post-card reveal" data-category="cloud" onclick="window.location.href='#'">
+    <span class="post-tag cloud">Cloud Architecture</span>
+    <h3>The Solutions Architect's Discovery Framework for AI Data Projects</h3>
+    <p class="post-excerpt">A structured approach to scoping enterprise AI data needs: from current state assessment through annotation taxonomy design to success criteria. Includes the questions that separate good discovery from great.</p>
+    <div class="post-footer">
+      <span class="post-date">Feb 2026 · 8 min</span>
+      <span class="post-read">Read →</span>
+    </div>
+  </article>
+
+  <article class="post-card reveal" data-category="llm" onclick="window.location.href='#'">
+    <span class="post-tag llm">AI & ML</span>
+    <h3>SFT vs. DPO: When Each Fine-Tuning Method Actually Matters in Clinical NLP</h3>
+    <p class="post-excerpt">Supervised fine-tuning handles simple classification. But for clinical reasoning and triage, DPO after SFT delivers 7-8% accuracy gains. A practical decision framework for choosing your fine-tuning strategy.</p>
+    <div class="post-footer">
+      <span class="post-date">Feb 2026 · 10 min</span>
+      <span class="post-read">Read →</span>
+    </div>
+  </article>
+
+  <article class="post-card reveal" data-category="robotics" onclick="window.location.href='#'">
+    <span class="post-tag robotics">Reinforcement Learning</span>
+    <h3>Anatomy of a Robotics Perception Pipeline: From LiDAR Point Clouds to Labeled Training Data</h3>
+    <p class="post-excerpt">How autonomous systems turn raw sensor data into actionable understanding. Breaking down the full pipeline: sensor fusion, scene extraction, multi-modal annotation, and the continuous data loop.</p>
+    <div class="post-footer">
+      <span class="post-date">Mar 2026 · 14 min</span>
+      <span class="post-read">Read →</span>
+    </div>
+  </article>
+
+  <article class="post-card reveal" data-category="safety" onclick="window.location.href='#'">
+    <span class="post-tag safety">AI Safety</span>
+    <h3>HITL Quality Frameworks: Why Consensus Workflows Are Non-Negotiable in Safety-Critical AI</h3>
+    <p class="post-excerpt">In clinical and autonomous systems, annotation errors have real-world consequences. Exploring inter-annotator agreement metrics, golden dataset validation, and the quality architecture behind reliable AI.</p>
+    <div class="post-footer">
+      <span class="post-date">Mar 2026 · 9 min</span>
+      <span class="post-read">Read →</span>
+    </div>
+  </article>
+
+  <article class="post-card reveal" data-category="cloud" onclick="window.location.href='#'">
+    <span class="post-tag cloud">Cloud Architecture</span>
+    <h3>Building the Auto-Labeling Pipeline: Architecture for Confidence-Based Annotation Routing</h3>
+    <p class="post-excerpt">When manual labelers hit accuracy and throughput walls, we built a multi-model NER engine with intelligent routing. The architecture that turned 200 docs/day into 2,000+ with higher accuracy.</p>
+    <div class="post-footer">
+      <span class="post-date">Mar 2026 · 11 min</span>
+      <span class="post-read">Read →</span>
+    </div>
+  </article>
+
+  <article class="post-card reveal" data-category="llm" onclick="window.location.href='#'">
+    <span class="post-tag llm">AI & ML</span>
+    <h3>The Compound AI System Pattern: Why Single-Model Architectures Are Losing to Orchestrated Pipelines</h3>
+    <p class="post-excerpt">From healthcare prior authorization to document intelligence — why production AI systems are evolving from monolithic models to orchestrated pipelines of specialized components.</p>
+    <div class="post-footer">
+      <span class="post-date">Apr 2026 · 13 min</span>
+      <span class="post-read">Read →</span>
+    </div>
+  </article>
+
+  <article class="post-card reveal" data-category="robotics" onclick="window.location.href='#'">
+    <span class="post-tag robotics">Reinforcement Learning</span>
+    <h3>Azure AVOps Architecture: Building the Data Loop for Autonomous Systems</h3>
+    <p class="post-excerpt">End-to-end reference architecture for autonomous vehicle data operations on Azure — from sensor ingestion through Data Factory, to labeling handoff via Data Share, to ML training on NVIDIA DGX.</p>
+    <div class="post-footer">
+      <span class="post-date">Apr 2026 · 15 min</span>
+      <span class="post-read">Read →</span>
+    </div>
+  </article>
+
+  <article class="post-card reveal" data-category="safety" onclick="window.location.href='#'">
+    <span class="post-tag safety">AI Safety</span>
+    <h3>Annotation Taxonomy Design: The Upstream Decision That Determines Your Model's Ceiling</h3>
+    <p class="post-excerpt">A practical guide to designing annotation taxonomies that maximize inter-annotator agreement. Entity types, attributes, relationships, assertion detection — and the common mistakes that kill labeling projects.</p>
+    <div class="post-footer">
+      <span class="post-date">Apr 2026 · 10 min</span>
+      <span class="post-read">Read →</span>
+    </div>
+  </article>
+
+</div>
+
+<!-- ABOUT -->
+<section class="about reveal" id="about">
+  <div>
+    <div class="about-label">About</div>
+    <h2>Kranthi Manchikanti</h2>
+  </div>
+  <div>
+    <p class="about-text">I work at the intersection of enterprise cloud architecture and artificial intelligence — designing the systems that turn advanced AI research into production deployments that actually work at scale.</p>
+    <p class="about-text">My focus spans building cloud-native AI platforms, designing human-in-the-loop quality frameworks, and advancing responsible AI deployment across regulated and high-stakes environments.</p>
+    <div class="about-tags">
+      <span class="about-tag">AI</span>
+      <span class="about-tag">Machine Learning</span>
+      <span class="about-tag">Reinforcement Learning</span>
+      <span class="about-tag">HITL</span>
+      <span class="about-tag">AI Safety</span>
+      <span class="about-tag">AI Advancements</span>
+    </div>
+    <div class="about-industries">
+      <span class="about-industry">High Tech</span>
+      <span class="about-industry">Finance</span>
+      <span class="about-industry">Healthcare</span>
+    </div>
+    <div class="about-label" style="margin-top:1.5rem">Architectures Implemented</div>
+    <div class="about-archs">
+      <span class="about-arch">Production-Grade RAG Pipelines & Chatbots</span>
+      <span class="about-arch">Prior Authorization in HLS</span>
+      <span class="about-arch">AI-Enabled Banking Systems</span>
+      <span class="about-arch">Agentic Architectures in Accounting & Finance</span>
+      <span class="about-arch">SRE Agents</span>
+      <span class="about-arch">Human-in-the-Loop Workflows & Multi-Agent Systems</span>
+      <span class="about-arch">AI-Enabled Customer Support Applications</span>
+      <span class="about-arch">Enterprise AI Search Applications</span>
+      <span class="about-arch">AI Tax Application & Chatbot</span>
+    </div>
+    <p class="about-text" style="margin-top:1.5rem">Previously, I've built compound AI systems for healthcare, designed OCR/document intelligence pipelines, and led technical discovery for enterprise AI implementations. I write about the hard problems that sit between "works in a notebook" and "works in production."</p>
+    <div class="about-links">
+      <a href="https://linkedin.com/in/yourprofile" target="_blank" class="about-link">LinkedIn</a>
+      <a href="https://github.com/yourprofile" target="_blank" class="about-link">GitHub</a>
+      <a href="https://twitter.com/yourprofile" target="_blank" class="about-link">X / Twitter</a>
+      <a href="mailto:your@email.com" class="about-link">Email</a>
+    </div>
+  </div>
+</section>
+
+<!-- SUBSCRIBE -->
+<section class="subscribe reveal">
+  <h2>Stay in the loop</h2>
+  <p>New posts on enterprise cloud architecture, AI/ML systems, and applied research. No spam, just technical depth.</p>
+  <div class="subscribe-form">
+    <input type="email" placeholder="your@email.com">
+    <button type="button">Subscribe</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Kranthi Manchikanti. Built with intent.</p>
+  <div class="footer-links">
+    <a href="#">RSS</a>
+    <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+    <a href="https://github.com/yourprofile" target="_blank">GitHub</a>
+  </div>
+</footer>
+
+<!-- Scroll reveal -->
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
