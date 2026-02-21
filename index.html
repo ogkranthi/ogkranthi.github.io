@@ -8,6 +8,7 @@
 <meta property="og:title" content="Kranthi Manchikanti | AI Agents, Architectures & Applied Research">
 <meta property="og:description" content="AI Agents, AI Architectures, Reinforcement Learning, HITL systems, and AI safety. Written from experience across high tech, finance and healthcare industries.">
 <meta property="og:type" content="website">
+<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/3d3eda9caaed2c475dba44126/f3ea9112071b1f2a08ad4ccce.js");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -720,7 +721,7 @@ footer p {
 
 <!-- HEADER -->
 <header>
-  <a href="#" class="logo">KM<span>.</span></a>
+  <a href="#" class="logo">Kranthi Manchikanti<span>.</span></a>
   <nav>
     <a href="#writing">Writing</a>
     <a href="#about">About</a>
@@ -928,8 +929,8 @@ footer p {
   <h2>Stay in the loop</h2>
   <p>New posts on enterprise cloud architecture, AI/ML systems, and applied research. No spam, just technical depth.</p>
   <div class="subscribe-form">
-    <input type="email" placeholder="your@email.com">
-    <button type="button">Subscribe</button>
+    <input type="email" id="subscribe-email" placeholder="your@email.com">
+    <button type="button" onclick="handleSubscribe()">Subscribe</button>
   </div>
 </section>
 
@@ -955,6 +956,16 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function handleSubscribe() {
+  const email = document.getElementById('subscribe-email').value.trim();
+  if (!email || !email.includes('@')) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+  const base = 'http://eepurl.com/jz1zyI';
+  window.open(base + '&EMAIL=' + encodeURIComponent(email), '_blank');
+}
 </script>
 
 </body>
