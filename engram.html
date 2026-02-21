@@ -558,7 +558,7 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <!-- SECTION 1 -->
     <h2>The Memory Problem Nobody Was Talking About</h2>
 
-    <p>When DeepSeek quietly published the Engram paper — <em>Conditional Memory via Scalable Lookup: A New Axis of Sparsity for Large Language Models</em> — most of the discussion in the AI community orbited around benchmark numbers. Engram-27B outperforms comparable MoE models. Impressive. But the deeper story is far more important than any leaderboard position.</p>
+    <p>When DeepSeek quietly published the <a href="https://github.com/deepseek-ai/Engram/blob/main/Engram_paper.pdf" target="_blank" style="color:var(--accent)">Engram paper</a> — <em>Conditional Memory via Scalable Lookup: A New Axis of Sparsity for Large Language Models</em> — most of the discussion in the AI community orbited around benchmark numbers. Engram-27B outperforms comparable MoE models. Impressive. But the deeper story is far more important than any leaderboard position.</p>
 
     <p>Engram forces a fundamental question: <strong>where should knowledge live in an AI system, and at what level of the stack should memory be solved?</strong></p>
 
@@ -690,23 +690,23 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
     <p>Before comparing Engram to application-layer memory tools, it's worth understanding what each of these systems was actually designed to solve — because they are solving genuinely different problems.</p>
 
-    <h3>Zep: Temporal Knowledge Graphs for AI Applications</h3>
+    <h3>Zep: Context Engineering with Temporal Knowledge Graphs <a href="https://www.getzep.com/" target="_blank" style="font-family:var(--mono);font-size:0.65rem;color:var(--accent);font-weight:500;letter-spacing:0.05em;margin-left:0.5rem;border-bottom:1px solid var(--accent-light);">getzep.com ↗</a></h3>
 
-    <p>Zep is a memory layer for AI applications that builds a <strong>temporal knowledge graph</strong> from conversations and interactions. It extracts entities, relationships, and facts from dialogue, stores them with timestamps, and retrieves relevant context at inference time. Zep is designed for applications where continuity across sessions matters — support agents, sales assistants, personal AI companions.</p>
+    <p>Zep has evolved from a memory layer into a full <strong>context engineering platform</strong> — its framing is that agents fail without the right context, and Zep's job is to ensure they always have it. Its core engine is <a href="https://github.com/getzep/graphiti" target="_blank" style="color:var(--accent)">Graphiti</a>, an open-source temporal knowledge graph that ingests data from conversations, business systems, and documents, then tracks how facts change over time. Unlike traditional vector retrieval, Graphiti invalidates outdated facts and maintains a full lineage of every piece of stored knowledge — a property that matters enormously in regulated industries.</p>
 
-    <p>The core value proposition: your AI remembers that a user mentioned their daughter's allergy three weeks ago, and surfaces that context when it's relevant. This is episodic, user-specific, and dynamic memory — the kind of memory that Engram cannot and was not designed to provide.</p>
+    <p>In practice: Zep knows that a user mentioned a preference three weeks ago, that the preference changed two weeks ago, and which version of the fact is current. Retrieval latency is under 200ms, and the platform is SOC 2 Type II and HIPAA certified. A <a href="https://arxiv.org/abs/2501.13956" target="_blank" style="color:var(--accent)">January 2026 paper</a> demonstrated up to 18.5% accuracy improvements on the LongMemEval benchmark. Graphiti itself crossed 20,000 GitHub stars within twelve months of open-sourcing.</p>
 
-    <h3>Mem0: Personalized Memory at the Application Layer</h3>
+    <h3>Mem0: Hybrid Vector + Graph Memory for AI Agents <a href="https://mem0.ai/" target="_blank" style="font-family:var(--mono);font-size:0.65rem;color:var(--accent);font-weight:500;letter-spacing:0.05em;margin-left:0.5rem;border-bottom:1px solid var(--accent-light);">mem0.ai ↗</a></h3>
 
-    <p>Mem0 takes a similar approach but places a stronger emphasis on personalization and preference learning. It combines vector database retrieval with graph-based relationship storage to build persistent user models. When a user interacts with an AI application built on Mem0, the system learns what they prefer, how they communicate, and what context is relevant to them — and this model updates continuously.</p>
+    <p>Mem0 positions itself as a <strong>universal memory layer</strong> — model-agnostic infrastructure that adds persistent, personalized memory to any AI agent or application. Its architecture combines vector-based retrieval with a graph memory layer (compatible with Neo4j, Memgraph, Amazon Neptune, and Kuzu), enabling both semantic search and multi-hop relational queries across stored memories.</p>
 
-    <p>Mem0 is optimized for consumer-facing AI where individual user experience quality is the primary metric, and where memory accuracy about specific individuals is more important than broad knowledge coverage.</p>
+    <p>The headline 2026 capability is <strong>Graph Memory</strong> — entities, relationships, and events stored as nodes and edges, with an LLM-powered Conflict Resolver that decides whether to add, merge, invalidate, or skip graph elements when new information arrives. This gives Mem0 the ability to handle contradictory information gracefully rather than accumulating stale facts. Independent benchmarks show a 26% accuracy improvement over OpenAI's native memory, with 91% faster responses and 90% lower token usage. Mem0 recently became the <a href="https://mem0.ai/blog" target="_blank" style="color:var(--accent)">exclusive memory provider for AWS's Agent SDK</a>, and closed a <a href="https://mem0.ai/series-a" target="_blank" style="color:var(--accent)">$24M Series A</a> in October 2025.</p>
 
-    <h3>Letta: OS-Inspired Memory Management for Long-Running Agents</h3>
+    <h3>Letta: Stateful Agent Development Platform <a href="https://www.letta.com/" target="_blank" style="font-family:var(--mono);font-size:0.65rem;color:var(--accent);font-weight:500;letter-spacing:0.05em;margin-left:0.5rem;border-bottom:1px solid var(--accent-light);">letta.com ↗</a></h3>
 
-    <p>Letta (originally MemGPT) approaches memory from the perspective of a long-running agent that must manage a finite context window. Inspired by operating system memory hierarchies, Letta maintains multiple tiers of memory: in-context working memory, recall memory (recent conversation history), and archival memory (long-term storage that can be searched).</p>
+    <p>Letta (formerly MemGPT) has matured significantly from its original OS-inspired memory hierarchy concept. The <a href="https://www.letta.com/blog/letta-v1-agent" target="_blank" style="color:var(--accent)">V1 architecture released in January 2026</a> moves away from the original heartbeat/send_message model and now supports <strong>native reasoning</strong> — extended thinking for Claude, the Responses API for OpenAI, and encrypted reasoning for other providers. This makes Letta's agents substantially more capable on the latest frontier models.</p>
 
-    <p>The agent itself manages what moves between these tiers — using tool calls to page relevant archival content into the context window when needed, and flushing stale context to archival storage when the window fills. Letta solves the problem of multi-session, multi-hour, or multi-day agent workflows where no single context window is sufficient.</p>
+    <p>The core model remains OS-inspired: agents maintain in-context core memory (RAM analogy) and externally stored archival and recall memory (disk analogy), with the agent itself managing what moves between tiers. February 2026 introduced <strong>Context Repositories</strong> — a git-based versioning system for agent memory, enabling diffs, rollbacks, and programmatic management of memory state. Letta is fully model-agnostic, running on Claude, GPT-5, DeepSeek, and Gemini, and tool calling is no longer required to connect an LLM to the framework.</p>
 
     <!-- SECTION 5 -->
     <h2>Engram vs. Application Memory: Advantages and Trade-offs</h2>
@@ -730,14 +730,14 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
         <tr>
           <td>Memory type</td>
           <td>Static, factual/linguistic patterns</td>
-          <td>Dynamic, user-specific episodic</td>
-          <td>Dynamic, agent-managed context</td>
+          <td>Dynamic, user-specific episodic + graph</td>
+          <td>Dynamic, agent-managed context tiers</td>
         </tr>
         <tr>
           <td>Retrieval cost</td>
           <td>O(1), hidden behind compute</td>
-          <td>Vector search latency (10–100ms)</td>
-          <td>Context window management cost</td>
+          <td>Zep &lt;200ms · Mem0 91% faster vs OpenAI</td>
+          <td>Context window paging cost</td>
         </tr>
         <tr>
           <td>Update frequency</td>
@@ -834,13 +834,13 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <div class="usecase-grid">
       <div class="usecase-card">
         <div class="usecase-card-label" style="color:var(--tag-safety)">Application Layer</div>
-        <h4>Longitudinal User Relationships Matter</h4>
-        <p>Customer support, healthcare navigation, financial advising, relationship management — anywhere the AI needs to maintain a coherent model of a specific person across days, weeks, and months. Zep's temporal knowledge graph is designed exactly for this use case.</p>
+        <h4>Facts Change and Accuracy Is Non-Negotiable</h4>
+        <p>Zep's Graphiti engine tracks how facts evolve over time and invalidates stale information — unlike vector-only stores that accumulate contradictions. If your domain involves changing user preferences, evolving clinical data, or shifting compliance requirements, Zep's temporal graph is the right foundation.</p>
       </div>
       <div class="usecase-card">
         <div class="usecase-card-label" style="color:var(--tag-safety)">Application Layer</div>
-        <h4>You Need Explainable Memory</h4>
-        <p>Zep's graph-based storage means you can trace why the model surfaced a particular memory — what conversation it came from, when it was stored, what entities it involved. This auditability is essential in regulated industries where you must be able to explain AI behavior.</p>
+        <h4>Regulated Industries Requiring Audit Trails</h4>
+        <p>SOC 2 Type II and HIPAA certified, with full fact lineage tracking. Zep's dual-timeline model preserves every memory's provenance — when it was stored, what it replaced, and why. Essential for healthcare, finance, and legal applications where AI decisions must be explainable and defensible.</p>
       </div>
     </div>
 
@@ -849,13 +849,13 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <div class="usecase-grid">
       <div class="usecase-card">
         <div class="usecase-card-label" style="color:var(--tag-robotics)">Application Layer</div>
-        <h4>Personalization Is the Core Product</h4>
-        <p>Consumer AI applications where individual preference learning is the primary differentiator — health and wellness apps, personalized learning platforms, AI companions, e-commerce recommendation agents. Mem0's user model updates continuously and improves with every interaction.</p>
+        <h4>Personalization With Conflict Resolution</h4>
+        <p>Mem0's Graph Memory and LLM-powered Conflict Resolver make it the right choice when user preferences evolve and contradict prior state — health apps, personal finance tools, adaptive learning platforms. It doesn't just accumulate memories; it reconciles them. The 26% accuracy gain over OpenAI Memory on LOCOMO benchmark is meaningful for production applications.</p>
       </div>
       <div class="usecase-card">
         <div class="usecase-card-label" style="color:var(--tag-robotics)">Application Layer</div>
-        <h4>You're Building on Top of Any LLM</h4>
-        <p>Mem0 is model-agnostic. If your organization has standardized on a particular LLM provider and cannot change the underlying model, Mem0 gives you a personalization layer that works regardless of what model is underneath.</p>
+        <h4>AWS-Native or Multi-Cloud AI Stacks</h4>
+        <p>As the exclusive memory provider for AWS's Agent SDK, Mem0 is the path of least resistance for teams building on AWS infrastructure. It's also model-agnostic across other providers, so it works regardless of which LLM you standardize on. Ideal for enterprise teams that want managed memory without building and maintaining their own vector + graph infrastructure.</p>
       </div>
     </div>
 
@@ -864,13 +864,13 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <div class="usecase-grid">
       <div class="usecase-card">
         <div class="usecase-card-label" style="color:var(--tag-hitl)">Agent Framework</div>
-        <h4>Agents Run for Hours or Days</h4>
-        <p>Research agents, autonomous coding assistants, long-horizon planning systems — tasks that generate more context than any single context window can hold. Letta's paging architecture is the only production-ready solution for this class of problem today.</p>
+        <h4>Agents Run for Hours or Days With Native Reasoning</h4>
+        <p>Letta V1's native reasoning support (Claude extended thinking, GPT-5 Responses API) makes it the right choice for long-horizon agents that need to reason deeply across multi-session workflows — research agents, autonomous coding (Letta Code), complex analysis pipelines. The agent manages its own memory tiers and can now run without requiring tool calling support from the underlying LLM.</p>
       </div>
       <div class="usecase-card">
         <div class="usecase-card-label" style="color:var(--tag-hitl)">Agent Framework</div>
-        <h4>Multi-Session Continuity for Autonomous Agents</h4>
-        <p>If your agent needs to resume where it left off — picking up a project across multiple work sessions, maintaining state through interruptions — Letta's archival memory layer provides exactly this capability with explicit memory management the agent controls.</p>
+        <h4>Memory State Needs Version Control</h4>
+        <p>Letta's Context Repositories (February 2026) bring git-based versioning to agent memory — diffs, rollbacks, and programmatic management of what an agent knows. For enterprise applications where you need to audit, reproduce, or roll back an agent's knowledge state, this is a capability no other framework currently offers.</p>
       </div>
     </div>
 
@@ -1048,9 +1048,8 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
     <!-- CTA -->
     <div class="cta-section">
-      <h2>Are You Working on AI Memory Systems?</h2>
-      <p>If you are researching model-level memory architectures, building production memory infrastructure for AI applications, or deploying the kind of full-stack AI memory systems described in this article — I would genuinely like to connect.</p>
-      <p>I am particularly interested in conversations with teams working on Engram-adjacent research, production deployments of multi-layer memory stacks in regulated industries, and HITL frameworks for memory-augmented agentic systems. Whether you are a researcher, an engineer, or an architect navigating these decisions in a real enterprise environment — reach out.</p>
+      <h2>Working on AI Memory Systems?</h2>
+      <p>If you're researching model-level memory architectures, building production memory infrastructure, or deploying full-stack AI memory systems in regulated industries — I'd like to connect. Whether you're a researcher, engineer, or enterprise architect, reach out.</p>
       <div class="cta-links">
         <a href="mailto:ogkranthi22@gmail.com" class="cta-btn">Email Me →</a>
         <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="cta-btn-ghost">Connect on LinkedIn</a>
