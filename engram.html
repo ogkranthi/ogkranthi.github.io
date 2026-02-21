@@ -534,6 +534,10 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
   <p class="article-subtitle">A deep dive into the architectural breakthrough that challenges how we store knowledge in LLMs — and what it means for Zep, Mem0, Letta, and the entire application memory ecosystem.</p>
 
+  <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:0.65rem 1rem;margin-bottom:1.75rem;letter-spacing:0.02em;">
+    <strong style="color:var(--text-secondary);">Disclaimer:</strong> All ideas, opinions, and analysis expressed in this article are my own and do not represent the views of any employer, client, or affiliated organization.
+  </div>
+
   <div class="article-meta">
     <div class="article-meta-item">
       <span class="article-meta-label">Author</span>
@@ -698,9 +702,9 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
     <h3>Mem0: Hybrid Vector + Graph Memory for AI Agents <a href="https://mem0.ai/" target="_blank" style="font-family:var(--mono);font-size:0.65rem;color:var(--accent);font-weight:500;letter-spacing:0.05em;margin-left:0.5rem;border-bottom:1px solid var(--accent-light);">mem0.ai ↗</a></h3>
 
-    <p>Mem0 positions itself as a <strong>universal memory layer</strong> — model-agnostic infrastructure that adds persistent, personalized memory to any AI agent or application. Its architecture combines vector-based retrieval with a graph memory layer (compatible with Neo4j, Memgraph, Amazon Neptune, and Kuzu), enabling both semantic search and multi-hop relational queries across stored memories.</p>
+    <p>Mem0 positions itself as a <strong>universal memory layer</strong> — truly framework- and cloud-agnostic infrastructure that adds persistent, personalized memory to any AI agent or application. Its architecture combines vector-based retrieval with a graph memory layer (compatible with Neo4j, Memgraph, Amazon Neptune, and Kuzu), enabling both semantic search and multi-hop relational queries across stored memories. With <a href="https://github.com/mem0ai/mem0" target="_blank" style="color:var(--accent)">41,000+ GitHub stars</a> and 13M+ Python package downloads, it has become one of the fastest-adopted components in the AI infrastructure ecosystem.</p>
 
-    <p>The headline 2026 capability is <strong>Graph Memory</strong> — entities, relationships, and events stored as nodes and edges, with an LLM-powered Conflict Resolver that decides whether to add, merge, invalidate, or skip graph elements when new information arrives. This gives Mem0 the ability to handle contradictory information gracefully rather than accumulating stale facts. Independent benchmarks show a 26% accuracy improvement over OpenAI's native memory, with 91% faster responses and 90% lower token usage. Mem0 recently became the <a href="https://mem0.ai/blog" target="_blank" style="color:var(--accent)">exclusive memory provider for AWS's Agent SDK</a>, and closed a <a href="https://mem0.ai/series-a" target="_blank" style="color:var(--accent)">$24M Series A</a> in October 2025.</p>
+    <p>The headline 2026 capability is <strong>Graph Memory</strong> — entities, relationships, and events stored as nodes and edges, with an LLM-powered Conflict Resolver that decides whether to add, merge, invalidate, or skip graph elements when new information arrives. Independent benchmarks show a 26% accuracy improvement over OpenAI's native memory, with 91% faster responses and 90% lower token usage. On the ecosystem side, Mem0 has secured integrations across all major clouds and agent frameworks: it is the <a href="https://mem0.ai/blog/aws-and-mem0-partner-to-bring-persistent-memory-to-next-gen-ai-agents-with-strands" target="_blank" style="color:var(--accent)">exclusive memory provider for AWS Strands Agents SDK</a>, has <a href="https://devblogs.microsoft.com/foundry/azure-ai-mem0-integration/" target="_blank" style="color:var(--accent)">official integration with Microsoft Azure AI Foundry and Microsoft Agent Framework</a>, and supports LangChain, LlamaIndex, LangGraph, CrewAI, and Google ADK. It supports 15+ LLM providers natively including OpenAI, Anthropic, Azure OpenAI, Gemini, Bedrock, DeepSeek, and Ollama. The company closed a <a href="https://techcrunch.com/2025/10/28/mem0-raises-24m-from-yc-peak-xv-and-basis-set-to-build-the-memory-layer-for-ai-apps/" target="_blank" style="color:var(--accent)">$24M Series A</a> in October 2025.</p>
 
     <h3>Letta: Stateful Agent Development Platform <a href="https://www.letta.com/" target="_blank" style="font-family:var(--mono);font-size:0.65rem;color:var(--accent);font-weight:500;letter-spacing:0.05em;margin-left:0.5rem;border-bottom:1px solid var(--accent-light);">letta.com ↗</a></h3>
 
@@ -854,8 +858,8 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
       </div>
       <div class="usecase-card">
         <div class="usecase-card-label" style="color:var(--tag-robotics)">Application Layer</div>
-        <h4>AWS-Native or Multi-Cloud AI Stacks</h4>
-        <p>As the exclusive memory provider for AWS's Agent SDK, Mem0 is the path of least resistance for teams building on AWS infrastructure. It's also model-agnostic across other providers, so it works regardless of which LLM you standardize on. Ideal for enterprise teams that want managed memory without building and maintaining their own vector + graph infrastructure.</p>
+        <h4>Multi-Cloud and Multi-Framework Enterprise Stacks</h4>
+        <p>Mem0's ecosystem reach is unusually broad — officially integrated with AWS (Strands, Bedrock, Neptune), Microsoft (Azure AI Foundry, Microsoft Agent Framework), and all major agent frameworks (LangChain, LlamaIndex, LangGraph, CrewAI, Google ADK). If your enterprise uses multiple clouds or is standardized on any of these frameworks, Mem0 drops in without requiring a rearchitecture of the surrounding stack.</p>
       </div>
     </div>
 
