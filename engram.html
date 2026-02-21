@@ -22,16 +22,16 @@
   --text-primary: #1a1a1a;
   --text-secondary: #555555;
   --text-muted: #999999;
-  --accent: #2563eb;
-  --accent-dim: #1d4ed8;
-  --accent-light: #eff6ff;
+  --accent: #18181b;
+  --accent-dim: #09090b;
+  --accent-light: #f4f4f5;
   --border: #e8e8e5;
-  --border-hover: #d4d4d0;
-  --tag-cloud: #2563eb;
-  --tag-llm: #c2410c;
-  --tag-robotics: #7c3aed;
-  --tag-safety: #059669;
-  --tag-hitl: #b45309;
+  --border-hover: #c4c4c0;
+  --tag-cloud: #52525b;
+  --tag-llm: #52525b;
+  --tag-robotics: #52525b;
+  --tag-safety: #52525b;
+  --tag-hitl: #52525b;
   --serif: 'Newsreader', Georgia, serif;
   --sans: 'Inter', -apple-system, sans-serif;
   --mono: 'JetBrains Mono', monospace;
@@ -311,11 +311,11 @@ nav a:hover { color: var(--accent); }
   font-weight: 500;
 }
 
-.badge-blue { background: var(--accent-light); color: var(--accent); }
-.badge-green { background: #f0fdf4; color: #059669; }
-.badge-orange { background: #fff7ed; color: #c2410c; }
-.badge-purple { background: #f5f3ff; color: #7c3aed; }
-.badge-amber { background: #fffbeb; color: #b45309; }
+.badge-blue { background: var(--accent-light); color: var(--text-primary); }
+.badge-green { background: var(--accent-light); color: var(--text-primary); }
+.badge-orange { background: var(--accent-light); color: var(--text-primary); }
+.badge-purple { background: var(--accent-light); color: var(--text-primary); }
+.badge-amber { background: var(--accent-light); color: var(--text-primary); }
 
 /* ── USE CASE CARDS ── */
 .usecase-grid {
@@ -419,7 +419,7 @@ nav a:hover { color: var(--accent); }
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--tag-robotics));
+  background: var(--accent);
 }
 
 .cta-section h2 {
@@ -642,82 +642,81 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
     <!-- HAND-DRAWN DIAGRAM -->
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
-    <div style="margin:2.5rem 0;background:#fdfcfb;border:1.5px solid var(--border);border-radius:12px;padding:1.5rem;overflow-x:auto;">
-      <svg viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;font-family:'Caveat',cursive;">
+    <div style="margin:2.5rem -2rem;background:#fdfcfb;border:1.5px solid var(--border);border-radius:12px;padding:2rem;overflow-x:auto;">
+      <svg viewBox="0 0 780 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;display:block;margin:0 auto;font-family:'Caveat',cursive;">
 
         <!-- title -->
-        <text x="340" y="28" text-anchor="middle" font-size="17" fill="#1a1a1a" font-weight="700">Engram: How It Fits Inside a Transformer</text>
+        <text x="390" y="32" text-anchor="middle" font-size="21" fill="#1a1a1a" font-weight="700">Engram: How It Fits Inside a Transformer</text>
 
         <!-- ── INPUT TOKENS ── -->
-        <rect x="200" y="48" width="280" height="44" rx="8" fill="#ffffff" stroke="#c7c7c3" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <text x="340" y="68" text-anchor="middle" font-size="14" fill="#555">Input Tokens</text>
-        <text x="340" y="84" text-anchor="middle" font-size="12" fill="#999">[the]  [patient]  [has]  [a]  [fever]</text>
+        <rect x="220" y="52" width="320" height="50" rx="8" fill="#ffffff" stroke="#c7c7c3" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="380" y="74" text-anchor="middle" font-size="16" fill="#555">Input Tokens</text>
+        <text x="380" y="93" text-anchor="middle" font-size="14" fill="#999">[the]  [patient]  [has]  [a]  [fever]</text>
 
         <!-- arrow down from tokens -->
-        <line x1="340" y1="92" x2="340" y2="118" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="380" y1="102" x2="380" y2="132" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
 
         <!-- ── N-GRAM HASH ── -->
-        <rect x="245" y="118" width="190" height="40" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
-        <text x="340" y="135" text-anchor="middle" font-size="14" fill="#2563eb" font-weight="600">n-gram hash address</text>
-        <text x="340" y="151" text-anchor="middle" font-size="11" fill="#6b9fe4">O(1) · computed before forward pass</text>
+        <rect x="272" y="132" width="216" height="48" rx="8" fill="#f4f4f5" stroke="#a1a1aa" stroke-width="1.5"/>
+        <text x="380" y="153" text-anchor="middle" font-size="16" fill="#18181b" font-weight="600">n-gram hash address</text>
+        <text x="380" y="172" text-anchor="middle" font-size="13" fill="#71717a">O(1) · computed before forward pass</text>
 
         <!-- arrow left to CPU DRAM -->
-        <path d="M 245 138 Q 150 138 130 200" stroke="#2563eb" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrblu)"/>
+        <path d="M 272 156 Q 160 156 145 228" stroke="#18181b" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrblu)"/>
         <!-- arrow down to GPU -->
-        <line x1="340" y1="158" x2="340" y2="192" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="380" y1="180" x2="380" y2="220" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
 
         <!-- ── CPU DRAM BOX ── -->
-        <rect x="18" y="190" width="185" height="110" rx="10" fill="#f0fdf4" stroke="#6ee7b7" stroke-width="1.5"/>
-        <text x="110" y="212" text-anchor="middle" font-size="13" fill="#059669" font-weight="700">CPU DRAM</text>
-        <text x="110" y="230" text-anchor="middle" font-size="12" fill="#555">Engram Table</text>
-        <text x="110" y="248" text-anchor="middle" font-size="11" fill="#888">billions of embeddings</text>
-        <text x="110" y="265" text-anchor="middle" font-size="11" fill="#888">cheap · large · static</text>
-        <text x="110" y="283" text-anchor="middle" font-size="11" fill="#059669">prefetched in parallel ↗</text>
+        <rect x="14" y="220" width="206" height="130" rx="10" fill="#f9f9f8" stroke="#a1a1aa" stroke-width="1.5" stroke-dasharray="6,3"/>
+        <text x="117" y="246" text-anchor="middle" font-size="15" fill="#18181b" font-weight="700">CPU DRAM</text>
+        <text x="117" y="267" text-anchor="middle" font-size="14" fill="#555">Engram Table</text>
+        <text x="117" y="287" text-anchor="middle" font-size="13" fill="#888">billions of embeddings</text>
+        <text x="117" y="306" text-anchor="middle" font-size="13" fill="#888">cheap · large · static</text>
+        <text x="117" y="325" text-anchor="middle" font-size="13" fill="#52525b">prefetched in parallel ↗</text>
 
         <!-- arrow right from CPU to residual inject -->
-        <path d="M 203 245 Q 260 245 260 310" stroke="#059669" stroke-width="1.5" fill="none" marker-end="url(#arrgrn)"/>
-        <text x="218" y="282" font-size="11" fill="#059669">e_engram</text>
+        <path d="M 220 283 Q 288 283 288 362" stroke="#18181b" stroke-width="1.5" fill="none" marker-end="url(#arrgrn)"/>
+        <text x="238" y="330" font-size="13" fill="#52525b">e_engram</text>
 
         <!-- ── GPU HBM BOX ── -->
-        <rect x="220" y="192" width="240" height="110" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
-        <text x="340" y="214" text-anchor="middle" font-size="13" fill="#c2410c" font-weight="700">GPU HBM</text>
-        <text x="340" y="232" text-anchor="middle" font-size="12" fill="#555">Transformer Layers</text>
-        <text x="340" y="250" text-anchor="middle" font-size="11" fill="#888">Attention  ·  MoE Experts</text>
-        <text x="340" y="268" text-anchor="middle" font-size="11" fill="#888">KV Cache  ·  MLP weights</text>
-        <text x="340" y="286" text-anchor="middle" font-size="11" fill="#c2410c">expensive · limited · dynamic</text>
+        <rect x="252" y="220" width="268" height="130" rx="10" fill="#ffffff" stroke="#18181b" stroke-width="1.5"/>
+        <text x="386" y="246" text-anchor="middle" font-size="15" fill="#18181b" font-weight="700">GPU HBM</text>
+        <text x="386" y="267" text-anchor="middle" font-size="14" fill="#555">Transformer Layers</text>
+        <text x="386" y="287" text-anchor="middle" font-size="13" fill="#888">Attention  ·  MoE Experts</text>
+        <text x="386" y="306" text-anchor="middle" font-size="13" fill="#888">KV Cache  ·  MLP weights</text>
+        <text x="386" y="325" text-anchor="middle" font-size="13" fill="#71717a">expensive · limited · dynamic</text>
 
-        <!-- arrow right side label — no Engram table here -->
-        <rect x="478" y="210" width="180" height="76" rx="8" fill="#fafaf9" stroke="#e8e8e5" stroke-width="1.2" stroke-dasharray="4,3"/>
-        <text x="568" y="232" text-anchor="middle" font-size="12" fill="#999">static patterns no</text>
-        <text x="568" y="249" text-anchor="middle" font-size="12" fill="#999">longer stored here</text>
-        <text x="568" y="266" text-anchor="middle" font-size="12" fill="#6b9fe4">→ freed capacity</text>
-        <text x="568" y="280" text-anchor="middle" font-size="12" fill="#6b9fe4">for reasoning</text>
-        <!-- dashed arrow from GPU to freed -->
-        <line x1="460" y1="248" x2="478" y2="248" stroke="#ccc" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arrgry)"/>
+        <!-- freed capacity note -->
+        <rect x="542" y="238" width="220" height="94" rx="8" fill="#fafaf9" stroke="#e8e8e5" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <text x="652" y="262" text-anchor="middle" font-size="13" fill="#999">static patterns no</text>
+        <text x="652" y="281" text-anchor="middle" font-size="13" fill="#999">longer stored here</text>
+        <text x="652" y="300" text-anchor="middle" font-size="13" fill="#52525b">→ freed capacity</text>
+        <text x="652" y="319" text-anchor="middle" font-size="13" fill="#52525b">for reasoning</text>
+        <line x1="520" y1="283" x2="542" y2="283" stroke="#ccc" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arrgry)"/>
 
         <!-- ── RESIDUAL INJECTION ── -->
-        <rect x="220" y="326" width="240" height="44" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
-        <text x="340" y="346" text-anchor="middle" font-size="13" fill="#2563eb" font-weight="600">Residual Stream Injection</text>
-        <text x="340" y="362" text-anchor="middle" font-size="11" fill="#6b9fe4">h = TransformerLayer(h) + α · e_engram</text>
+        <rect x="252" y="382" width="268" height="54" rx="8" fill="#f4f4f5" stroke="#a1a1aa" stroke-width="1.5"/>
+        <text x="386" y="406" text-anchor="middle" font-size="15" fill="#18181b" font-weight="600">Residual Stream Injection</text>
+        <text x="386" y="426" text-anchor="middle" font-size="13" fill="#71717a">h = TransformerLayer(h) + α · e_engram</text>
 
         <!-- arrow down from GPU to injection -->
-        <line x1="340" y1="302" x2="340" y2="326" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="386" y1="350" x2="386" y2="382" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
 
         <!-- arrow down from injection to output -->
-        <line x1="340" y1="370" x2="340" y2="400" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="386" y1="436" x2="386" y2="466" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
 
         <!-- ── OUTPUT ── -->
-        <rect x="245" y="400" width="190" height="40" rx="8" fill="#ffffff" stroke="#c7c7c3" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <text x="340" y="418" text-anchor="middle" font-size="14" fill="#1a1a1a" font-weight="600">Output</text>
-        <text x="340" y="434" text-anchor="middle" font-size="11" fill="#999">richer knowledge · zero added latency</text>
+        <rect x="272" y="466" width="216" height="48" rx="8" fill="#ffffff" stroke="#c7c7c3" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="380" y="488" text-anchor="middle" font-size="16" fill="#1a1a1a" font-weight="600">Output</text>
+        <text x="380" y="506" text-anchor="middle" font-size="13" fill="#999">richer knowledge · zero added latency</text>
 
         <!-- ── LEGEND ── -->
-        <line x1="30" y1="456" x2="55" y2="456" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <text x="62" y="460" font-size="11" fill="#555">lookup / prefetch path</text>
-        <line x1="200" y1="456" x2="225" y2="456" stroke="#059669" stroke-width="1.5"/>
-        <text x="232" y="460" font-size="11" fill="#555">embedding injection</text>
-        <line x1="380" y1="456" x2="405" y2="456" stroke="#aaa" stroke-width="1.5"/>
-        <text x="412" y="460" font-size="11" fill="#555">forward pass flow</text>
+        <line x1="30" y1="534" x2="62" y2="534" stroke="#18181b" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="70" y="539" font-size="13" fill="#555">lookup / prefetch path</text>
+        <line x1="240" y1="534" x2="272" y2="534" stroke="#18181b" stroke-width="1.5"/>
+        <text x="280" y="539" font-size="13" fill="#555">embedding injection</text>
+        <line x1="460" y1="534" x2="492" y2="534" stroke="#aaa" stroke-width="1.5"/>
+        <text x="500" y="539" font-size="13" fill="#555">forward pass flow</text>
 
         <!-- ARROWHEAD MARKERS -->
         <defs>
@@ -725,10 +724,10 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
             <path d="M0,0 L0,6 L8,3 z" fill="#aaa"/>
           </marker>
           <marker id="arrblu" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+            <path d="M0,0 L0,6 L8,3 z" fill="#18181b"/>
           </marker>
           <marker id="arrgrn" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L8,3 z" fill="#059669"/>
+            <path d="M0,0 L0,6 L8,3 z" fill="#18181b"/>
           </marker>
           <marker id="arrgry" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
             <path d="M0,0 L0,6 L8,3 z" fill="#ccc"/>
