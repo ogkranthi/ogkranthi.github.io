@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fine-Tuning a 1.2B LLM for Pediatric Disaster Response on the Edge | Kranthi Manchikanti</title>
+<meta name="description" content="How we fine-tuned LiquidAI's LFM2.5-1.2B on pediatric triage protocols using Unsloth + Hugging Face — and built a model that runs offline, under 1GB RAM, on field devices with no connectivity.">
+<meta property="og:title" content="Fine-Tuning a 1.2B LLM for Pediatric Disaster Response on the Edge">
+<meta property="og:description" content="SFT with LoRA, Unsloth optimizations, HF Jobs for cloud training, and GGUF export for offline deployment. A complete technical walkthrough.">
+<meta property="og:type" content="article">
+<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/3d3eda9caaed2c475dba44126/f3ea9112071b1f2a08ad4ccce.js");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fafaf9;
+  --bg-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #999999;
+  --accent: #18181b;
+  --accent-dim: #09090b;
+  --accent-light: #f4f4f5;
+  --border: #e8e8e5;
+  --border-hover: #c4c4c0;
+  --serif: 'Newsreader', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── HEADER ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(250, 250, 249, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.logo span { color: var(--accent); }
+
+nav { display: flex; gap: 2rem; align-items: center; }
+
+nav a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+nav a:hover { color: var(--accent); }
+
+.nav-cta {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.nav-cta:hover { background: var(--accent-dim); color: #fff; }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 8rem 2.5rem 6rem;
+}
+
+/* ── ARTICLE HERO ── */
+.article-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.article-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+}
+
+.article-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.article-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.article-meta {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.article-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.article-meta-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.article-meta-value {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.article-body h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-top: 2.25rem;
+  margin-bottom: 0.65rem;
+  color: var(--text-primary);
+}
+
+.article-body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 1.35rem;
+  font-weight: 300;
+}
+
+.article-body p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.article-body ul, .article-body ol {
+  margin: 0.75rem 0 1.35rem 1.5rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.85;
+  font-weight: 300;
+}
+
+.article-body li { margin-bottom: 0.45rem; }
+.article-body li strong { color: var(--text-primary); font-weight: 600; }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: 2rem 0;
+}
+
+.callout p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.callout-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* ── ARCHITECTURE BLOCK ── */
+.arch-block {
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 1.75rem 2rem;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.arch-block pre {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.75;
+  color: #e2e8f0;
+  white-space: pre;
+}
+
+.arch-block .comment { color: #64748b; }
+.arch-block .highlight { color: #60a5fa; }
+.arch-block .accent2 { color: #34d399; }
+.arch-block .warn { color: #f59e0b; }
+.arch-block .red { color: #f87171; }
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: #0f172a;
+  border-radius: 8px;
+  padding: 1.5rem 1.75rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.code-block pre {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+  white-space: pre;
+}
+
+.code-block .kw { color: #c084fc; }
+.code-block .str { color: #86efac; }
+.code-block .cm { color: #64748b; }
+.code-block .num { color: #fdba74; }
+.code-block .fn { color: #60a5fa; }
+
+/* ── COMPARISON TABLE ── */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.85rem;
+}
+
+.compare-table th {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border);
+  text-align: left;
+  background: var(--bg);
+}
+
+.compare-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+
+.compare-table td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* ── METRIC CARDS ── */
+.metric-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.metric-value {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 0.3rem;
+}
+
+.metric-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── SECTION DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3.5rem 0;
+}
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2.5rem;
+  text-align: center;
+  margin-top: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+}
+
+.cta-section h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.cta-section p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 1.75rem;
+  font-weight: 300;
+}
+
+.cta-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.cta-btn:hover { background: var(--accent-dim); color: #fff; }
+
+.cta-btn-ghost {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.cta-btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── FOOTER ── */
+footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer p { font-size: 0.75rem; color: var(--text-muted); }
+
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 1rem 1.5rem; }
+  nav a:not(.nav-cta) { display: none; }
+  .article-wrap { padding: 6rem 1.5rem 4rem; }
+  .metric-row { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+  .arch-block { padding: 1.25rem; }
+  .arch-block pre { font-size: 0.65rem; }
+  .code-block pre { font-size: 0.7rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="/" class="logo">Kranthi Manchikanti<span>.</span></a>
+  <nav>
+    <a href="/#writing">Writing</a>
+    <a href="/#about">About</a>
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta">LinkedIn →</a>
+  </nav>
+</header>
+
+<!-- ARTICLE -->
+<div class="article-wrap">
+
+  <div class="article-label">Applied AI Research · Edge AI · Fine-Tuning</div>
+
+  <h1 class="article-title">Fine-Tuning a 1.2B LLM for Pediatric Disaster Response <em>on the Edge</em></h1>
+
+  <p class="article-subtitle">How we took LiquidAI's LFM2.5-1.2B, injected JumpSTART triage protocols and PALS emergency medicine directly into its weights using Unsloth and Hugging Face — and produced a model that runs under 1GB RAM with zero internet connectivity on field devices.</p>
+
+  <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:0.65rem 1rem;margin-bottom:1.75rem;letter-spacing:0.02em;">
+    <strong style="color:var(--text-secondary);">Disclaimer:</strong> All ideas, opinions, and analysis expressed in this article are my own and do not represent the views of any employer, client, or affiliated organization. This project is a research proof-of-concept. Model outputs are not a substitute for professional medical training or clinical judgment.
+  </div>
+
+  <div class="article-meta">
+    <div class="article-meta-item">
+      <span class="article-meta-label">Author</span>
+      <span class="article-meta-value">Kranthi Manchikanti</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Published</span>
+      <span class="article-meta-value">Feb 2026</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Read time</span>
+      <span class="article-meta-value">18 min</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Topics</span>
+      <span class="article-meta-value">SFT · LoRA · Edge AI · Unsloth · HF Jobs</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+    <!-- SECTION 1 -->
+    <h2>The Problem Nobody in AI Is Building For</h2>
+
+    <p>In a mass casualty event — an earthquake, a flood, a building collapse — first responders face decisions that kill or save children in seconds. JumpSTART triage asks: is the child breathing? What is the respiratory rate? Is the radial pulse present? Depending on the answers, the child gets tagged RED, YELLOW, GREEN, or BLACK — each color dictating the immediacy of intervention.</p>
+
+    <p>These protocols are well-established. JumpSTART (Lou Romig, MD), PALS from the American Heart Association, SALT mass casualty triage, and the Broselow Pediatric Emergency Tape. The problem is not the protocols. The problem is <strong>the gap between protocol knowledge and field availability</strong>.</p>
+
+    <p>In disaster zones, connectivity collapses. There is no 4G. There is no cloud API to call. The volunteer sitting next to a 6-year-old pulled from rubble does not have a pediatric emergency physician on the phone. They have whatever knowledge they carried into the field — and whatever tools will run on their device without internet.</p>
+
+    <div class="callout">
+      <div class="callout-label">The Core Constraint</div>
+      <p>The field device may be a ruggedized Android tablet, a mid-range smartphone, or an older laptop. RAM is constrained. Battery is limited. Connectivity is zero. The model must run locally, instantly, and with enough medical accuracy to meaningfully guide triage decisions without expert oversight on-site.</p>
+    </div>
+
+    <p>General-purpose LLMs like GPT-4 or Claude are not the answer here. They require internet. They are too large for on-device inference. And they are trained on broad medical text, not on the specific decision trees and age-weight-dose relationships that emergency responders need in the field. This is a case where a <strong>small, specialized, offline model</strong> beats a large, general, cloud-hosted one — by a wide margin.</p>
+
+    <h3>Why This Is an Edge AI Problem, Not a RAG Problem</h3>
+
+    <p>The first instinct of most AI engineers facing a "domain knowledge" problem is to reach for Retrieval-Augmented Generation: embed the protocols, store them in a vector database, retrieve relevant chunks at query time. RAG is the right tool for many problems. This is not one of them.</p>
+
+    <p>RAG requires a retrieval infrastructure. In the field, there is no vector database server. There is no embedding API. There is no network to reach either. More fundamentally, triage decisions under stress need to be instantaneous — the cognitive overhead of a responder reading retrieved chunks and synthesizing them into an action is friction that costs lives. The model needs to <em>know</em> the protocols the way a trained paramedic knows them: internalized, retrievable under pressure, structured as actionable outputs.</p>
+
+    <p>That means fine-tuning. Knowledge baked into weights. Zero retrieval overhead. Zero connectivity dependency.</p>
+
+    <!-- SECTION 2 -->
+    <h2>Choosing the Right Base Model: Why LFM2.5-1.2B</h2>
+
+    <p>The base model choice is the most consequential decision in an edge AI project. The wrong model and you are either too large to run on-device or too weak to produce medically coherent outputs. We evaluated the constraint space before touching a single line of training code.</p>
+
+    <div class="metric-row">
+      <div class="metric-card">
+        <div class="metric-value">&lt;1GB</div>
+        <div class="metric-label">RAM footprint (Q4_K_M GGUF)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">1.2B</div>
+        <div class="metric-label">Parameters</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">0</div>
+        <div class="metric-label">Internet required</div>
+      </div>
+    </div>
+
+    <p>We chose <strong>LiquidAI/LFM2.5-1.2B-Instruct</strong> — a Liquid Foundation Model from LiquidAI. LFM2.5 is not a standard transformer. It is a hybrid architecture combining Liquid Neural Network (LNN) principles with structured state-space components — specifically, LIV (Liquid Input-output Variant) convolution layers alongside grouped-query attention (GQA). This architecture makes two things true simultaneously that are usually in tension: strong reasoning coherence and extreme parameter efficiency.</p>
+
+    <h3>What LFM2.5 Gets Right for Edge Deployment</h3>
+
+    <p>Standard transformer models at 1B parameters degrade quickly on multi-step clinical reasoning. The attention patterns that enable coherent chain-of-thought in larger models simply do not form reliably at this scale in a vanilla architecture. LFM2.5 addresses this through its hybrid LNN-attention design: the LIV convolution layers provide sequential state tracking that augments attention, giving the model a form of recurrence that preserves logical chain across steps even at small scale.</p>
+
+    <p>For our use case — where responses must walk through triage category, immediate actions, and explicit contraindications in a structured format — this sequential coherence matters enormously. The model needs to reason: <em>child is not walking → check breathing → breathing present → check rate → 36/min is elevated for age 5 → RED triage</em>. That is a five-step conditional chain that 1B-parameter vanilla transformers often break.</p>
+
+    <p>The second advantage is quantization tolerance. LFM2.5-1.2B quantizes well to Q4_K_M GGUF format, maintaining output quality at under 1GB RAM footprint — a hard requirement for sub-2GB RAM field devices.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Params</th>
+          <th>GGUF (Q4_K_M)</th>
+          <th>Edge Viable</th>
+          <th>Clinical Coherence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>LFM2.5-1.2B</td>
+          <td>1.2B</td>
+          <td>~750MB</td>
+          <td>Yes</td>
+          <td>Strong (hybrid arch)</td>
+        </tr>
+        <tr>
+          <td>Llama 3.2-1B</td>
+          <td>1B</td>
+          <td>~650MB</td>
+          <td>Yes</td>
+          <td>Moderate</td>
+        </tr>
+        <tr>
+          <td>Qwen2.5-1.5B</td>
+          <td>1.5B</td>
+          <td>~950MB</td>
+          <td>Marginal</td>
+          <td>Moderate</td>
+        </tr>
+        <tr>
+          <td>Phi-3.5-mini</td>
+          <td>3.8B</td>
+          <td>~2.4GB</td>
+          <td>No</td>
+          <td>Strong</td>
+        </tr>
+        <tr>
+          <td>Llama 3.1-8B</td>
+          <td>8B</td>
+          <td>~5.0GB</td>
+          <td>No</td>
+          <td>Very Strong</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- SECTION 3 -->
+    <h2>The Dataset: Encoding Protocols as Conversations</h2>
+
+    <p>Fine-tuning quality is determined by dataset quality more than any hyperparameter choice. For a domain as narrow and high-stakes as pediatric disaster triage, this meant constructing the dataset by hand — not scraping medical text, not using LLM-synthesized pairs without expert review.</p>
+
+    <p>The dataset is structured in the ChatML multi-turn conversation format that LFM2.5-Instruct was instruction-tuned on. Each example has three roles: a <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">system</code> message encoding the assistant's persona and constraints, a <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">user</code> message presenting a field scenario or protocol question, and an <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">assistant</code> response structured as: triage category, rationale, immediate actions, explicit contraindications (Do NOT), and reassessment triggers.</p>
+
+    <div class="arch-block">
+      <pre><span class="comment">// pediatric_disaster_poc.jsonl — example structure</span>
+
+{
+  <span class="accent2">"messages"</span>: [
+    {
+      <span class="accent2">"role"</span>: <span class="highlight">"system"</span>,
+      <span class="accent2">"content"</span>: <span class="highlight">"You are a pediatric disaster response assistant
+        trained on JumpSTART triage, PALS protocols, and field emergency
+        medicine. You help first responders make fast, accurate decisions
+        for injured children in offline, resource-limited environments.
+        Always state triage category, immediate action, and what NOT to do."</span>
+    },
+    {
+      <span class="accent2">"role"</span>: <span class="highlight">"user"</span>,
+      <span class="accent2">"content"</span>: <span class="highlight">"5-year-old pulled from earthquake rubble. Right leg crushed,
+        significant bleeding. Screaming, alert, breathing fast at 36/min,
+        radial pulse weak but present."</span>
+    },
+    {
+      <span class="accent2">"role"</span>: <span class="highlight">"assistant"</span>,
+      <span class="accent2">"content"</span>: <span class="highlight">"TRIAGE: RED (Immediate)
+
+        Rationale: Crush injury with significant bleeding and compensated
+        shock. RR 36/min elevated for age (normal 5yr: 20-30/min) ...
+
+        Immediate Actions:
+        1. Apply tourniquet above crush injury — note time on skin
+        2. Direct pressure to additional bleeding points
+        ...
+
+        Do NOT: Remove tourniquet once applied. No food or water.
+        Do not straighten crushed limb.
+
+        Crush Syndrome Warning: reperfusion arrhythmia risk at extrication."</span>
+    }
+  ]
+}</pre>
+    </div>
+
+    <p>The ~60 examples in the PoC dataset cover the full scope of field scenarios: JumpSTART algorithm decision paths, vital sign reference tables by age group (newborn through adolescent), specific disaster types (earthquake crush injury, flood near-drowning, fire burns and inhalation, chemical exposure with decontamination protocol), CPR technique differences between infants and children, weight-based dosing via the Broselow tape, shock recognition and progression, pediatric spinal precautions, and psychological first aid for uninjured but distressed children.</p>
+
+    <p>Token lengths across the dataset range from 282 to 490 tokens per example — all well within the 1,024 token training window. This is intentional: responses are structured to be field-readable under stress, not exhaustive clinical references.</p>
+
+    <div class="callout">
+      <div class="callout-label">Dataset Design Principle</div>
+      <p>Every assistant response follows a strict output schema: TRIAGE category first, rationale second, numbered immediate actions, explicit Do NOT list, reassessment triggers. This is not stylistic — it is a trained behavioral constraint. A model that buries the triage category in paragraph four of its response fails in the field even if the medical content is accurate.</p>
+    </div>
+
+    <!-- SECTION 4 -->
+    <h2>Why Unsloth: The Engineering Case for 60% Less VRAM</h2>
+
+    <p>Once the dataset is ready, the training question becomes: how do you fine-tune a model efficiently on a single commodity GPU — or on a cloud GPU instance you are billed by the minute for? This is where Unsloth's engineering makes a material difference.</p>
+
+    <h3>What Unsloth Actually Does</h3>
+
+    <p>Unsloth is not just a wrapper around Hugging Face Transformers. It is a set of fused CUDA kernels and memory management techniques that significantly reduce the VRAM footprint and wall-clock time of LoRA fine-tuning. The headline numbers — 60% less VRAM, 2× faster training — hold in practice on small-to-medium PoC datasets like ours.</p>
+
+    <p>The key optimizations are:</p>
+
+    <ul>
+      <li><strong>Fused cross-entropy loss:</strong> Standard loss computation materializes the full logit matrix (vocab_size × sequence_length) in GPU memory before computing loss. Unsloth computes the loss in chunks, never materializing the full matrix — dramatically reducing activation memory at the backward pass.</li>
+      <li><strong>Custom gradient checkpointing:</strong> The <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">use_gradient_checkpointing="unsloth"</code> flag enables a carefully tuned selective recomputation strategy. Rather than checkpointing at every layer (slow) or no layers (high VRAM), it checkpoints at the sequence position boundary — optimal for chat-format data with variable-length turns.</li>
+      <li><strong>FastLanguageModel loading:</strong> Unsloth's <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">FastLanguageModel.from_pretrained()</code> patches attention layers at load time with triton-optimized kernels, replacing the standard HuggingFace attention implementation with fused forward/backward passes.</li>
+    </ul>
+
+    <p>For LFM2.5's hybrid architecture, there is an additional consideration. The LIV convolution layers and GQA attention require explicit LoRA target module selection — the default "all-linear" targeting used for standard transformers misses the architecture-specific projection layers. We target eight specific modules:</p>
+
+    <div class="code-block">
+      <pre><span class="cm"># LFM2.5-specific LoRA target modules</span>
+<span class="cm"># Covers: GQA attention projections + LIV convolution gates + FFN</span>
+model = FastLanguageModel.<span class="fn">get_peft_model</span>(
+    model,
+    r=<span class="num">16</span>,                <span class="cm"># LoRA rank</span>
+    target_modules=[
+        <span class="str">"q_proj"</span>, <span class="str">"k_proj"</span>, <span class="str">"v_proj"</span>,  <span class="cm"># GQA attention</span>
+        <span class="str">"out_proj"</span>,                        <span class="cm"># attention output</span>
+        <span class="str">"in_proj"</span>,                         <span class="cm"># LIV input gate</span>
+        <span class="str">"w1"</span>, <span class="str">"w2"</span>, <span class="str">"w3"</span>,               <span class="cm"># FFN SwiGLU projections</span>
+    ],
+    lora_alpha=<span class="num">16</span>,          <span class="cm"># alpha = r: no scaling, per Unsloth recommendation</span>
+    lora_dropout=<span class="num">0</span>,         <span class="cm"># no dropout — small dataset, regularize elsewhere</span>
+    bias=<span class="str">"none"</span>,
+    use_gradient_checkpointing=<span class="str">"unsloth"</span>,
+    random_state=<span class="num">3407</span>,
+)</pre>
+    </div>
+
+    <h3>Train on Responses Only</h3>
+
+    <p>One of the most important and often skipped SFT practices is masking the loss on non-assistant tokens. When training on chat-formatted data, the model sees system prompts and user messages in every forward pass. If we compute cross-entropy loss across <em>all</em> tokens, we are training the model to predict the user's question given the system prompt — exactly the wrong objective. We want the model to learn to produce high-quality assistant responses given the context.</p>
+
+    <p>TRL's <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">train_on_responses_only()</code> function applies this masking by setting the labels of all non-assistant tokens to -100 (ignored in cross-entropy). With our dataset's specific ChatML delimiters, this is configured as:</p>
+
+    <div class="code-block">
+      <pre><span class="cm"># Mask system + user tokens; only compute loss on assistant responses</span>
+trainer = <span class="fn">train_on_responses_only</span>(
+    trainer,
+    instruction_part=<span class="str">"&lt;|im_start|&gt;user\n"</span>,
+    response_part=<span class="str">"&lt;|im_start|&gt;assistant\n"</span>,
+)</pre>
+    </div>
+
+    <p>On a dataset of 60 examples with ~400 tokens each, this effectively reduces the number of gradient-informative tokens per step by roughly 60% — the system and user portions are masked. This is not a problem; it means the gradient signal is more concentrated on the behavior we actually care about.</p>
+
+    <!-- SECTION 5 -->
+    <h2>Why Hugging Face: The Platform Decision</h2>
+
+    <p>Choosing Hugging Face as the training and deployment platform is not just a convenience decision — it is a complete MLOps architecture choice. For a project like this, HF solves three separate problems: compute access, model versioning, and deployment artifact management.</p>
+
+    <h3>HF Jobs: Serverless GPU Training Without Infrastructure</h3>
+
+    <p>Running fine-tuning locally requires owning or renting a GPU. For a PoC dataset of 60 examples training for 3 epochs on a 1.2B model, the training completes in approximately 15 minutes on an NVIDIA A10G (24GB VRAM). HF Jobs provides exactly this GPU class as a managed serverless resource:</p>
+
+    <div class="code-block">
+      <pre><span class="cm"># Launch training on HF's managed a10g-small GPU</span>
+<span class="cm"># No infrastructure setup. Billed per minute.</span>
+hf jobs uv run scripts/sft_pediatric_lfm.py \
+    --flavor a10g-small \
+    --secrets HF_TOKEN \
+    --timeout 1h \
+    -- \
+    --dataset data/pediatric_disaster_poc.jsonl \
+    --num-epochs 3 \
+    --output-repo username/pediatric-disaster-lfm-1.2b</pre>
+    </div>
+
+    <p>The <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">uv run</code> command uses the inline dependency specification at the top of the script — no <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">requirements.txt</code>, no separate environment setup. The dependencies are declared directly in the script header and resolved by <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">uv</code> at runtime:</p>
+
+    <div class="code-block">
+      <pre><span class="cm"># /// script</span>
+<span class="cm"># requires-python = ">=3.10"</span>
+<span class="cm"># dependencies = [</span>
+<span class="cm">#   "unsloth",</span>
+<span class="cm">#   "datasets",</span>
+<span class="cm">#   "trl==0.22.2",</span>
+<span class="cm">#   "huggingface_hub[hf_transfer]",</span>
+<span class="cm">#   "trackio",</span>
+<span class="cm">#   "tensorboard",</span>
+<span class="cm">#   "transformers==4.57.3",</span>
+<span class="cm"># ]</span>
+<span class="cm"># ///</span></pre>
+    </div>
+
+    <h3>HF Hub: Model Versioning and Artifact Management</h3>
+
+    <p>After training, the pipeline produces two output artifacts depending on the flags passed:</p>
+
+    <ul>
+      <li><strong>LoRA adapter only:</strong> ~60MB adapter checkpoint pushed to HF Hub. Requires the base model to be loaded separately at inference time. Appropriate for development and evaluation environments where the base model is already available.</li>
+      <li><strong>Merged 16-bit model + GGUF:</strong> The LoRA weights are merged into the base model via <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">push_to_hub_merged(save_method="merged_16bit")</code>, then quantized to GGUF Q4_K_M format via <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">push_to_hub_gguf(quantization_method="q4_k_m")</code>. The resulting GGUF artifact is ~750MB and directly consumable by llama.cpp for offline inference.</li>
+    </ul>
+
+    <p>HF Hub also handles metadata tagging automatically — the training script applies tags for pediatric, disaster-response, triage, jumpstart, medical, edge-ai, and lfm — making the model discoverable and communicating its intended use context to anyone who encounters it.</p>
+
+    <h3>Trackio: Live Training Monitoring</h3>
+
+    <p>For PoC runs where you want to observe loss curves in real time without spinning up a full MLflow or W&B infrastructure, Trackio provides a lightweight HF Space-based dashboard. When a <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">--trackio-space</code> argument is provided, training metrics stream live to the configured HF Space, giving full observability into training and eval loss curves during the job run.</p>
+
+    <!-- SECTION 6 -->
+    <h2>Training Configuration: The Numbers That Matter</h2>
+
+    <p>For a 60-example PoC dataset, the training configuration choices have outsized impact on whether the model learns the target behavior or overfits and collapses. Here are the specific decisions and the reasoning behind each.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Hyperparameter</th>
+          <th>Value</th>
+          <th>Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>LoRA rank (r)</td>
+          <td>16</td>
+          <td>Sufficient expressivity for domain-specific protocols without risk of parameter explosion. Higher rank on tiny datasets accelerates overfitting.</td>
+        </tr>
+        <tr>
+          <td>LoRA alpha</td>
+          <td>16</td>
+          <td>alpha = r → scaling factor of 1.0. Unsloth recommends this for stability. Avoids the alpha/r ratio tuning problem entirely.</td>
+        </tr>
+        <tr>
+          <td>Learning rate</td>
+          <td>2e-4</td>
+          <td>Standard for LoRA fine-tuning. Higher rates cause loss spikes on small datasets; lower rates under-fit in 3 epochs.</td>
+        </tr>
+        <tr>
+          <td>Effective batch size</td>
+          <td>8 (2 × 4 accum)</td>
+          <td>2 per-device batch × 4 gradient accumulation = 8 effective. Stabilizes gradient estimates across mini-batches from a 60-example dataset.</td>
+        </tr>
+        <tr>
+          <td>Epochs</td>
+          <td>3</td>
+          <td>The 60-example dataset fits in ~8 gradient steps per epoch. 3 epochs = ~24 updates — enough to shift behavior without memorizing verbatim.</td>
+        </tr>
+        <tr>
+          <td>Optimizer</td>
+          <td>AdamW 8-bit</td>
+          <td>bitsandbytes 8-bit Adam reduces optimizer state VRAM from 32-bit (two fp32 moment tensors) to ~2GB savings on 1.2B parameters.</td>
+        </tr>
+        <tr>
+          <td>LR scheduler</td>
+          <td>Linear decay</td>
+          <td>Simple and stable for short runs. Cosine decay is marginally better at larger scale but adds negligible value for 24-step training.</td>
+        </tr>
+        <tr>
+          <td>Max seq length</td>
+          <td>1,024</td>
+          <td>Dataset token range is 282–490. 1,024 provides comfortable headroom without wasting KV-cache allocation on empty positions.</td>
+        </tr>
+        <tr>
+          <td>Eval split</td>
+          <td>Disabled</td>
+          <td>60 examples is too small for a meaningful eval split. Withholding even 10% (6 examples) produces an unreliable eval signal. Evaluate behaviorally post-training instead.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- SECTION 7 -->
+    <h2>Cloud Architecture: From Training Pipeline to Field Deployment</h2>
+
+    <p>Understanding the end-to-end system architecture is essential for anyone considering deploying this pattern in production. There are three distinct zones: the development and training zone, the model registry, and the field deployment zone. The architecture is designed so that once the model artifact lands on a device, it requires no further cloud connectivity.</p>
+
+    <div class="arch-block">
+      <pre><span class="comment">╔══════════════════════════════════════════════════════════════════════════╗</span>
+<span class="comment">║          PEDIATRIC DISASTER RESPONSE — EDGE AI ARCHITECTURE              ║</span>
+<span class="comment">╚══════════════════════════════════════════════════════════════════════════╝</span>
+
+<span class="warn">┌─────────────────────────────────────────────────────────────────────┐</span>
+<span class="warn">│  ZONE 1 — DEVELOPMENT & TRAINING  (Cloud / Dev Machine)             │</span>
+<span class="warn">└─────────────────────────────────────────────────────────────────────┘</span>
+
+  Developer Workstation
+  ┌─────────────────────┐
+  │  Dataset Authoring  │  ← JumpSTART, PALS, SALT, Broselow protocols
+  │  JSONL (ChatML fmt) │    hand-crafted instruction-response pairs
+  │  prepare_dataset.py │  ← Validate format, check token distribution
+  └────────┬────────────┘
+           │  git push / hf upload
+           ▼
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  Hugging Face Hub (Dataset Repository)                          │
+  │  pediatric_disaster_poc.jsonl                                   │
+  └────────────────────────────────────────────────────────────────-┘
+           │
+           │  hf jobs uv run sft_pediatric_lfm.py
+           │  --flavor a10g-small  --timeout 1h
+           ▼
+<span class="highlight">  ┌─────────────────────────────────────────────────────────────────┐</span>
+<span class="highlight">  │  HF Jobs — Managed GPU Compute  (NVIDIA A10G, 24GB VRAM)        │</span>
+<span class="highlight">  │                                                                  │</span>
+<span class="highlight">  │  FastLanguageModel.from_pretrained()                            │</span>
+<span class="highlight">  │    └─ LFM2.5-1.2B-Instruct  (16-bit, ~2.4GB VRAM)              │</span>
+<span class="highlight">  │                                                                  │</span>
+<span class="highlight">  │  get_peft_model()  →  LoRA rank=16                              │</span>
+<span class="highlight">  │    └─ trainable params: ~20M of 1.2B  (~1.7%)                   │</span>
+<span class="highlight">  │                                                                  │</span>
+<span class="highlight">  │  SFTTrainer  (TRL)                                              │</span>
+<span class="highlight">  │    ├─ train_on_responses_only()  (loss masked on user/sys)      │</span>
+<span class="highlight">  │    ├─ adamw_8bit, lr=2e-4, effective_batch=8                    │</span>
+<span class="highlight">  │    ├─ 3 epochs  (~15 min)                                       │</span>
+<span class="highlight">  │    └─ Trackio live metrics → HF Space dashboard                 │</span>
+<span class="highlight">  │                                                                  │</span>
+<span class="highlight">  │  Post-training export:                                          │</span>
+<span class="highlight">  │    ├─ push_to_hub_merged()  →  merged 16-bit weights            │</span>
+<span class="highlight">  │    └─ push_to_hub_gguf(q4_k_m)  →  ~750MB GGUF artifact        │</span>
+<span class="highlight">  └─────────────────────────────────────────────────────────────────┘</span>
+           │  model.push_to_hub() / push_to_hub_gguf()
+           ▼
+
+<span class="warn">┌─────────────────────────────────────────────────────────────────────┐</span>
+<span class="warn">│  ZONE 2 — MODEL REGISTRY  (Hugging Face Hub)                        │</span>
+<span class="warn">└─────────────────────────────────────────────────────────────────────┘</span>
+
+  username/pediatric-disaster-lfm-1.2b
+  ┌───────────────────────────────────────────────────┐
+  │  Artifact 1: LoRA adapter   (~60MB)               │
+  │  ├─ adapter_config.json                           │
+  │  └─ adapter_model.safetensors                     │
+  │                                                   │
+  │  Artifact 2: Merged 16-bit  (~2.4GB)              │
+  │  ├─ model.safetensors                             │
+  │  └─ tokenizer files                               │
+  │                                                   │
+  │  Artifact 3: GGUF Q4_K_M   (~750MB)  ← PRIMARY   │
+  │  └─ pediatric-disaster-lfm-1.2b-Q4_K_M.gguf      │
+  │                                                   │
+  │  Tags: pediatric · triage · jumpstart · edge-ai   │
+  └───────────────────────────────────────────────────┘
+           │
+           │  one-time device sync (Wi-Fi / USB)
+           ▼
+
+<span class="accent2">┌─────────────────────────────────────────────────────────────────────┐</span>
+<span class="accent2">│  ZONE 3 — FIELD DEPLOYMENT  (Fully Offline)                          │</span>
+<span class="accent2">└─────────────────────────────────────────────────────────────────────┘</span>
+
+  On-Device (ruggedized tablet / laptop / Android)
+  ┌───────────────────────────────────────────────────┐
+  │  llama.cpp inference engine  (CPU/GPU agnostic)   │
+  │                                                   │
+  │  llama-cli                                        │
+  │    -m pediatric-lfm-Q4_K_M.gguf                  │
+  │    --chat-template chatml                         │
+  │    -p "You are a pediatric disaster assistant..." │
+  │                                                   │
+  │  Runtime footprint:                               │
+  │    RAM: ~750MB                                    │
+  │    CPU: 4-core ARM / x86 sufficient              │
+  │    Connectivity: None required                    │
+  │    Latency: 2–5 seconds / response (CPU)          │
+  └───────────────────────────────────────────────────┘
+           │
+           │  Responder interface (CLI / mobile app)
+           ▼
+  ┌───────────────────────────────────────────────────┐
+  │  Field Responder Query                            │
+  │  "8yo, pulled from flood, unresponsive, RR 8/min" │
+  │                                                   │
+  │  Model Response                                   │
+  │  TRIAGE: RED (Immediate)                          │
+  │  1. Open airway — head-tilt chin-lift             │
+  │  2. Assess breathing after repositioning ...      │
+  │  Do NOT: Remove airway support. Do not leave...   │
+  └───────────────────────────────────────────────────┘</pre>
+    </div>
+
+    <h3>The Offline-First Guarantee</h3>
+
+    <p>The architecture has a deliberate hard boundary at Zone 3. Once the GGUF artifact is on the device, the system has zero external dependencies. No API keys expire. No cloud endpoints go down. No rate limits apply. The responder's device becomes a fully self-contained medical decision support system. The tradeoff is that model updates require a device sync — but in a disaster response context, protocol updates are infrequent and can be pushed during debrief phases when connectivity is restored.</p>
+
+    <!-- SECTION 8 -->
+    <h2>The GGUF Export Pipeline: From LoRA to llama.cpp</h2>
+
+    <p>The path from a LoRA adapter to a llama.cpp-compatible GGUF file involves three sequential operations. Understanding each is important if you need to customize the quantization or debug a failed export.</p>
+
+    <h3>Step 1: LoRA Merge</h3>
+
+    <p>During training, the LoRA adapter lives as a set of low-rank matrices (A, B per targeted layer) that are added to the frozen base model weights during the forward pass: <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">W_adapted = W_base + (B × A) × (alpha/r)</code>. The adapter is small and efficient for training. But for inference, especially on-device inference via llama.cpp, you want the merged weights — a single weight matrix per layer, no runtime addition. Unsloth's <code style="font-family:var(--mono);font-size:0.88em;background:var(--accent-light);padding:0.1rem 0.35rem;border-radius:3px">push_to_hub_merged(save_method="merged_16bit")</code> performs this merge in fp16 and pushes the full model to HF Hub.</p>
+
+    <h3>Step 2: GGUF Quantization (Q4_K_M)</h3>
+
+    <p>Q4_K_M is a 4-bit quantization scheme from the GGUF specification. The "K" denotes k-quantization (a per-block scaling technique that improves accuracy versus simple 4-bit), and "M" denotes medium quality within the K family. For LFM2.5-1.2B at fp16 (~2.4GB), Q4_K_M produces a ~750MB artifact — a 3.2× compression — with perplexity degradation that remains well within acceptable bounds for our factual recall use case.</p>
+
+    <div class="callout">
+      <div class="callout-label">Quantization Accuracy Note</div>
+      <p>Q4_K_M is the recommended default for edge deployments that need maximum accuracy within a 1GB RAM budget. Q5_K_M provides marginally better quality at ~950MB. Q8_0 retains near-fp16 quality at ~1.3GB — feasible on devices with 4GB RAM but too large for constrained field hardware. For pediatric triage specifically, Q4_K_M's accuracy loss on numerical recall (vital sign ranges, drug doses) is acceptably low given the structured nature of the training data.</p>
+    </div>
+
+    <h3>Step 3: llama.cpp Inference</h3>
+
+    <p>On the field device, llama.cpp provides inference without requiring CUDA, PyTorch, or any Python runtime. It compiles to a standalone binary that reads the GGUF file directly. On a 4-core ARM device, response latency is 2–5 seconds for a 200-token assistant response — fast enough for field use.</p>
+
+    <div class="code-block">
+      <pre><span class="cm"># On-device offline inference — no connectivity required</span>
+llama-cli \
+  -m pediatric-disaster-lfm-1.2b-Q4_K_M.gguf \
+  --chat-template chatml \
+  -p <span class="str">"You are a pediatric disaster response assistant trained on JumpSTART
+     triage and PALS protocols. You help first responders in offline,
+     resource-limited environments."</span> \
+  --color \
+  -i  <span class="cm"># interactive mode for field queries</span></pre>
+    </div>
+
+    <!-- SECTION 9 -->
+    <h2>What's Next: From PoC to Production-Grade</h2>
+
+    <p>The current state of the project is a validated PoC: dataset created, training pipeline functional, export pipeline working. The gap between this PoC and a deployment-ready system is well-defined and achievable. Here is the path forward.</p>
+
+    <h3>Evaluation Against Ground Truth</h3>
+
+    <p>The most critical next step is protocol-adherence evaluation. JumpSTART is a deterministic decision tree — given a specific set of patient observations, there is exactly one correct triage category. This makes automated evaluation tractable: generate a held-out test set of 50+ scenarios with known correct triage classifications, run the model, and measure exact-match accuracy on the triage category. Secondary metrics include Do NOT compliance (does the model hallucinate contraindicated actions?) and vital sign numerical accuracy (are the stated normal ranges correct for the specified age group?).</p>
+
+    <h3>Dataset Expansion via Structured Generation</h3>
+
+    <p>The 60-example PoC covers core scenarios but underrepresents edge cases: multi-casualty scenarios requiring triage priority decisions between two simultaneous patients, pediatric-specific toxicological exposures, neonatal (under 28 days) edge cases that differ from JumpSTART's 1–8 year scope. Expanding to 300–500 examples — still tractable for manual quality review — would meaningfully improve robustness without changing the training infrastructure.</p>
+
+    <h3>DPO Alignment Pass</h3>
+
+    <p>After SFT establishes the base behavior, a Direct Preference Optimization (DPO) pass can tighten behavioral alignment. The preference dataset would consist of response pairs: a correct, well-structured response versus a plausible-but-incorrect one (wrong triage category, missing Do NOT, incorrect age-specific vital range). DPO trains the model to assign higher probability to the preferred response, directly optimizing for the behaviors that SFT only indirectly incentivizes through next-token prediction.</p>
+
+    <h3>Mobile Application Shell</h3>
+
+    <p>The llama.cpp binary is powerful but CLI-only. Wrapping it in a native mobile application — Android preferred for ruggedized device ecosystem compatibility — adds a structured input interface (checkboxes for observed symptoms, dropdowns for age group), structured output rendering (triage color displayed prominently, actions in numbered list), and session logging for post-incident review. Frameworks like MLC-LLM or llama.cpp's Android Java bindings provide the inference layer; the UI layer is standard Android development.</p>
+
+    <!-- CLOSING -->
+    <hr class="divider">
+
+    <h2>The Broader Principle</h2>
+
+    <p>This project is a specific instantiation of a broader architectural principle that I think will define the next wave of AI deployment: <strong>not every AI system belongs in the cloud.</strong></p>
+
+    <p>The instinct in AI engineering has been to centralize: bigger models, more compute, cloud APIs, managed infrastructure. That instinct is correct for many use cases. But it creates a hidden fragility — a dependency on connectivity and cloud availability that simply does not hold in the environments where AI could do the most good. Disaster response. Remote healthcare. Contested environments. Edge industrial operations.</p>
+
+    <p>The combination of efficient small-model architectures (LFM2.5, Llama 3.2, Qwen2.5 at 1–3B), aggressive quantization (GGUF Q4_K_M), fast fine-tuning frameworks (Unsloth), and managed cloud training (HF Jobs) has removed most of the barriers to building these systems. You can train a domain-specialized 1.2B model in 15 minutes on a rented GPU, export it to a 750MB file, and deploy it to a device that works in a field with no connectivity. The full pipeline runs in an afternoon.</p>
+
+    <p>The pediatric disaster response model is a PoC. But the architecture it represents — specialized, fine-tuned, quantized, offline-capable — is a pattern that will show up across healthcare, defense, industrial operations, and anywhere the assumption of always-on connectivity fails. Building it matters beyond the specific use case.</p>
+
+  </div><!-- /article-body -->
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Explore the Project</h2>
+    <p>The full dataset, fine-tuning script, and dataset validation tooling are available on GitHub. The LoRA adapter and GGUF artifacts will be published to HF Hub on completion of protocol-adherence evaluation.</p>
+    <div class="cta-links">
+      <a href="https://github.com/ogkranthi/pediatric-disaster-response-edge-ai" target="_blank" class="cta-btn">GitHub Repo →</a>
+      <a href="https://huggingface.co/LiquidAI/LFM2.5-1.2B-Instruct" target="_blank" class="cta-btn-ghost">Base Model on HF →</a>
+    </div>
+  </div>
+
+</div><!-- /article-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Kranthi Manchikanti. Built with intent.</p>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/ogkranthi" target="_blank">GitHub</a>
+    <a href="https://x.com/ogkranthi" target="_blank">X / Twitter</a>
+  </div>
+</footer>
+
+</body>
+</html>
