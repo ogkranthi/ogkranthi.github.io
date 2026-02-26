@@ -570,6 +570,70 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
   </svg>
 </div>
 
+<h2>How Reinforcement Learning Supercharges Distillation</h2>
+
+<p>Raw output copying is table stakes. What makes modern distillation attacks dramatically more powerful is the use of <strong>reinforcement learning to generate synthetic training data</strong> at scale.</p>
+
+<p>Here's the key insight: a model that can solve a problem step-by-step, showing its reasoning trace, is worth far more as a training target than a model that just gives you the answer. When DeepSeek queried Claude for chain-of-thought traces — the "think out loud" reasoning that Claude shows before answering — they weren't collecting answers. They were collecting a <strong>reasoning curriculum</strong>.</p>
+
+<p>In RL-augmented distillation, attackers go further. They generate thousands of specialized tasks, query the teacher model for solutions with full reasoning traces, then use those traces as reward signal to train the student model's own reasoning process. The student doesn't just memorize answers — it <strong>learns the underlying reasoning strategy</strong>. This is why the resulting models are so capable despite their smaller size: they've been trained on the distilled reasoning of a much larger model, not just its surface outputs.</p>
+
+<p>Moonshot's focus on "agentic reasoning and computer-use capabilities" makes sense in this light. These are high-value, hard-to-train behaviors. Generating synthetic demonstrations of agent-style reasoning — plan → tool call → observe → adapt — via an existing capable model is orders of magnitude cheaper than training those capabilities from scratch.</p>
+
+<div class="callout">
+  <div class="callout-label">The RL insight</div>
+  <p>Chain-of-thought traces are not just verbose answers. They are a transferable reasoning dataset. When you elicit CoT from a capable model at scale, you are building a fine-tuning curriculum — not just collecting outputs.</p>
+</div>
+
+<!-- DIAGRAM 2: RL Data Generation Pipeline -->
+<div style="margin: 2.5rem 0; padding: 2rem; background: #f8f8f7; border: 1px solid #e8e8e5; border-radius: 10px;">
+  <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: #999; margin-bottom: 1.25rem;">Fig. 2 — RL-Augmented Distillation Pipeline</div>
+  <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto;" font-family="'JetBrains Mono', monospace">
+    <defs>
+      <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L6,3 z" fill="#c4c4c0"/>
+      </marker>
+    </defs>
+    <!-- Step 1: Task Generator -->
+    <rect x="20" y="20" width="130" height="55" rx="6" fill="#fff" stroke="#e8e8e5" stroke-width="1.5"/>
+    <text x="85" y="44" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="600">TASK GENERATOR</text>
+    <text x="85" y="58" text-anchor="middle" fill="#777" font-size="8">Specialized prompts</text>
+    <text x="85" y="69" text-anchor="middle" fill="#777" font-size="8">at scale</text>
+    <!-- Arrow down to Teacher API -->
+    <line x1="85" y1="75" x2="85" y2="105" stroke="#c4c4c0" stroke-width="1.5" marker-end="url(#arr2)"/>
+    <!-- Step 2: Teacher API -->
+    <rect x="20" y="105" width="130" height="55" rx="6" fill="#1a1a1a" stroke="none"/>
+    <text x="85" y="129" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">TEACHER API</text>
+    <text x="85" y="143" text-anchor="middle" fill="#aaa" font-size="8">Returns answer +</text>
+    <text x="85" y="154" text-anchor="middle" fill="#aaa" font-size="8">CoT reasoning trace</text>
+    <!-- Arrow right to Reward Scoring -->
+    <line x1="150" y1="132" x2="220" y2="132" stroke="#c4c4c0" stroke-width="1.5" marker-end="url(#arr2)"/>
+    <text x="185" y="125" text-anchor="middle" fill="#999" font-size="8">(Query +</text>
+    <text x="185" y="136" text-anchor="middle" fill="#999" font-size="8">CoT trace)</text>
+    <!-- Step 3: Reward Scoring -->
+    <rect x="220" y="105" width="140" height="55" rx="6" fill="#fff" stroke="#e8e8e5" stroke-width="1.5"/>
+    <text x="290" y="129" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="600">REWARD SCORING</text>
+    <text x="290" y="143" text-anchor="middle" fill="#777" font-size="8">Correctness + reasoning</text>
+    <text x="290" y="154" text-anchor="middle" fill="#777" font-size="8">quality signals</text>
+    <!-- Arrow right to Student Training -->
+    <line x1="360" y1="132" x2="430" y2="132" stroke="#c4c4c0" stroke-width="1.5" marker-end="url(#arr2)"/>
+    <!-- Step 4: Student Training -->
+    <rect x="430" y="105" width="140" height="55" rx="6" fill="#52525b" stroke="none"/>
+    <text x="500" y="129" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">STUDENT TRAINING</text>
+    <text x="500" y="143" text-anchor="middle" fill="#d4d4d8" font-size="8">RL updates on</text>
+    <text x="500" y="154" text-anchor="middle" fill="#d4d4d8" font-size="8">reasoning traces</text>
+    <!-- Arrow up to Capable Student -->
+    <line x1="500" y1="105" x2="500" y2="75" stroke="#c4c4c0" stroke-width="1.5" marker-end="url(#arr2)"/>
+    <!-- Step 5: Capable Student -->
+    <rect x="430" y="20" width="140" height="55" rx="6" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
+    <text x="500" y="44" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="600">CAPABLE STUDENT</text>
+    <text x="500" y="58" text-anchor="middle" fill="#555" font-size="8">Learns reasoning strategy,</text>
+    <text x="500" y="69" text-anchor="middle" fill="#555" font-size="8">not just surface outputs</text>
+    <!-- Loop label -->
+    <text x="350" y="210" text-anchor="middle" fill="#bbb" font-size="8">Iterate → target new capabilities → pivot within 24h of teacher model updates</text>
+  </svg>
+</div>
+
 </div><!-- /article-body -->
 
   <!-- CTA -->
