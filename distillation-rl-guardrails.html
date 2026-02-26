@@ -507,6 +507,22 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
   </div>
 
   <div class="article-body">
+
+<h2>The Heist</h2>
+
+<p>In late 2024 and early 2025, three Chinese AI labs — DeepSeek, Moonshot AI, and MiniMax — ran what Anthropic would later describe as an "industrial-scale" campaign to steal its most capable model's knowledge. Not by hacking servers. Not by acquiring training data. By <strong>talking to Claude</strong>.</p>
+
+<p>Across roughly 24,000 fraudulent accounts, coordinated in distributed clusters designed to evade detection, the three companies generated over 16 million exchanges. They weren't looking for information. They were building a dataset — systematically eliciting Claude's reasoning traces, its agentic behaviors, its chain-of-thought patterns — everything needed to train a cheaper model to behave like a much more expensive one.</p>
+
+<p>The scale is striking. <strong>MiniMax alone generated 13 million exchanges</strong>, focused almost entirely on agentic coding. When Anthropic released a new model, MiniMax pivoted within 24 hours to target the upgraded version. Moonshot collected 3.4 million exchanges targeting reasoning and computer-use capabilities. DeepSeek — smaller in volume but arguably most strategic — focused on generating chain-of-thought training data and finding ways to elicit responses that bypassed censorship filters.</p>
+
+<p>This wasn't opportunistic scraping. It was a coordinated intelligence operation against a commercial AI system. And Anthropic only detected it because they built classifiers specifically designed to catch it.</p>
+
+<div class="callout">
+  <div class="callout-label">Why this matters to you</div>
+  <p>You don't need to be Anthropic for this to be your problem. Any fine-tuned model with specialized capabilities — medical reasoning, legal analysis, domain-specific code generation — is a target. Your API is a training dataset if you're not treating it like one.</p>
+</div>
+
 </div><!-- /article-body -->
 
   <!-- CTA -->
