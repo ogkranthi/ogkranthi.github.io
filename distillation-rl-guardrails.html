@@ -523,6 +523,53 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
   <p>You don't need to be Anthropic for this to be your problem. Any fine-tuned model with specialized capabilities — medical reasoning, legal analysis, domain-specific code generation — is a target. Your API is a training dataset if you're not treating it like one.</p>
 </div>
 
+
+<h2>What Is Model Distillation?</h2>
+
+<p>Model distillation was invented as a compression technique. The idea is elegant: you have a large, expensive "teacher" model with strong capabilities, and you want a small, cheap "student" model that behaves similarly. Instead of training the student on raw data, you train it on the <strong>outputs of the teacher</strong> — its probability distributions, its reasoning traces, its answers. The student learns to mimic the teacher's behavior without needing the teacher's scale.</p>
+
+<p>Legitimate distillation is how companies build efficient models for deployment. GPT-4 distilled into smaller variants. LLaMA fine-tuned on GPT-4 outputs (before OpenAI's terms changed). This is well-established ML engineering.</p>
+
+<p>The attack version is the same technique applied without consent, at scale, against a commercial API. Instead of authorized access to the teacher's internals, attackers use the <strong>public API as a synthetic data generator</strong>. Every response is a labeled training example. Every reasoning trace is a dataset row. The student model trains on millions of these examples until it approximates the teacher's behavior — without any of the teacher's safety training, RLHF fine-tuning, or constitutional alignment.</p>
+
+<!-- DIAGRAM 1: Teacher-Student Distillation Loop -->
+<div style="margin: 2.5rem 0; padding: 2rem; background: #f8f8f7; border: 1px solid #e8e8e5; border-radius: 10px;">
+  <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: #999; margin-bottom: 1.25rem;">Fig. 1 — Illicit Distillation Loop</div>
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto;" font-family="'JetBrains Mono', monospace">
+    <defs>
+      <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L6,3 z" fill="#c4c4c0"/>
+      </marker>
+      <marker id="arrow-gray" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L6,3 z" fill="#c4c4c0"/>
+      </marker>
+    </defs>
+    <!-- Teacher Model box -->
+    <rect x="20" y="70" width="150" height="60" rx="6" fill="#1a1a1a" stroke="none"/>
+    <text x="95" y="97" text-anchor="middle" fill="#fff" font-size="10" font-weight="500">TEACHER MODEL</text>
+    <text x="95" y="113" text-anchor="middle" fill="#999" font-size="9">(Claude / GPT-4 / etc.)</text>
+    <!-- Arrow: Teacher to Synthetic Outputs -->
+    <line x1="170" y1="100" x2="240" y2="100" stroke="#c4c4c0" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="205" y="92" text-anchor="middle" fill="#999" font-size="8">Fraudulent</text>
+    <text x="205" y="103" text-anchor="middle" fill="#999" font-size="8">API queries</text>
+    <!-- Synthetic Output box -->
+    <rect x="240" y="70" width="150" height="60" rx="6" fill="#fff" stroke="#e8e8e5" stroke-width="1.5"/>
+    <text x="315" y="97" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="500">SYNTHETIC OUTPUTS</text>
+    <text x="315" y="113" text-anchor="middle" fill="#777" font-size="9">Answers + CoT traces</text>
+    <!-- Arrow: Synthetic to Student -->
+    <line x1="390" y1="100" x2="460" y2="100" stroke="#c4c4c0" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="425" y="92" text-anchor="middle" fill="#999" font-size="8">Training</text>
+    <text x="425" y="103" text-anchor="middle" fill="#999" font-size="8">dataset</text>
+    <!-- Student Model box -->
+    <rect x="460" y="70" width="150" height="60" rx="6" fill="#52525b" stroke="none"/>
+    <text x="535" y="97" text-anchor="middle" fill="#fff" font-size="10" font-weight="500">STUDENT MODEL</text>
+    <text x="535" y="113" text-anchor="middle" fill="#d4d4d8" font-size="9">No safeguards. Cheap.</text>
+    <!-- Feedback loop arrow (bottom) -->
+    <path d="M535 130 Q535 160 315 160 Q100 160 95 130" fill="none" stroke="#c4c4c0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-gray)"/>
+    <text x="315" y="178" text-anchor="middle" fill="#aaa" font-size="8">Iterate: target new capabilities, pivot on new model releases</text>
+  </svg>
+</div>
+
 </div><!-- /article-body -->
 
   <!-- CTA -->
