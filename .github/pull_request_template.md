@@ -22,3 +22,11 @@
 
 ## Related posts
 - List 2–3 internal links considered
+
+## Publishing checklist
+- [ ] New post file created or updated
+- [ ] Homepage tile added/updated in `index.html`
+- [ ] Homepage post count updated
+- [ ] Featured essay reviewed
+- [ ] Internal links updated where relevant
+- [ ] Post is reachable from the homepage, not only by direct URL
