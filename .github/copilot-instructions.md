@@ -23,3 +23,19 @@ Core rules:
   - what assumptions were made
   - where human fact-checking is still needed
   - any suggested follow-up posts
+ 
+- # Diagram requirements for workflow and architecture posts
+
+For any post that describes a system, workflow, control plane, agent loop, or multi-step process:
+
+- Include at least one diagram for each major workflow described in the article.
+- Prefer inline SVG diagrams embedded directly in the HTML file.
+- Diagrams must clarify architecture, state transitions, boundaries, approvals, or control flow.
+- Do not add decorative diagrams.
+- Every diagram must have:
+  - figure label
+  - short caption
+  - consistent visual style
+  - accessible text or title where practical
+- If the article includes sections on orchestration, escalation, evaluation, or approvals, those sections should usually have a corresponding diagram.
+- When opening a PR, explicitly list which diagrams were added and which sections they support.
