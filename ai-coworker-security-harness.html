@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Coworkers Need Security Harnesses, Not Just Smarter Models | Kranthi Manchikanti</title>
+<meta name="description" content="OpenAI's planned acquisition of Promptfoo is an architectural signal: evaluation, red-teaming, and policy testing are becoming first-class infrastructure for agentic AI in enterprise workflows.">
+<meta property="og:title" content="AI Coworkers Need Security Harnesses, Not Just Smarter Models">
+<meta property="og:description" content="The winning AI coworker stack won't have the best model demos. It will have the strongest security harness, evaluation discipline, and operational controls.">
+<meta property="og:type" content="article">
+<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/3d3eda9caaed2c475dba44126/f3ea9112071b1f2a08ad4ccce.js");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fafaf9;
+  --bg-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #999999;
+  --accent: #18181b;
+  --accent-dim: #09090b;
+  --accent-light: #f4f4f5;
+  --border: #e8e8e5;
+  --border-hover: #c4c4c0;
+  --serif: 'Newsreader', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── HEADER ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(250, 250, 249, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.logo span { color: var(--accent); }
+
+nav { display: flex; gap: 2rem; align-items: center; }
+
+nav a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+nav a:hover { color: var(--accent); }
+
+.nav-cta {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.nav-cta:hover { background: var(--accent-dim); color: #fff; }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 8rem 2.5rem 6rem;
+}
+
+/* ── ARTICLE HERO ── */
+.article-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.article-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+}
+
+.article-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.article-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.article-meta {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.article-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.article-meta-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.article-meta-value {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.article-body h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-top: 2.25rem;
+  margin-bottom: 0.65rem;
+  color: var(--text-primary);
+}
+
+.article-body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 1.35rem;
+  font-weight: 300;
+}
+
+.article-body p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.article-body ul, .article-body ol {
+  margin: 0.75rem 0 1.35rem 1.5rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.85;
+  font-weight: 300;
+}
+
+.article-body li { margin-bottom: 0.45rem; }
+.article-body li strong { color: var(--text-primary); font-weight: 600; }
+
+.article-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: 2rem 0;
+}
+
+.callout p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.callout-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* ── COMPARISON TABLE ── */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.85rem;
+}
+
+.compare-table th {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border);
+  text-align: left;
+  background: var(--bg);
+}
+
+.compare-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+
+.compare-table td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* ── SECTION DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3.5rem 0;
+}
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2.5rem;
+  text-align: center;
+  margin-top: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+}
+
+.cta-section h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.cta-section p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 1.75rem;
+  font-weight: 300;
+}
+
+.cta-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.cta-btn:hover { background: var(--accent-dim); color: #fff; }
+
+.cta-btn-ghost {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.cta-btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── FOOTER ── */
+footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer p { font-size: 0.75rem; color: var(--text-muted); }
+
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+
+/* ── DIAGRAM CONTAINER ── */
+.diagram-container {
+  margin: 2.5rem 0;
+  padding: 2rem;
+  background: #f8f8f7;
+  border: 1px solid #e8e8e5;
+  border-radius: 10px;
+}
+
+.diagram-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 1.25rem;
+}
+
+.diagram-caption {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 1rem;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 1rem 1.5rem; }
+  nav a:not(.nav-cta) { display: none; }
+  .article-wrap { padding: 6rem 1.5rem 4rem; }
+  footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="/" class="logo">Kranthi Manchikanti<span>.</span></a>
+  <nav>
+    <a href="/#writing">Writing</a>
+    <a href="/#about">About</a>
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta">LinkedIn →</a>
+  </nav>
+</header>
+
+<!-- ARTICLE -->
+<div class="article-wrap">
+
+  <div class="article-label">AI Security · Agentic AI · Enterprise Architecture</div>
+  <h1 class="article-title">AI Coworkers Need <em>Security Harnesses,</em> Not Just Smarter Models</h1>
+  <p class="article-subtitle">OpenAI's planned acquisition of Promptfoo is not a corporate M&A story. It is an architectural signal: evaluation, red-teaming, and policy testing are becoming first-class infrastructure for agentic AI. The enterprise stack that wins won't have the most impressive model demos — it will have the strongest security harness, evaluation discipline, and operational controls.</p>
+  <div class="article-meta">
+    <div class="article-meta-item">
+      <span class="article-meta-label">Author</span>
+      <span class="article-meta-value">Kranthi Manchikanti</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Published</span>
+      <span class="article-meta-value">Mar 2026</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Read time</span>
+      <span class="article-meta-value">16 min</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Category</span>
+      <span class="article-meta-value">AI Security</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+<h2>The Signal in the Acquisition</h2>
+
+<p>On March 9, 2026, OpenAI announced plans to acquire Promptfoo, an open-source framework for LLM evaluation, red-teaming, and security testing. <!-- TODO: Verify acquisition announcement date and details from https://openai.com/index/openai-to-acquire-promptfoo/ --> The stated intent is to integrate Promptfoo's capabilities into OpenAI Frontier — the enterprise platform for AI coworkers — to strengthen evaluation, security, and compliance for agentic workflows. <!-- TODO: Confirm "OpenAI Frontier" branding and stated integration scope from primary source --></p>
+
+<p>The industry reflex is to read this as competitive strategy: OpenAI buying its way into the evaluation tooling market, expanding its platform moat, neutralizing an open-source alternative. That reading is not wrong, but it misses the more important signal.</p>
+
+<p>When a company building the most advanced AI models in the world decides that the next critical investment is in <em>testing and policy enforcement infrastructure</em>, the architecture of how we build and deploy agentic systems is shifting. The control plane is moving. And enterprises that recognize this shift early will build systems that hold up in production; those that don't will build expensive liability.</p>
+
+<div class="callout">
+  <div class="callout-label">Thesis</div>
+  <p>The shift from model-centric to control-plane-centric AI is already underway. Evaluation, red-teaming, and policy enforcement are not pre-launch activities — they are runtime infrastructure. The winning enterprise AI coworker stack will be defined not by its model capability but by the strength of its security harness.</p>
+</div>
+
+
+<h2>What Promptfoo Actually Does</h2>
+
+<p>Promptfoo is an evaluation and security framework for LLMs and agentic systems. <!-- TODO: Verify feature set from https://promptfoo.dev or acquisition announcement --> Its core capabilities include:</p>
+
+<ul>
+  <li><strong>Automated LLM evaluation:</strong> Running prompts against test cases and scoring outputs against expected behaviors — factual accuracy, tone, format compliance, and custom criteria.</li>
+  <li><strong>Red-teaming:</strong> Generating adversarial prompt variants designed to probe for jailbreaks, prompt injection, data leakage, and policy violations. Not one-time pen testing — repeatable, automated adversarial testing against model and pipeline changes.</li>
+  <li><strong>Policy-as-code evaluation:</strong> Defining expected behavior as code-level assertions that can be version-controlled, reviewed, and enforced in CI/CD pipelines.</li>
+  <li><strong>Comparative evaluation:</strong> Testing how different models, prompts, or configurations perform against each other on the same test suite — enabling data-driven decisions about model upgrades rather than vibes-driven ones.</li>
+</ul>
+
+<p>These are not marketing features. They are operational requirements for any agentic system that touches production data, real users, or consequential decisions. The fact that a standalone open-source project had to exist to provide these capabilities tells you something about how incomplete the AI platform stack has been.</p>
+
+
+<h2>The Architecture Is Shifting</h2>
+
+<p>For the past several years, the dominant mental model for enterprise AI has been: <strong>model capability drives outcomes</strong>. Get a better model, get better results. The roadmap is a capability curve. Deployment is a matter of connecting the model to your data and users.</p>
+
+<p>This model was always incomplete. It just wasn't obviously wrong until AI coworkers started doing things that mattered: writing and sending emails, executing code, browsing the web, calling external APIs, managing files, scheduling tasks. When an AI agent's actions have real-world consequences — costs, communications, system changes — the gap between "impressive model" and "reliable, safe system" becomes operationally significant.</p>
+
+<p>The new mental model is a layered stack with four distinct concerns:</p>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>What it governs</th>
+      <th>Failure mode when missing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Model Capability</td>
+      <td>Can the model do the task at all?</td>
+      <td>Wrong outputs, hallucinations, task failure</td>
+    </tr>
+    <tr>
+      <td>Workflow Reliability</td>
+      <td>Does the agent complete tasks correctly over time?</td>
+      <td>Inconsistency, regressions on model updates, silent drift</td>
+    </tr>
+    <tr>
+      <td>Security Assurance</td>
+      <td>Can the system be manipulated or abused?</td>
+      <td>Prompt injection, data exfiltration, jailbreaks, tool misuse</td>
+    </tr>
+    <tr>
+      <td>Policy Enforcement</td>
+      <td>Does agent behavior comply with organizational rules?</td>
+      <td>Regulatory violations, brand risk, unauthorized actions</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Most current enterprise AI deployments invest heavily in the first layer and lightly in the rest. The Promptfoo acquisition is OpenAI signaling that the second, third, and fourth layers are becoming first-class product requirements — not optional extensions, not DIY infrastructure, but core platform capabilities.</p>
+
+
+<!-- DIAGRAM 1: Agent Security and Evaluation Control Plane -->
+<div class="diagram-container">
+  <div class="diagram-label">Fig. 1 — Agent Security and Evaluation Control Plane</div>
+  <svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'JetBrains Mono', monospace" role="img" aria-label="Agent security and evaluation control plane showing four layers: model capability, workflow reliability, security assurance, and policy enforcement">
+    <defs>
+      <marker id="arr-cp" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#888"/>
+      </marker>
+      <marker id="arr-cp-dark" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#1a1a1a"/>
+      </marker>
+    </defs>
+
+    <!-- Background layers (bottom to top) -->
+    <!-- Policy Enforcement Layer -->
+    <rect x="20" y="330" width="760" height="70" rx="6" fill="#f4f4f5" stroke="#c4c4c0" stroke-width="1.5"/>
+    <text x="40" y="356" fill="#1a1a1a" font-size="9" font-weight="700" letter-spacing="0.08em">POLICY ENFORCEMENT LAYER</text>
+    <text x="40" y="374" fill="#777" font-size="8">Policy-as-code · Compliance checks · Audit trail · Access controls</text>
+    <rect x="580" y="340" width="180" height="48" rx="4" fill="#1a1a1a"/>
+    <text x="670" y="361" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">POLICY GATE</text>
+    <text x="670" y="376" text-anchor="middle" fill="#ccc" font-size="7">Block / allow / escalate</text>
+
+    <!-- Security Assurance Layer -->
+    <rect x="20" y="245" width="760" height="70" rx="6" fill="#f8f8f7" stroke="#e8e8e5" stroke-width="1.5"/>
+    <text x="40" y="271" fill="#1a1a1a" font-size="9" font-weight="700" letter-spacing="0.08em">SECURITY ASSURANCE LAYER</text>
+    <text x="40" y="289" fill="#777" font-size="8">Red-teaming · Prompt injection detection · Tool abuse monitoring · Output scanning</text>
+    <rect x="580" y="255" width="180" height="48" rx="4" fill="#52525b"/>
+    <text x="670" y="276" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">SECURITY GATE</text>
+    <text x="670" y="291" text-anchor="middle" fill="#d9d9df" font-size="7">Adversarial pattern checks</text>
+
+    <!-- Workflow Reliability Layer -->
+    <rect x="20" y="160" width="760" height="70" rx="6" fill="#fff" stroke="#e8e8e5" stroke-width="1.5"/>
+    <text x="40" y="186" fill="#1a1a1a" font-size="9" font-weight="700" letter-spacing="0.08em">WORKFLOW RELIABILITY LAYER</text>
+    <text x="40" y="204" fill="#777" font-size="8">Evaluation harnesses · Regression tests · Behavioral assertions · Rollback triggers</text>
+    <rect x="580" y="170" width="180" height="48" rx="4" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+    <text x="670" y="191" text-anchor="middle" fill="#1a1a1a" font-size="8" font-weight="600">EVAL GATE</text>
+    <text x="670" y="206" text-anchor="middle" fill="#444" font-size="7">Pass / fail / rollback</text>
+
+    <!-- Model Capability Layer -->
+    <rect x="20" y="75" width="760" height="70" rx="6" fill="#fff" stroke="#e8e8e5" stroke-width="1"/>
+    <text x="40" y="101" fill="#1a1a1a" font-size="9" font-weight="700" letter-spacing="0.08em">MODEL CAPABILITY LAYER</text>
+    <text x="40" y="119" fill="#777" font-size="8">LLM inference · Reasoning · Tool calls · Context management</text>
+    <rect x="580" y="85" width="180" height="48" rx="4" fill="#f4f4f5" stroke="#c0c0c0" stroke-width="1"/>
+    <text x="670" y="106" text-anchor="middle" fill="#555" font-size="8" font-weight="500">AGENT CORE</text>
+    <text x="670" y="121" text-anchor="middle" fill="#999" font-size="7">Model + tools + context</text>
+
+    <!-- Vertical gate arrows -->
+    <line x1="670" y1="133" x2="670" y2="163" stroke="#888" stroke-width="1.5" marker-end="url(#arr-cp)"/>
+    <line x1="670" y1="218" x2="670" y2="248" stroke="#888" stroke-width="1.5" marker-end="url(#arr-cp)"/>
+    <line x1="670" y1="303" x2="670" y2="333" stroke="#888" stroke-width="1.5" marker-end="url(#arr-cp)"/>
+
+    <!-- Input/Output labels -->
+    <text x="40" y="55" fill="#1a1a1a" font-size="9" font-weight="600" letter-spacing="0.05em">USER / SYSTEM INPUT</text>
+    <line x1="200" y1="60" x2="200" y2="73" stroke="#888" stroke-width="1.5" marker-end="url(#arr-cp)"/>
+
+    <text x="40" y="415" fill="#555" font-size="8">AUDITED OUTPUT / ESCALATION</text>
+    <line x1="200" y1="400" x2="200" y2="412" stroke="#888" stroke-width="1.5" marker-end="url(#arr-cp)"/>
+
+    <!-- Left-side vertical flow line -->
+    <line x1="200" y1="75" x2="200" y2="330" stroke="#1a1a1a" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+    <!-- Layer tags on right -->
+    <text x="785" y="320" text-anchor="end" fill="#999" font-size="7" transform="rotate(-90,785,320)">← CONTROL PLANE</text>
+  </svg>
+  <p class="diagram-caption">The four-layer control plane for enterprise AI coworkers. Most deployments fully invest in the model capability layer; the Promptfoo acquisition signals that the three layers above it are becoming required infrastructure.</p>
+</div>
+
+
+<h2>Why Evaluation and Red-Teaming Are Now Runtime Requirements</h2>
+
+<p>The conventional framing treats red-teaming and evaluation as pre-deployment activities. You test before you ship. You benchmark before you update. You run the adversarial suite before you promote to production. This framing made sense when models were static artifacts that you deployed and left running.</p>
+
+<p>Agentic systems break this assumption in three ways.</p>
+
+<h3>Models change continuously</h3>
+
+<p>API-based LLMs are updated by their providers without your consent or prior notice. A model that passed your evaluation suite in December may behave differently in March — not because it failed, but because the underlying model weights changed. The same prompt can produce different outputs. The same tool call can produce different downstream effects. If your only evaluation gate was pre-deployment, you have no visibility into behavioral drift over time.</p>
+
+<h3>Agent behavior is context-dependent</h3>
+
+<p>A static test suite evaluates a model against a fixed set of inputs. But an agent's behavior in production is shaped by the real inputs it receives — user messages, tool outputs, memory contents, and chained actions from earlier in the conversation. Adversarial conditions emerge not from hand-crafted test cases but from the combinatorial space of real interactions. Continuous, production-integrated evaluation is the only way to catch these.</p>
+
+<h3>The attack surface grows with capability</h3>
+
+<p>As AI coworkers gain more tools — email, calendar, file systems, code execution, API access — the scope of what a successful attack can accomplish expands proportionally. A prompt injection that causes an agent to output misleading text is an annoyance. A prompt injection that causes an agent to send a phishing email, exfiltrate a document, or approve a fraudulent transaction is a security incident. The more capable the agent, the more critical the security harness. <!-- TODO: Verify examples of real-world agent security incidents from published sources --></p>
+
+<div class="callout">
+  <div class="callout-label">Architectural implication</div>
+  <p>Runtime evaluation is not a performance overhead — it is the mechanism by which agentic systems remain trustworthy over time. Pre-deployment evaluation is a gate; runtime evaluation is a continuous audit. Both are required, and they serve different functions.</p>
+</div>
+
+
+<!-- DIAGRAM 2: Pre-Deployment vs Runtime Evaluation Architecture -->
+<div class="diagram-container">
+  <div class="diagram-label">Fig. 2 — Pre-Deployment vs Runtime Evaluation Architecture</div>
+  <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'JetBrains Mono', monospace" role="img" aria-label="Comparison of pre-deployment evaluation (left) versus runtime continuous evaluation (right)">
+    <defs>
+      <marker id="arr-ev" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#888"/>
+      </marker>
+      <marker id="arr-ev-w" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#fff"/>
+      </marker>
+    </defs>
+
+    <!-- Divider -->
+    <line x1="400" y1="20" x2="400" y2="370" stroke="#e8e8e5" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <text x="400" y="14" text-anchor="middle" fill="#bbb" font-size="7" letter-spacing="0.1em">VS</text>
+
+    <!-- LEFT: Pre-deployment -->
+    <text x="200" y="40" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="700" letter-spacing="0.06em">PRE-DEPLOYMENT EVALUATION</text>
+    <text x="200" y="56" text-anchor="middle" fill="#999" font-size="8">(Traditional model)</text>
+
+    <!-- Steps left -->
+    <rect x="40" y="75" width="320" height="42" rx="6" fill="#1a1a1a"/>
+    <text x="200" y="93" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">Model / prompt update proposed</text>
+    <text x="200" y="107" text-anchor="middle" fill="#ccc" font-size="7">Developer-initiated change</text>
+
+    <line x1="200" y1="117" x2="200" y2="140" stroke="#888" stroke-width="1.5" marker-end="url(#arr-ev)"/>
+
+    <rect x="40" y="142" width="320" height="42" rx="6" fill="#52525b"/>
+    <text x="200" y="160" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">Benchmark suite run</text>
+    <text x="200" y="174" text-anchor="middle" fill="#d9d9df" font-size="7">Fixed test set · One-time evaluation</text>
+
+    <line x1="200" y1="184" x2="200" y2="207" stroke="#888" stroke-width="1.5" marker-end="url(#arr-ev)"/>
+
+    <rect x="40" y="209" width="320" height="42" rx="6" fill="#fff" stroke="#e8e8e5" stroke-width="1.5"/>
+    <text x="200" y="227" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="600">Manual red-team review</text>
+    <text x="200" y="241" text-anchor="middle" fill="#777" font-size="7">Periodic · Expensive · Incomplete coverage</text>
+
+    <line x1="200" y1="251" x2="200" y2="274" stroke="#888" stroke-width="1.5" marker-end="url(#arr-ev)"/>
+
+    <rect x="40" y="276" width="320" height="42" rx="6" fill="#f4f4f5" stroke="#c0c0c0" stroke-width="1"/>
+    <text x="200" y="294" text-anchor="middle" fill="#555" font-size="9" font-weight="600">Deploy to production</text>
+    <text x="200" y="308" text-anchor="middle" fill="#999" font-size="7">No ongoing evaluation gate</text>
+
+    <rect x="60" y="334" width="280" height="28" rx="4" fill="#fee" stroke="#fcc" stroke-width="1"/>
+    <text x="200" y="351" text-anchor="middle" fill="#c00" font-size="8" font-weight="600">⚠ Blind to runtime drift, novel attacks, model updates</text>
+
+    <!-- RIGHT: Runtime evaluation -->
+    <text x="600" y="40" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="700" letter-spacing="0.06em">RUNTIME CONTINUOUS EVALUATION</text>
+    <text x="600" y="56" text-anchor="middle" fill="#999" font-size="8">(Required for agentic AI)</text>
+
+    <rect x="440" y="75" width="320" height="42" rx="6" fill="#1a1a1a"/>
+    <text x="600" y="93" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">Agent action in production</text>
+    <text x="600" y="107" text-anchor="middle" fill="#ccc" font-size="7">Real input · Real context · Real consequences</text>
+
+    <line x1="600" y1="117" x2="600" y2="140" stroke="#888" stroke-width="1.5" marker-end="url(#arr-ev)"/>
+
+    <rect x="440" y="142" width="320" height="42" rx="6" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+    <text x="600" y="160" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="600">Inline eval gate</text>
+    <text x="600" y="174" text-anchor="middle" fill="#444" font-size="7">Policy checks · Behavioral assertions · Output scoring</text>
+
+    <line x1="560" y1="184" x2="530" y2="207" stroke="#888" stroke-width="1.5" marker-end="url(#arr-ev)"/>
+    <line x1="640" y1="184" x2="670" y2="207" stroke="#888" stroke-width="1.5" marker-end="url(#arr-ev)"/>
+
+    <rect x="440" y="209" width="145" height="42" rx="6" fill="#f4f4f5" stroke="#c0c0c0" stroke-width="1"/>
+    <text x="513" y="227" text-anchor="middle" fill="#555" font-size="9" font-weight="600">PASS</text>
+    <text x="513" y="241" text-anchor="middle" fill="#999" font-size="7">Action proceeds · Logged</text>
+
+    <rect x="615" y="209" width="145" height="42" rx="6" fill="#52525b"/>
+    <text x="688" y="227" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">FAIL / ESCALATE</text>
+    <text x="688" y="241" text-anchor="middle" fill="#d9d9df" font-size="7">Block · Alert · HITL handoff</text>
+
+    <line x1="513" y1="251" x2="513" y2="274" stroke="#888" stroke-width="1.5" marker-end="url(#arr-ev)"/>
+
+    <rect x="440" y="276" width="320" height="42" rx="6" fill="#fff" stroke="#e8e8e5" stroke-width="1.5"/>
+    <text x="600" y="294" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="600">Continuous audit + eval feedback</text>
+    <text x="600" y="308" text-anchor="middle" fill="#777" font-size="7">Drift detection · Red-team regression · Policy updates</text>
+
+    <rect x="460" y="334" width="280" height="28" rx="4" fill="#efe" stroke="#cec" stroke-width="1"/>
+    <text x="600" y="351" text-anchor="middle" fill="#060" font-size="8" font-weight="600">✓ Visible to runtime conditions · Model-update safe · Adaptive</text>
+  </svg>
+  <p class="diagram-caption">Pre-deployment evaluation (left) provides a one-time gate that goes blind the moment the system ships. Runtime continuous evaluation (right) maintains a live audit and enforcement layer throughout the agent's operation — the only viable model for production AI coworkers.</p>
+</div>
+
+
+<h2>What Enterprise Teams Should Build Now</h2>
+
+<p>If the control plane for agentic AI is shifting from prompt-plus-model toward evaluation-plus-governance, what does that mean for teams building enterprise AI coworker systems today? The gap between "we have an agent" and "we have a production-grade AI coworker" is largely a gap in the following five infrastructure areas.</p>
+
+<h3>1. Agent Evaluation Harnesses</h3>
+
+<p>An evaluation harness is the test infrastructure that continuously validates agent behavior against defined expectations. In software engineering terms, it is the test suite and CI pipeline for your agent. In agentic AI terms, it is the mechanism that tells you whether a model update, a prompt change, or a context shift has altered how your agent behaves on real tasks.</p>
+
+<p>A minimal evaluation harness includes: a curated set of representative task scenarios (including edge cases and known failure modes), behavioral assertions that check output against expected criteria, a regression tracker that compares performance across versions, and automated execution that runs on every change and on a scheduled cadence in production.</p>
+
+<p>What it does <em>not</em> include: a spreadsheet of manual test results, an ad-hoc process of someone "checking the outputs," or a one-time evaluation tied to a specific model release.</p>
+
+<h3>2. Prompt and Tool Abuse Testing</h3>
+
+<p>Prompt injection is now a well-documented attack class for LLM-based systems. <!-- TODO: Link to published research on prompt injection attack taxonomy when available --> The attack surface expands significantly when an agent has access to external tools: email, code execution, web access, database queries, API calls. Each tool integration is a potential abuse vector — not only for external attackers, but for malicious data sources in the agent's context (documents, web pages, tool outputs) that contain adversarial instructions.</p>
+
+<p>Red-teaming for agentic systems requires more than adversarial prompts. It requires testing the full tool-use surface: what happens when a retrieved document contains instructions that contradict the system prompt? What happens when a tool returns a response designed to hijack the agent's next action? What happens when a user constructs a multi-turn conversation designed to gradually shift the agent's behavior boundaries?</p>
+
+<p>These tests should be automated, repeatable, and version-controlled — not a one-time exercise performed before launch and never revisited.</p>
+
+<h3>3. Policy-as-Code Checks</h3>
+
+<p>Organizational policies for AI coworker behavior — what data the agent can access, what actions it can take, what it can and cannot say — should be implemented as code-level assertions, not as prompt instructions. Prompt-based policy enforcement is fragile: it can be overridden by adversarial inputs, can drift with model updates, and is not auditable in the way that code is.</p>
+
+<p>Policy-as-code means: a version-controlled definition of allowed and prohibited behaviors, automated enforcement in the eval gate that checks every agent output against these policies, a clear record of what policies were in effect at what time, and a mechanism for updating policies without redeploying the model.</p>
+
+<p>This is the AI coworker equivalent of access control lists and RBAC — the mechanisms that prevent capable systems from exceeding their authorized scope.</p>
+
+<h3>4. Traceability and Replay</h3>
+
+<p>When an agent takes an action that causes a problem — sends the wrong email, executes an incorrect query, makes an erroneous recommendation — the diagnostic question is: why did it do that? Without structured trace logging, this question cannot be answered. The agent's reasoning is lost, the tool calls are not recorded, the context that produced the behavior is gone.</p>
+
+<p>Traceability means logging every step of the agent's execution: the inputs it received, the reasoning steps it took (where observable), the tool calls it made and the results they returned, the evaluation gate decisions, and the final output. Replay means being able to reconstruct and rerun any agent execution from the log — reproducing failures, testing fixes, and validating that a patch actually resolves the issue.</p>
+
+<p>This is not a nice-to-have. It is the operational requirement for debugging, for incident response, and for the audit trails that regulated industries require.</p>
+
+<h3>5. Escalation Boundaries for Unsafe or Uncertain Actions</h3>
+
+<p>Every agentic system needs a well-defined boundary between what the agent handles autonomously and what triggers a handoff to a human. This boundary should not be implemented as a prompt instruction ("if you are unsure, ask the user"). It should be a structural constraint enforced by the orchestration layer: specific conditions under which the agent is not permitted to proceed and must escalate.</p>
+
+<p>Escalation conditions include: confidence scores below a threshold, outputs that fail policy checks, actions that would exceed the agent's authorized mutation surface, and edge cases that the evaluation harness has flagged as outside the agent's reliable operating range. See also: the <a href="autoresearch-harness-engineering.html">harness engineering pattern</a> for how bounded loops and explicit termination conditions implement this structurally.</p>
+
+<p>Escalation is not failure. It is the mechanism by which the agent stays within its trustworthy operating envelope and hands off to human judgment when that envelope is exceeded. The systems that get this right will have fewer incidents and more user trust than systems that optimize for autonomous completion rate at the expense of reliable behavior.</p>
+
+
+<h2>The Equivalent of CI/CD + AppSec + Observability</h2>
+
+<p>The enterprise software stack has spent two decades building the infrastructure that makes software systems reliable and secure in production: continuous integration, automated testing, deployment pipelines, application security scanning, runtime monitoring, observability tooling. This infrastructure exists because "works on my laptop" is not a production readiness criterion.</p>
+
+<p>AI coworker platforms need the equivalent stack, and it maps surprisingly directly:</p>
+
+<ul>
+  <li><strong>Evaluation harnesses</strong> are the CI layer — every change is tested before it ships, regressions are caught automatically, and the test suite is the authoritative definition of expected behavior.</li>
+  <li><strong>Red-teaming infrastructure</strong> is the AppSec layer — automated adversarial testing that runs continuously, not as a compliance checkbox but as a live attack surface scanner.</li>
+  <li><strong>Policy-as-code enforcement</strong> is the security policy layer — version-controlled, automatically enforced, auditable rules about what the system is and is not permitted to do.</li>
+  <li><strong>Trace logging and replay</strong> is the observability layer — the ability to understand what the system did, why, and how to reproduce and fix failures.</li>
+  <li><strong>Escalation boundaries and HITL checkpoints</strong> are the operational runbook — defined procedures for when human intervention is required and how it is triggered.</li>
+</ul>
+
+<p>None of these are novel concepts. They are well-understood engineering disciplines applied to a new type of system. The mistake would be to treat AI coworkers as a different category of software that requires different principles rather than the same principles applied more carefully. <!-- TODO: Verify whether OpenAI's harness engineering documentation explicitly draws these analogies from https://openai.com/index/harness-engineering/ --></p>
+
+
+<h2>Connection to Harness Engineering and HITL Control Planes</h2>
+
+<p>The Promptfoo acquisition sits in direct continuity with two existing frameworks that are worth connecting explicitly.</p>
+
+<p>OpenAI's <a href="https://openai.com/index/harness-engineering/">harness engineering</a> framing — described in the context of AutoResearch and agentic AI systems — articulates exactly the pattern that Promptfoo operationalizes: bounded agent loops, explicit evaluation gates, rollback discipline, and repository-native audit trails. <!-- TODO: Verify alignment between Promptfoo's stated capabilities and OpenAI's harness engineering documentation --> Acquiring Promptfoo is, in part, acquiring the tooling that makes harness engineering programmable at scale — so that the evaluation gates and policy checks can be defined in code, version-controlled, and integrated into CI pipelines.</p>
+
+<p>The HITL (human-in-the-loop) control plane is the other half of the picture. Harness engineering and evaluation infrastructure define where the agent operates autonomously. HITL design defines where it doesn't — the structural escalation boundaries that hand off to human judgment when the agent is outside its reliable operating envelope. These are complementary, not competing, design concerns. Evaluation infrastructure tells you when escalation is needed; HITL infrastructure tells you what to do when it is.</p>
+
+<p>The enterprise AI coworker platform that combines these — strong evaluation harnesses, continuous red-teaming, policy-as-code enforcement, trace logging, and well-designed HITL escalation — is not just more secure. It is more trustworthy in the operational sense: the team running it can reason about its behavior, explain its decisions, catch its failures, and update its policies with confidence.</p>
+
+
+<!-- DIAGRAM 3: Agent Action Flow with Policy Checks, Eval Gates, and Escalation Paths -->
+<div class="diagram-container">
+  <div class="diagram-label">Fig. 3 — Agent Action Flow: Policy Checks, Eval Gates, and Escalation Paths</div>
+  <svg viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'JetBrains Mono', monospace" role="img" aria-label="Agent action flow diagram showing task intake, context assembly, policy check gate, agent reasoning, eval gate, escalation decision, and output or HITL handoff">
+    <defs>
+      <marker id="arr-af" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#888"/>
+      </marker>
+      <marker id="arr-af-dark" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#1a1a1a"/>
+      </marker>
+      <marker id="arr-af-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#52525b"/>
+      </marker>
+    </defs>
+
+    <!-- TASK INTAKE -->
+    <rect x="280" y="20" width="240" height="48" rx="8" fill="#1a1a1a"/>
+    <text x="400" y="41" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">TASK / REQUEST</text>
+    <text x="400" y="57" text-anchor="middle" fill="#ccc" font-size="8">User input · System trigger · Tool output</text>
+
+    <!-- Arrow down -->
+    <line x1="400" y1="68" x2="400" y2="92" stroke="#888" stroke-width="1.5" marker-end="url(#arr-af)"/>
+
+    <!-- CONTEXT ASSEMBLY -->
+    <rect x="280" y="94" width="240" height="48" rx="8" fill="#52525b"/>
+    <text x="400" y="115" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">CONTEXT ASSEMBLY</text>
+    <text x="400" y="131" text-anchor="middle" fill="#d9d9df" font-size="8">Memory · Tools · Instructions · History</text>
+
+    <!-- Arrow down -->
+    <line x1="400" y1="142" x2="400" y2="166" stroke="#888" stroke-width="1.5" marker-end="url(#arr-af)"/>
+
+    <!-- POLICY CHECK GATE (diamond-ish rounded rect) -->
+    <rect x="260" y="168" width="280" height="52" rx="26" fill="#fff" stroke="#1a1a1a" stroke-width="2.5"/>
+    <text x="400" y="190" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700" letter-spacing="0.05em">POLICY CHECK GATE</text>
+    <text x="400" y="208" text-anchor="middle" fill="#444" font-size="8">Input scope · Data access · Authorization</text>
+
+    <!-- Policy PASS arrow down -->
+    <line x1="400" y1="220" x2="400" y2="244" stroke="#888" stroke-width="1.5" marker-end="url(#arr-af)"/>
+    <text x="412" y="236" fill="#060" font-size="7" font-weight="600">PASS</text>
+
+    <!-- Policy FAIL arrow right -->
+    <line x1="540" y1="194" x2="620" y2="194" stroke="#52525b" stroke-width="1.5" marker-end="url(#arr-af-red)"/>
+    <text x="575" y="188" text-anchor="middle" fill="#52525b" font-size="7" font-weight="600">FAIL</text>
+    <rect x="622" y="170" width="148" height="48" rx="6" fill="#52525b"/>
+    <text x="696" y="190" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">BLOCK + ALERT</text>
+    <text x="696" y="206" text-anchor="middle" fill="#d9d9df" font-size="7">Policy violation logged</text>
+
+    <!-- AGENT REASONING -->
+    <rect x="280" y="246" width="240" height="52" rx="8" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+    <text x="400" y="268" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="700">AGENT REASONING</text>
+    <text x="400" y="284" text-anchor="middle" fill="#444" font-size="8">Planning · Tool calls · Draft generation</text>
+
+    <!-- Arrow down -->
+    <line x1="400" y1="298" x2="400" y2="322" stroke="#888" stroke-width="1.5" marker-end="url(#arr-af)"/>
+
+    <!-- EVAL GATE -->
+    <rect x="260" y="324" width="280" height="52" rx="26" fill="#fff" stroke="#1a1a1a" stroke-width="2.5"/>
+    <text x="400" y="346" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700" letter-spacing="0.05em">EVALUATION GATE</text>
+    <text x="400" y="362" text-anchor="middle" fill="#444" font-size="8">Behavioral assertions · Security scan · Output scoring</text>
+
+    <!-- Eval PASS arrow down -->
+    <line x1="400" y1="376" x2="400" y2="400" stroke="#888" stroke-width="1.5" marker-end="url(#arr-af)"/>
+    <text x="412" y="392" fill="#060" font-size="7" font-weight="600">PASS</text>
+
+    <!-- Eval FAIL / UNCERTAIN arrow right -->
+    <line x1="540" y1="350" x2="620" y2="350" stroke="#52525b" stroke-width="1.5" marker-end="url(#arr-af-red)"/>
+    <text x="572" y="344" text-anchor="middle" fill="#52525b" font-size="7" font-weight="600">FAIL / UNCERTAIN</text>
+
+    <!-- Escalation decision box -->
+    <rect x="622" y="326" width="148" height="52" rx="6" fill="#f4f4f5" stroke="#c0c0c0" stroke-width="1.5"/>
+    <text x="696" y="347" text-anchor="middle" fill="#1a1a1a" font-size="8" font-weight="700">ESCALATION DECISION</text>
+    <text x="696" y="363" text-anchor="middle" fill="#555" font-size="7">Confidence · Scope · Reversibility</text>
+
+    <!-- Escalation down to HITL -->
+    <line x1="696" y1="378" x2="696" y2="430" stroke="#52525b" stroke-width="1.5" marker-end="url(#arr-af-red)"/>
+    <rect x="622" y="432" width="148" height="48" rx="6" fill="#1a1a1a"/>
+    <text x="696" y="453" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">HITL HANDOFF</text>
+    <text x="696" y="469" text-anchor="middle" fill="#ccc" font-size="7">Human review · Approve / reject</text>
+
+    <!-- OUTPUT -->
+    <rect x="280" y="402" width="240" height="48" rx="8" fill="#fff" stroke="#e8e8e5" stroke-width="1.5"/>
+    <text x="400" y="423" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="700">AUDITED OUTPUT</text>
+    <text x="400" y="439" text-anchor="middle" fill="#777" font-size="8">Action executed · Trace logged · Replay-ready</text>
+
+    <!-- AUDIT LOG bottom -->
+    <rect x="100" y="402" width="160" height="48" rx="6" fill="#1a1a1a"/>
+    <text x="180" y="422" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">AUDIT / TRACE LOG</text>
+    <text x="180" y="438" text-anchor="middle" fill="#ccc" font-size="7">All steps · All decisions</text>
+
+    <!-- Dashed lines to audit log -->
+    <line x1="280" y1="270" x2="260" y2="426" stroke="#999" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-af)"/>
+    <line x1="280" y1="350" x2="245" y2="435" stroke="#999" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-af)"/>
+
+    <!-- Bottom note -->
+    <text x="400" y="505" text-anchor="middle" fill="#555" font-size="8">Every gate decision is logged · Failures and escalations are traceable · Replay available for all steps</text>
+  </svg>
+  <p class="diagram-caption">The complete agent action flow for a production AI coworker. Policy check gates enforce authorization before agent reasoning begins; evaluation gates enforce behavioral and security assertions on outputs; escalation paths hand off to human review when automated confidence is insufficient.</p>
+</div>
+
+
+<h2>What to Avoid</h2>
+
+<p>The most common failure modes in enterprise AI coworker deployments are not caused by bad models. They are caused by architectural shortcuts in the harness layer.</p>
+
+<h3>Relying on one-time benchmarking</h3>
+
+<p>A benchmark score achieved at a point in time tells you how the model performed on a specific test set under specific conditions. It does not tell you how it will perform next month after a provider update, on the real distribution of inputs your users will produce, or under adversarial conditions that weren't in the test set. Benchmarks are necessary but not sufficient. The team that benchmarks once and deploys is running blind from day one.</p>
+
+<h3>Treating red-teaming as a compliance checkbox</h3>
+
+<p>Red-teaming that is done once, before launch, to satisfy a security review is not red-teaming — it's security theater. The attack surface for agentic systems changes with every model update, every new tool integration, and every expansion of the agent's authorized scope. Red-teaming needs to be continuous, automated, and integrated into the same pipeline as deployment — not a one-time exercise with a report filed in a compliance folder.</p>
+
+<h3>Assuming model upgrades improve safety automatically</h3>
+
+<p>Newer models are generally more capable. They are not automatically safer or more policy-compliant. A GPT-4o update that improves coding performance may also change how the model handles edge cases in your specific workflow. A more capable model may find more creative ways to violate your policies if those policies are implemented only in the prompt. Every model upgrade should be treated as a potential behavioral change and validated through the evaluation harness before it reaches production users.</p>
+
+<h3>Building evaluation as a separate system</h3>
+
+<p>The evaluation infrastructure should not live in a separate dashboard that the security team checks occasionally. It should be integrated into the same tooling as the agent's deployment pipeline — triggered on every change, reporting to the same alerting channels as other production systems, and owned by the same team that runs the agent. Evaluation that lives outside the operational loop will be ignored when it matters most.</p>
+
+
+<h2>The Production-Grade AI Coworker Stack</h2>
+
+<p>The signal from the Promptfoo acquisition is that the market for enterprise AI is moving toward a definition of "production-grade" that looks a lot like the definition that applied to enterprise software twenty years ago: not just "it works," but "it works reliably, it fails safely, it is auditable, and it can be updated without breaking what was already working."</p>
+
+<p>This is a higher bar than the AI industry has generally applied to itself. The demos are impressive, the benchmarks are competitive, the capabilities are real. But impressive demos and high benchmark scores do not make a system that enterprise architects can stake their operations on. The harness layer is what makes the difference.</p>
+
+<p>The teams that build this infrastructure now — evaluation harnesses, red-teaming pipelines, policy-as-code enforcement, trace logging, HITL escalation boundaries — will be operating from a position of advantage when enterprise buyers start asking harder questions about reliability, security, and auditability. Those questions are coming. The Promptfoo acquisition is a leading indicator.</p>
+
+<div class="callout">
+  <div class="callout-label">Sources</div>
+  <p>This post draws on OpenAI's <a href="https://openai.com/index/openai-to-acquire-promptfoo/" target="_blank">announcement of the planned Promptfoo acquisition</a> and the <a href="https://openai.com/index/harness-engineering/" target="_blank">harness engineering</a> framework. <!-- TODO: Verify all factual claims against primary sources before publishing. Promptfoo product capabilities should be confirmed against https://promptfoo.dev. OpenAI Frontier branding and integration scope need primary source confirmation. --></p>
+</div>
+
+<hr class="divider">
+
+<h2>Related Reading</h2>
+
+<ul>
+  <li><a href="autoresearch-harness-engineering.html">AutoResearch, Harness Engineering, and the Next Layer of Agentic AI</a> — The structural pattern of bounded agent loops, narrow write surfaces, and explicit evaluation gates that the Promptfoo acquisition operationalizes at scale.</li>
+  <li><a href="distillation-rl-guardrails.html">Your API Is a Training Dataset: How Distillation Attacks Work and How to Stop Them</a> — Layered guardrail patterns and defense-in-depth for AI systems, including API-level security measures that complement agent-level evaluation harnesses.</li>
+</ul>
+
+<hr class="divider">
+
+<h2>Fact-Check Items</h2>
+
+<ul>
+  <li><!-- TODO --> Verify the exact announcement date, scope, and terms of the OpenAI–Promptfoo acquisition from <a href="https://openai.com/index/openai-to-acquire-promptfoo/" target="_blank">https://openai.com/index/openai-to-acquire-promptfoo/</a></li>
+  <li><!-- TODO --> Confirm "OpenAI Frontier" as the correct product branding and verify the stated integration scope from primary sources</li>
+  <li><!-- TODO --> Verify Promptfoo's current feature set (evaluation, red-teaming, policy-as-code) from <a href="https://promptfoo.dev" target="_blank">promptfoo.dev</a> or the acquisition announcement</li>
+  <li><!-- TODO --> Confirm alignment between the harness engineering framing at <a href="https://openai.com/index/harness-engineering/" target="_blank">https://openai.com/index/harness-engineering/</a> and how Promptfoo's capabilities map to it</li>
+  <li><!-- TODO --> Source examples of published real-world agent security incidents (prompt injection, tool misuse) from peer-reviewed or vendor security reports</li>
+</ul>
+
+</div><!-- /article-body -->
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Follow the Research</h2>
+    <p>More on agentic AI security, harness engineering, and production AI architecture on LinkedIn and GitHub.</p>
+    <div class="cta-links">
+      <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="cta-btn">LinkedIn →</a>
+      <a href="https://github.com/ogkranthi" target="_blank" class="cta-btn-ghost">GitHub →</a>
+    </div>
+  </div>
+
+</div><!-- /article-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Kranthi Manchikanti. Built with intent.</p>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/ogkranthi" target="_blank">GitHub</a>
+    <a href="https://x.com/ogkranthi" target="_blank">X / Twitter</a>
+  </div>
+</footer>
+
+</body>
+</html>
