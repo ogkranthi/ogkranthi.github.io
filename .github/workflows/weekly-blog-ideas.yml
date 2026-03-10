@@ -1,0 +1,41 @@
+name: Weekly blog ideas
+
+on:
+  schedule:
+    - cron: "0 15 * * 2"   # Tuesday 11:00 AM
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  create-idea-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create weekly idea issue
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_PAT }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh issue create \
+            --repo "$REPO" \
+            --title "Weekly editorial planning" \
+            --label "blog-idea" \
+            --body "$(cat <<'EOF'
+          Propose 3 blog topics aligned to these pillars:
+          - enterprise AI agents
+          - AI architectures
+          - reinforcement learning
+          - HITL systems
+          - AI safety
+          - production engineering lessons from current AI developments
+
+          For each topic include:
+          - working title
+          - one-paragraph thesis
+          - why it matters now
+          - how it differs from existing posts
+          - recommended length
+          EOF
+          )"
