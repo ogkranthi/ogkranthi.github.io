@@ -79,3 +79,6 @@ body:
         - summary of structure
         - assumptions made
         - verification gaps
+        - the new or updated post draft
+        - inline SVG diagrams for each major workflow
+        - summary of which sections each diagram supports
