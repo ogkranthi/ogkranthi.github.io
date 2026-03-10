@@ -1,46 +1,156 @@
-name: Weekly blog ideas
+name: Weekly queued blog issue for Copilot
 
 on:
   schedule:
-    - cron: "0 15 * * 2"   # Tuesday 11:00 AM America/New_York during EDT
+    - cron: "0 15 * * 2"   # Tuesday 11:00 AM New York during EDT
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   issues: write
+  pull-requests: write
+  actions: read
 
 jobs:
-  create-idea-issue:
+  create-next-blog-issue:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create weekly idea issue
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Pick next queued topic
+        id: pick
+        shell: bash
         run: |
           set -euo pipefail
 
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(".github/blog-topic-queue.json")
+          data = json.loads(path.read_text())
+
+          selected = None
+          for item in data:
+              if item.get("status") == "queued":
+                  selected = item
+                  item["status"] = "issued"
+                  break
+
+          if not selected:
+              with open(Path.cwd() / "picked.env", "w") as f:
+                  f.write("FOUND=false\n")
+              path.write_text(json.dumps(data, indent=2) + "\n")
+              raise SystemExit(0)
+
+          path.write_text(json.dumps(data, indent=2) + "\n")
+
+          labels = ",".join(selected.get("labels", []))
+          body = selected["body"]
+
+          with open(Path.cwd() / "picked.env", "w") as f:
+              f.write("FOUND=true\n")
+              f.write(f"SLUG={selected['slug']}\n")
+              f.write(f"TITLE<<EOF\n{selected['title']}\nEOF\n")
+              f.write(f"LABELS={labels}\n")
+              f.write(f"BODY<<EOF\n{body}\nEOF\n")
+          PY
+
+          cat picked.env >> "$GITHUB_OUTPUT"
+
+      - name: Stop if nothing queued
+        if: steps.pick.outputs.FOUND != 'true'
+        run: echo "No queued topics found."
+
+      - name: Commit queue status update
+        if: steps.pick.outputs.FOUND == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/blog-topic-queue.json
+          git commit -m "Mark blog topic as issued: ${{ steps.pick.outputs.SLUG }}" || exit 0
+          git push
+
+      - name: Check for existing issue with same title
+        if: steps.pick.outputs.FOUND == 'true'
+        id: dedupe
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TITLE: ${{ steps.pick.outputs.TITLE }}
+        run: |
+          set -euo pipefail
+
+          count=$(gh issue list \
+            --repo "$REPO" \
+            --search "in:title \"$TITLE\"" \
+            --state all \
+            --limit 20 \
+            --json title \
+            --jq '[.[] | select(.title == env.TITLE)] | length')
+
+          if [ "$count" -gt 0 ]; then
+            echo "EXISTS=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "EXISTS=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create next blog issue
+        if: steps.pick.outputs.FOUND == 'true' && steps.dedupe.outputs.EXISTS != 'true'
+        id: create_issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TITLE: ${{ steps.pick.outputs.TITLE }}
+          LABELS: ${{ steps.pick.outputs.LABELS }}
+          BODY: ${{ steps.pick.outputs.BODY }}
+        run: |
+          set -euo pipefail
+
+          issue_url=$(gh issue create \
+            --repo "$REPO" \
+            --title "$TITLE" \
+            --label "$LABELS" \
+            --body "$BODY")
+
+          issue_number="${issue_url##*/}"
+          echo "ISSUE_NUMBER=$issue_number" >> "$GITHUB_OUTPUT"
+          echo "ISSUE_URL=$issue_url" >> "$GITHUB_OUTPUT"
+
+      - name: Assign created issue to Copilot
+        if: steps.create_issue.outputs.ISSUE_NUMBER != ''
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_PAT }}
+          REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ steps.create_issue.outputs.ISSUE_NUMBER }}
+          BASE_BRANCH: main
+        run: |
+          set -euo pipefail
+
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "Missing secret: COPILOT_ASSIGN_PAT"
+            exit 1
+          fi
+
           gh auth status
 
-          gh issue create \
-            --repo "$REPO" \
-            --title "Weekly editorial planning" \
-            --label "blog-idea" \
-            --body "$(cat <<'EOF'
-          Propose 3 blog topics aligned to these pillars:
-          - enterprise AI agents
-          - AI architectures
-          - reinforcement learning
-          - HITL systems
-          - AI safety
-          - production engineering lessons from current AI developments
-
-          For each topic include:
-          - working title
-          - one-paragraph thesis
-          - why it matters now
-          - how it differs from existing posts
-          - recommended length
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "/repos/$REPO/issues/$ISSUE_NUMBER/assignees" \
+            --input - <<EOF
+          {
+            "assignees": ["copilot-swe-agent[bot]"],
+            "agent_assignment": {
+              "target_repo": "$REPO",
+              "base_branch": "$BASE_BRANCH",
+              "custom_instructions": "Follow repository Copilot instructions. For blog tasks, create or update the article file and update index.html, homepage post count, and featured tile when the issue requires publishing. Include inline SVG diagrams for each major workflow.",
+              "custom_agent": "",
+              "model": ""
+            }
+          }
           EOF
-          )"
