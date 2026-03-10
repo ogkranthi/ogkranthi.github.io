@@ -12,81 +12,58 @@ permissions:
 
 jobs:
   assign-to-copilot:
-    if: github.event.label.name == 'blog-draft' || github.event.label.name == 'blog-refresh' || github.event.label.name == 'blog-publish'
+    if: >
+      github.event.label.name == 'blog-draft' ||
+      github.event.label.name == 'blog-refresh' ||
+      github.event.label.name == 'blog-publish'
     runs-on: ubuntu-latest
+
     steps:
-      - name: Assign issue to Copilot via GraphQL
+      - name: Debug trigger
+        run: |
+          echo "Label: ${{ github.event.label.name }}"
+          echo "Issue: #${{ github.event.issue.number }}"
+          echo "Repo: ${{ github.repository }}"
+
+      - name: Assign issue to Copilot
         env:
           GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_PAT }}
-          OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
+          REPO: ${{ github.repository }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+          BASE_BRANCH: main
         run: |
           set -euo pipefail
 
-          HEADER="GraphQL-Features: issues_copilot_assignment_api_support,coding_agent_model_selection"
-
-          BOT_ID=$(gh api graphql \
-            -H "$HEADER" \
-            -f query='
-            query($owner:String!, $repo:String!) {
-              repository(owner:$owner, name:$repo) {
-                suggestedActors(capabilities:[CAN_BE_ASSIGNED], first:100) {
-                  nodes {
-                    __typename
-                    ... on Bot { id login }
-                    ... on User { id login }
-                  }
-                }
-              }
-            }' \
-            -f owner="$OWNER" -f repo="$REPO" \
-            --jq '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id')
-
-          if [ -z "$BOT_ID" ]; then
-            echo "Could not find copilot-swe-agent in suggestedActors"
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "Missing secret: COPILOT_ASSIGN_PAT"
             exit 1
           fi
 
-          ISSUE_ID=$(gh api graphql \
-            -f query='
-            query($owner:String!, $repo:String!, $number:Int!) {
-              repository(owner:$owner, name:$repo) {
-                issue(number:$number) { id }
-              }
-            }' \
-            -f owner="$OWNER" -f repo="$REPO" -F number="$ISSUE_NUMBER" \
-            --jq '.data.repository.issue.id')
+          gh auth status
 
-          REPO_ID=$(gh api graphql \
-            -f query='
-            query($owner:String!, $repo:String!) {
-              repository(owner:$owner, name:$repo) { id }
-            }' \
-            -f owner="$OWNER" -f repo="$REPO" \
-            --jq '.data.repository.id')
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "/repos/$REPO/issues/$ISSUE_NUMBER/assignees" \
+            --input - <<EOF
+          {
+            "assignees": ["copilot-swe-agent[bot]"],
+            "agent_assignment": {
+              "target_repo": "$REPO",
+              "base_branch": "$BASE_BRANCH",
+              "custom_instructions": "Follow repository Copilot instructions. For blog tasks, create or update the article file and update index.html, homepage post count, and featured tile when the issue requires publishing.",
+              "custom_agent": "",
+              "model": ""
+            }
+          }
+          EOF
 
-          gh api graphql \
-            -H "$HEADER" \
-            -f query='
-            mutation($issueId:ID!, $botId:ID!, $repoId:ID!) {
-              replaceActorsForAssignable(input:{
-                assignableId:$issueId,
-                actorIds:[$botId],
-                agentAssignment:{
-                  targetRepositoryId:$repoId,
-                  baseRef:"main",
-                  customInstructions:"Follow repository copilot instructions. For blog tasks, update post file and homepage when required.",
-                  customAgent:"",
-                  model:""
-                }
-              }) {
-                assignable {
-                  ... on Issue {
-                    id
-                    assignees(first:10) { nodes { login } }
-                  }
-                }
-              }
-            }' \
-            -f issueId="$ISSUE_ID" -f botId="$BOT_ID" -f repoId="$REPO_ID"
+      - name: Confirm assignee
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_PAT }}
+          REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          gh issue view "$ISSUE_NUMBER" --repo "$REPO" --json assignees
