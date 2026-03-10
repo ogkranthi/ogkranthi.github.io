@@ -1,0 +1,62 @@
+name: Blog post draft
+description: Create or update a technical blog post draft
+title: "[Blog]: "
+labels: ["blog-draft"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Proposed title
+      placeholder: AutoResearch, Harness Engineering, and the Next Layer of Agentic AI
+    validations:
+      required: true
+
+  - type: textarea
+    id: thesis
+    attributes:
+      label: Thesis
+      description: One paragraph on the core argument of the post
+    validations:
+      required: true
+
+  - type: textarea
+    id: audience
+    attributes:
+      label: Audience
+      placeholder: Enterprise architects, senior engineers, AI platform teams
+
+  - type: textarea
+    id: key_points
+    attributes:
+      label: Key points to cover
+      description: Bullets or numbered points
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Voice, length, files to touch, what not to change
+      value: |
+        - Keep the author's technical, architecture-first tone
+        - Do not modify site config or layout
+        - Draft only; do not publish
+        - Add TODO markers where factual verification is needed
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources or notes
+      description: Paste links or notes here
+
+  - type: textarea
+    id: done
+    attributes:
+      label: Done condition
+      value: |
+        Open a draft PR with:
+        - the new or updated post draft
+        - summary of structure
+        - assumptions made
+        - verification gaps
