@@ -2,7 +2,7 @@ name: Weekly blog ideas
 
 on:
   schedule:
-    - cron: "0 15 * * 2"   # Tuesday 11:00 AM
+    - cron: "0 15 * * 2"   # Tuesday 11:00 AM America/New_York during EDT
   workflow_dispatch:
 
 permissions:
@@ -12,12 +12,17 @@ permissions:
 jobs:
   create-idea-issue:
     runs-on: ubuntu-latest
+
     steps:
       - name: Create weekly idea issue
         env:
-          GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_PAT }}
+          GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
+          set -euo pipefail
+
+          gh auth status
+
           gh issue create \
             --repo "$REPO" \
             --title "Weekly editorial planning" \
