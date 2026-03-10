@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoResearch, Harness Engineering, and the Next Layer of Agentic AI | Kranthi Manchikanti</title>
+<meta name="description" content="Andrej Karpathy's AutoResearch demonstrates harness engineering: bounded agent loops, narrow write surfaces, fixed evaluation budgets, and rollback discipline. What enterprises should copy — and what they shouldn't.">
+<meta property="og:title" content="AutoResearch, Harness Engineering, and the Next Layer of Agentic AI">
+<meta property="og:description" content="The real innovation in AutoResearch isn't autonomy — it's the constraints that make autonomy safe. A structural analysis of harness engineering for enterprise agentic AI.">
+<meta property="og:type" content="article">
+<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/3d3eda9caaed2c475dba44126/f3ea9112071b1f2a08ad4ccce.js");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fafaf9;
+  --bg-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #999999;
+  --accent: #18181b;
+  --accent-dim: #09090b;
+  --accent-light: #f4f4f5;
+  --border: #e8e8e5;
+  --border-hover: #c4c4c0;
+  --serif: 'Newsreader', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── HEADER ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(250, 250, 249, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.logo span { color: var(--accent); }
+
+nav { display: flex; gap: 2rem; align-items: center; }
+
+nav a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+nav a:hover { color: var(--accent); }
+
+.nav-cta {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.nav-cta:hover { background: var(--accent-dim); color: #fff; }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 8rem 2.5rem 6rem;
+}
+
+/* ── ARTICLE HERO ── */
+.article-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.article-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+}
+
+.article-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.article-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.article-meta {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.article-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.article-meta-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.article-meta-value {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.article-body h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-top: 2.25rem;
+  margin-bottom: 0.65rem;
+  color: var(--text-primary);
+}
+
+.article-body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 1.35rem;
+  font-weight: 300;
+}
+
+.article-body p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.article-body ul, .article-body ol {
+  margin: 0.75rem 0 1.35rem 1.5rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.85;
+  font-weight: 300;
+}
+
+.article-body li { margin-bottom: 0.45rem; }
+.article-body li strong { color: var(--text-primary); font-weight: 600; }
+
+.article-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: 2rem 0;
+}
+
+.callout p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.callout-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* ── COMPARISON TABLE ── */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.85rem;
+}
+
+.compare-table th {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border);
+  text-align: left;
+  background: var(--bg);
+}
+
+.compare-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+
+.compare-table td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* ── SECTION DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3.5rem 0;
+}
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2.5rem;
+  text-align: center;
+  margin-top: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+}
+
+.cta-section h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.cta-section p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 1.75rem;
+  font-weight: 300;
+}
+
+.cta-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.cta-btn:hover { background: var(--accent-dim); color: #fff; }
+
+.cta-btn-ghost {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.cta-btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── FOOTER ── */
+footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer p { font-size: 0.75rem; color: var(--text-muted); }
+
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 1rem 1.5rem; }
+  nav a:not(.nav-cta) { display: none; }
+  .article-wrap { padding: 6rem 1.5rem 4rem; }
+  footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="/" class="logo">Kranthi Manchikanti<span>.</span></a>
+  <nav>
+    <a href="/#writing">Writing</a>
+    <a href="/#about">About</a>
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta">LinkedIn →</a>
+  </nav>
+</header>
+
+<!-- ARTICLE -->
+<div class="article-wrap">
+
+  <div class="article-label">AI Agents · Agentic AI · Harness Engineering</div>
+  <h1 class="article-title">AutoResearch, Harness Engineering, and <em>the Next Layer of Agentic AI</em></h1>
+  <p class="article-subtitle">Andrej Karpathy's AutoResearch is interesting not because it automates ML experiments overnight, but because it demonstrates a deeper pattern: bounded agent loops, narrow write surfaces, fixed evaluation budgets, and rollback discipline. This is the scaffolding that separates reliable agents from impressive demos.</p>
+  <div class="article-meta">
+    <div class="article-meta-item">
+      <span class="article-meta-label">Author</span>
+      <span class="article-meta-value">Kranthi Manchikanti</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Published</span>
+      <span class="article-meta-value">Mar 2026</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Read time</span>
+      <span class="article-meta-value">14 min</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Category</span>
+      <span class="article-meta-value">AI Agents</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+<h2>The Pattern, Not the Product</h2>
+
+<p>Andrej Karpathy released AutoResearch — a system that runs ML experiments autonomously overnight, proposing hypotheses, writing code, executing training runs, evaluating results, and iterating. <!-- TODO: Verify exact release date and context of AutoResearch from https://github.com/karpathy/autoresearch --> The AI research community responded with the expected mix of excitement and anxiety. Another step toward automated science. Another job function under pressure.</p>
+
+<p>But the interesting part of AutoResearch isn't the autonomy. It's the <strong>constraints</strong>.</p>
+
+<p>AutoResearch doesn't give an agent a blank canvas and say "do science." It operates inside a tightly engineered harness: fixed compute budgets, narrow code mutation surfaces, automated evaluation against explicit metrics, and rollback rules that prevent the system from drifting into unrecoverable states. The agent is powerful <em>because</em> it is constrained, not despite it.</p>
+
+<p>This is the same pattern OpenAI describes as <a href="https://openai.com/index/harness-engineering/">harness engineering</a> — the discipline of building the scaffolding around an agent that makes its autonomy safe and productive. And it's the pattern that enterprise teams should be studying far more carefully than the agent itself.</p>
+
+<div class="callout">
+  <div class="callout-label">Thesis</div>
+  <p>The real innovation in systems like AutoResearch is not the agent's capabilities — it's the harness that bounds those capabilities into a reliable, auditable, recoverable loop. Harness engineering is the missing infrastructure layer in most enterprise AI agent deployments.</p>
+</div>
+
+
+<h2>What AutoResearch Actually Does</h2>
+
+<p>At a high level, AutoResearch is a loop. The agent proposes an experiment — a specific hypothesis about a model architecture, training strategy, or hyperparameter configuration. It writes or modifies code to implement the experiment. It executes the training run within a fixed compute budget. It evaluates the results against predefined metrics. Then it decides: iterate, pivot, or stop. <!-- TODO: Verify exact loop mechanics from https://github.com/karpathy/autoresearch README --></p>
+
+<p>The key structural choices are what make it work:</p>
+
+<ul>
+  <li><strong>Fixed compute budgets:</strong> Each experiment gets a bounded allocation of GPU time. The agent cannot decide to "run a bigger experiment" to chase a marginal improvement. This prevents runaway costs and forces the system to be efficient with its exploration. <!-- TODO: Confirm specific budget constraints from repo documentation --></li>
+  <li><strong>Narrow mutation surfaces:</strong> The agent doesn't rewrite the entire codebase. It modifies specific, well-defined parts of the experiment code — hyperparameters, architecture choices, training configurations. The core infrastructure remains untouched.</li>
+  <li><strong>Automated evaluation:</strong> Results are evaluated against explicit metrics — loss curves, accuracy benchmarks, convergence rates. There is no ambiguity about whether an experiment "worked." The evaluation is deterministic and reproducible.</li>
+  <li><strong>Iteration with memory:</strong> The agent maintains context across experiments, learning from what worked and what didn't. But this memory is structured — experiment logs, metric histories, hypothesis tracking — not free-form reasoning that could drift.</li>
+</ul>
+
+<p>This is not an agent with general intelligence doing open-ended research. It's a <strong>specialist operating inside a well-engineered cage</strong>, and the cage is doing most of the hard work.</p>
+
+
+<h2>The Harness Engineering Pattern</h2>
+
+<p>OpenAI's <a href="https://openai.com/index/harness-engineering/">harness engineering</a> framing gives this pattern a name and a structure. <!-- TODO: Verify specific details and definitions from the OpenAI harness engineering article --> The core idea is that the reliability of an agent system comes not from the agent's intelligence but from the harness that surrounds it — the orchestration logic, evaluation infrastructure, and safety boundaries that constrain the agent's behavior into a productive channel.</p>
+
+<p>Five principles define the pattern:</p>
+
+<h3>1. Bounded Loops</h3>
+
+<p>The agent operates in discrete cycles with explicit termination conditions. Every loop has a maximum iteration count, a time budget, or a convergence threshold. The system <em>cannot</em> run indefinitely. This is the difference between "let the agent figure it out" and "let the agent figure it out within these bounds."</p>
+
+<h3>2. Narrow Write Surfaces</h3>
+
+<p>The agent can only modify specific, well-defined parts of the system. In AutoResearch, this means experiment configurations and training code — not the evaluation harness, not the data pipeline, not the infrastructure. In enterprise systems, this translates to: the agent can modify a draft, not the production database. It can suggest a configuration change, not deploy it.</p>
+
+<h3>3. Fixed Evaluation Budgets</h3>
+
+<p>Every action the agent takes is evaluated, and the evaluation itself has a bounded cost. The system doesn't spend more resources evaluating an experiment than running it. This prevents the pathological case where evaluation becomes the bottleneck — or worse, where the agent games the evaluation by optimizing for the metric rather than the underlying objective.</p>
+
+<h3>4. Rollback Discipline</h3>
+
+<p>Every state change is reversible. If an experiment degrades performance, the system rolls back to the previous best state automatically. This is version control applied to agent behavior — not just code versioning, but <strong>state versioning</strong>. The agent can explore freely because exploration is always recoverable.</p>
+
+<h3>5. Repository-Native Feedback</h3>
+
+<p>Results, decisions, and reasoning traces are logged in the same repository where the code lives. The agent's history is auditable through the same tools the team already uses — git logs, CI dashboards, experiment tracking systems. There is no separate "agent management console." The agent is a participant in the existing engineering workflow, not a parallel system.</p>
+
+<!-- DIAGRAM: Harness Engineering Loop -->
+<div style="margin: 2.5rem 0; padding: 2rem; background: #f8f8f7; border: 1px solid #e8e8e5; border-radius: 10px;">
+  <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: #666; margin-bottom: 1.25rem;">Fig. 1 — The Harness Engineering Loop</div>
+  <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin:0 auto;" font-family="'JetBrains Mono', monospace">
+    <defs>
+      <marker id="arr1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#888"/>
+      </marker>
+      <marker id="arr1-accent" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#1a1a1a"/>
+      </marker>
+    </defs>
+    <!-- PROPOSE -->
+    <rect x="30" y="60" width="160" height="55" rx="8" fill="#1a1a1a"/>
+    <text x="110" y="84" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">PROPOSE</text>
+    <text x="110" y="100" text-anchor="middle" fill="#ccc" font-size="8">Hypothesis / experiment</text>
+    <!-- Arrow right -->
+    <line x1="190" y1="88" x2="228" y2="88" stroke="#888" stroke-width="2" marker-end="url(#arr1)"/>
+    <!-- EXECUTE -->
+    <rect x="235" y="60" width="160" height="55" rx="8" fill="#52525b"/>
+    <text x="315" y="84" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">EXECUTE</text>
+    <text x="315" y="100" text-anchor="middle" fill="#d9d9df" font-size="8">Narrow write surface</text>
+    <!-- Arrow right -->
+    <line x1="395" y1="88" x2="428" y2="88" stroke="#888" stroke-width="2" marker-end="url(#arr1)"/>
+    <!-- EVALUATE -->
+    <rect x="435" y="60" width="160" height="55" rx="8" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+    <text x="515" y="84" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="700">EVALUATE</text>
+    <text x="515" y="100" text-anchor="middle" fill="#444" font-size="8">Fixed budget metrics</text>
+    <!-- Arrow right -->
+    <line x1="595" y1="88" x2="628" y2="88" stroke="#888" stroke-width="2" marker-end="url(#arr1)"/>
+    <!-- DECIDE -->
+    <rect x="635" y="60" width="140" height="55" rx="8" fill="#fff" stroke="#c0c0c0" stroke-width="1.5"/>
+    <text x="705" y="84" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="700">DECIDE</text>
+    <text x="705" y="100" text-anchor="middle" fill="#444" font-size="8">Continue / stop</text>
+    <!-- Iterate loop back -->
+    <path d="M705 115 Q705 175 400 175 Q110 175 110 115" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr1-accent)"/>
+    <text x="400" y="195" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="600">Iterate (bounded)</text>
+    <!-- Rollback arrow from DECIDE down -->
+    <line x1="705" y1="115" x2="705" y2="228" stroke="#888" stroke-width="1.5" marker-end="url(#arr1)"/>
+    <rect x="635" y="230" width="140" height="40" rx="6" fill="#f4f4f5" stroke="#c0c0c0" stroke-width="1"/>
+    <text x="705" y="254" text-anchor="middle" fill="#555" font-size="9" font-weight="500">ROLLBACK</text>
+    <!-- Escalate arrow from DECIDE -->
+    <line x1="670" y1="115" x2="555" y2="228" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr1)"/>
+    <rect x="470" y="230" width="140" height="40" rx="6" fill="#f4f4f5" stroke="#c0c0c0" stroke-width="1"/>
+    <text x="540" y="254" text-anchor="middle" fill="#555" font-size="9" font-weight="500">ESCALATE</text>
+    <!-- Labels for constraints -->
+    <text x="315" y="40" text-anchor="middle" fill="#999" font-size="7" letter-spacing="0.1em">COMPUTE BUDGET CAP</text>
+    <line x1="30" y1="47" x2="770" y2="47" stroke="#e8e8e5" stroke-width="1" stroke-dasharray="3,3"/>
+    <!-- Audit log -->
+    <rect x="30" y="230" width="200" height="40" rx="6" fill="#1a1a1a"/>
+    <text x="130" y="254" text-anchor="middle" fill="#fff" font-size="9" font-weight="500">AUDIT LOG (repo-native)</text>
+    <line x1="110" y1="115" x2="110" y2="228" stroke="#999" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr1)"/>
+    <line x1="315" y1="115" x2="180" y2="228" stroke="#999" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr1)"/>
+    <line x1="515" y1="115" x2="220" y2="228" stroke="#999" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr1)"/>
+    <text x="400" y="310" text-anchor="middle" fill="#555" font-size="8">Every step logged · Every state reversible · Every evaluation bounded</text>
+  </svg>
+</div>
+
+
+<h2>Why Scaffolding Beats Raw Autonomy</h2>
+
+<p>The AI industry has a fascination with autonomy. The narrative arc goes: models get smarter, agents get more autonomous, humans step back. AutoResearch pushes against this narrative in an instructive way.</p>
+
+<p>The system is <em>highly</em> autonomous — it runs overnight without human intervention, makes decisions about what experiments to try, and iterates on its own results. But the autonomy is <strong>earned through constraint</strong>, not through capability alone. A more capable model without the harness would be less reliable, not more.</p>
+
+<p>This is the lesson most enterprise teams miss. The instinct is to build the most capable agent possible and then try to make it safe after the fact — adding guardrails as an afterthought, bolting on evaluation as a reporting layer, treating rollback as an edge case. The harness engineering pattern inverts this: <strong>design the constraints first, then let the agent operate within them</strong>.</p>
+
+<p>The difference in outcomes is substantial:</p>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Raw Autonomy</th>
+      <th>Harness Engineering</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Failure mode</td>
+      <td>Unpredictable drift, cascading errors</td>
+      <td>Bounded failures, automatic rollback</td>
+    </tr>
+    <tr>
+      <td>Cost control</td>
+      <td>Runaway compute / API spend</td>
+      <td>Fixed budgets per iteration</td>
+    </tr>
+    <tr>
+      <td>Auditability</td>
+      <td>Black box reasoning</td>
+      <td>Full trace in existing tooling</td>
+    </tr>
+    <tr>
+      <td>Recovery</td>
+      <td>Manual intervention required</td>
+      <td>Automatic state rollback</td>
+    </tr>
+    <tr>
+      <td>Scope of impact</td>
+      <td>Entire system at risk</td>
+      <td>Changes limited to mutation surface</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The agents that ship to production — the ones that run reliably for months without incident — will not be the most capable ones. They will be the most constrained ones. Harness engineering is the discipline that makes this work.</p>
+
+
+<h2>The Enterprise Checklist: What to Copy</h2>
+
+<p>If you're building agentic AI systems for enterprise environments, AutoResearch and the harness engineering pattern give you a concrete checklist. These aren't aspirational principles — they're structural requirements for reliable agent deployments.</p>
+
+<h3>Deterministic Orchestration</h3>
+
+<p>The agent loop should be orchestrated by deterministic code, not by the agent itself. The agent makes decisions <em>within</em> the loop — what to try next, how to interpret results — but the loop structure, termination conditions, and state transitions are controlled by conventional software. This means: the agent cannot decide to skip evaluation, extend its budget, or bypass the rollback check. The orchestrator enforces these constraints mechanically.</p>
+
+<p>In practice, this looks like a state machine or workflow engine that calls the agent at specific decision points, not an agent that drives its own execution flow.</p>
+
+<h3>Explicit Evaluation Harnesses</h3>
+
+<p>Every agent action must be evaluated against explicit, predefined criteria. Not "did the agent do something useful?" but "did the output meet threshold X on metric Y?" The evaluation harness is code, not judgment. It runs automatically, produces a score, and that score determines whether the agent's action is accepted, rejected, or escalated.</p>
+
+<p>This is where most enterprise agent deployments fall apart. The agent produces output, a human reviews it, and the human's judgment becomes the bottleneck. Harness engineering requires that the <em>default path</em> is automated evaluation, with human review reserved for cases where automated evaluation is genuinely insufficient.</p>
+
+<h3>Narrow Mutation Surfaces</h3>
+
+<p>Define exactly what the agent is allowed to modify and enforce it structurally — not through prompting, not through instructions, but through access controls. If the agent is generating draft emails, it should not have write access to the CRM. If it's modifying configuration files, it should not be able to touch production infrastructure. The mutation surface should be the smallest possible scope that still allows the agent to do useful work.</p>
+
+<h3>Auditability and Trace Logging</h3>
+
+<p>Every decision the agent makes, every action it takes, and every evaluation result should be logged in a format that integrates with your existing observability stack. Not a separate AI dashboard — your existing logging, monitoring, and alerting infrastructure. The agent's behavior should be as auditable as any other service in your system.</p>
+
+<p>This is not optional for regulated industries. Financial services, healthcare, and legal applications require explainable decision trails. Harness engineering provides this by design, not as a bolt-on.</p>
+
+<h3>Escalation Boundaries</h3>
+
+<p>Define the conditions under which the agent stops and hands off to a human. These should be structural, not probabilistic. Specific conditions include: confidence below a threshold, evaluation metric outside an expected range, the agent's action would affect a resource outside its mutation surface, or the loop has reached its maximum iteration count without convergence.</p>
+
+<p>Escalation is not failure — it's a design feature. The boundary between agent autonomy and human oversight should be explicit, documented, and mechanically enforced. See also: <a href="distillation-rl-guardrails.html">layered guardrail patterns</a> and the broader principle of defense-in-depth applied to agent behavior.</p>
+
+
+<h2>What Not to Copy Blindly</h2>
+
+<p>AutoResearch works as well as it does because it operates in a domain that is unusually well-suited to autonomous agent loops. Recognizing where this domain alignment breaks down is as important as understanding the pattern.</p>
+
+<h3>Clean Metrics Don't Generalize</h3>
+
+<p>ML experiments have clear, quantitative evaluation metrics — loss, accuracy, convergence rate. These are unambiguous. Most enterprise tasks don't have this luxury. "Did the agent write a good customer email?" "Is this contract clause acceptable?" "Is this medical summary accurate?" These require judgment that cannot be reduced to a single numeric score.</p>
+
+<p>The harness engineering pattern still applies in these domains, but the evaluation harness needs to accommodate <strong>multi-dimensional, partially subjective criteria</strong>. This might mean: automated checks for format, compliance, and factual consistency, combined with human evaluation for tone, appropriateness, and strategic alignment. The harness is more complex, not absent.</p>
+
+<h3>Single-Player vs. Multi-Stakeholder</h3>
+
+<p>AutoResearch has one stakeholder: the researcher who wants better model performance. Enterprise systems serve multiple stakeholders with competing priorities — compliance, customer experience, cost efficiency, regulatory requirements. An agent optimizing for one dimension may degrade another. The harness needs to encode these tradeoffs explicitly, not leave them to the agent's judgment.</p>
+
+<h3>The Over-Constraint Trap</h3>
+
+<p>There is a risk of reading the harness engineering pattern and over-constraining the agent to the point where it cannot do useful work. If the mutation surface is too narrow, the compute budget too small, or the evaluation criteria too rigid, the agent becomes a rote automation script — not an intelligent system that can adapt and improve.</p>
+
+<p>The art is in finding the right level of constraint: <strong>tight enough to be safe, loose enough to be useful</strong>. This requires iteration. Start with tight constraints, measure what the agent achieves, and relax constraints selectively where the agent demonstrates reliable behavior.</p>
+
+
+<h2>Why HITL Still Matters</h2>
+
+<p>Harness engineering reduces the need for human-in-the-loop oversight within the agent's bounded domain. AutoResearch runs overnight without a human watching. But this is precisely because the domain is narrow, the metrics are clean, and the consequences of failure are limited to wasted compute.</p>
+
+<p>Outside these narrow optimization loops, human oversight remains non-negotiable. The situations where HITL is essential, even with a well-engineered harness, include:</p>
+
+<ul>
+  <li><strong>Novel situations:</strong> When the agent encounters inputs outside its training distribution or the evaluation harness encounters cases it wasn't designed for, a human needs to decide whether to proceed, modify the harness, or abort.</li>
+  <li><strong>Consequential decisions:</strong> When the agent's actions have real-world consequences that are difficult or impossible to reverse — patient care decisions, financial transactions, legal filings — the escalation boundary should err toward human involvement.</li>
+  <li><strong>Evolving objectives:</strong> When the business goals, regulatory requirements, or user expectations change, the harness itself needs to be updated. This is a human judgment call, not an agent capability.</li>
+  <li><strong>Cross-domain coordination:</strong> When an agent's output feeds into another system or another team's workflow, the handoff points require human verification to ensure that assumptions haven't silently broken.</li>
+</ul>
+
+<p>The relationship between harness engineering and HITL is not antagonistic — it's complementary. The harness handles the routine loop; humans handle the exceptions, the evolving context, and the judgment calls that metrics alone cannot capture. The systems that get this balance right will be the ones that scale. <!-- See the broader framework in the upcoming HITL post on this site. --></p>
+
+<div class="callout">
+  <div class="callout-label">The HITL principle</div>
+  <p>Harness engineering determines <em>where</em> the agent operates autonomously. HITL design determines <em>where</em> it doesn't. Both are architectural decisions, not afterthoughts. A well-designed system makes the boundary between them explicit and enforceable.</p>
+</div>
+
+
+<h2>Harness Engineering as a Discipline</h2>
+
+<p>The most important takeaway from AutoResearch is not about AutoResearch. It's about the emergence of harness engineering as a distinct discipline — one that sits alongside model training, prompt engineering, and system design as a core competency for teams building with AI.</p>
+
+<p>The teams that invest in harness engineering will ship agents that run reliably in production — bounded, auditable, recoverable, and integrated into existing engineering workflows. The teams that skip it will ship demos that work impressively in controlled settings and fail unpredictably in the real world.</p>
+
+<p>The infrastructure layer for agentic AI isn't a better model. It's a better cage.</p>
+
+<div class="callout">
+  <div class="callout-label">Sources</div>
+  <p>This post draws on OpenAI's <a href="https://openai.com/index/harness-engineering/">harness engineering</a> framing and Andrej Karpathy's <a href="https://github.com/karpathy/autoresearch">AutoResearch</a> project. <!-- TODO: Verify all specific claims against these primary sources before publishing. --></p>
+</div>
+
+<hr class="divider">
+
+<h2>Related Reading</h2>
+
+<ul>
+  <li><a href="distillation-rl-guardrails.html">Your API Is a Training Dataset: How Distillation Attacks Work and How to Stop Them</a> — Layered guardrail patterns and defense-in-depth for AI systems.</li>
+  <li><a href="engram.html">DeepSeek Engram: Why the Future of AI Memory Starts Inside the Model</a> — Agent memory architectures and how model-level memory interacts with agent frameworks.</li>
+</ul>
+
+</div><!-- /article-body -->
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Follow the Research</h2>
+    <p>More on agentic AI, harness engineering, and production AI architecture on LinkedIn and GitHub.</p>
+    <div class="cta-links">
+      <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="cta-btn">LinkedIn →</a>
+      <a href="https://github.com/ogkranthi" target="_blank" class="cta-btn-ghost">GitHub →</a>
+    </div>
+  </div>
+
+</div><!-- /article-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Kranthi Manchikanti. Built with intent.</p>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/ogkranthi" target="_blank">GitHub</a>
+    <a href="https://x.com/ogkranthi" target="_blank">X / Twitter</a>
+  </div>
+</footer>
+
+</body>
+</html>
