@@ -45,11 +45,30 @@ body:
         - Add TODO markers where factual verification is needed
 
   - type: textarea
+    id: workflows
+    attributes:
+      label: Workflows or architectures that need diagrams
+      description: List each workflow, loop, decision system, or architecture that should be visualized
+      placeholder: |
+        - AutoResearch bounded experiment loop
+        - Enterprise control-plane flow
+        - HITL escalation workflow
+
+  - type: textarea
+    id: diagram_requirements
+    attributes:
+      label: Diagram requirements
+      value: |
+        - Add at least one inline SVG diagram per major workflow
+        - Keep style consistent with site design
+        - Prefer architecture and decision-flow diagrams over decorative visuals
+  
+  - type: textarea
     id: sources
     attributes:
       label: Sources or notes
       description: Paste links or notes here
-
+  
   - type: textarea
     id: done
     attributes:
