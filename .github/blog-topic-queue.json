@@ -1,0 +1,16 @@
+[
+  {
+    "slug": "governed-agent-distribution",
+    "status": "queued",
+    "title": "[Blog]: Governed Agent Distribution Is Becoming the Enterprise Battleground",
+    "labels": ["blog-draft"],
+    "body": "## Thesis\nThe next phase of enterprise agent adoption is not just about model capability. It is about governed distribution: connectors, permissions, marketplaces, and admin controls that make agents deployable inside real enterprises.\n\n## Audience\nEnterprise architects, platform engineers, and technical leaders building internal AI platforms.\n\n## Why this matters now\nRecent enterprise agent launches highlight that enterprises need managed distribution, access control, and admin supervision for agents—not just smarter assistants.\n\n## Key points to cover\n- Why connectors and marketplaces change enterprise agent architecture\n- Why governed distribution matters more than raw capability\n- The relationship between plugins, permissions, and policy enforcement\n- How to design safe internal agent ecosystems\n\n## Required diagrams\n- Enterprise agent distribution architecture\n- Connector / permission / policy flow\n- Admin control plane for internal agents\n\n## Constraints\n- Focus on architecture and governance\n- Avoid generic product-comparison framing\n- Draft only\n- Add TODO markers for any fact-check items\n\n## Done condition\nOpen a draft PR with:\n- the post draft\n- inline SVG diagrams for each major workflow\n- suggested internal links\n- a list of fact-check items"
+  },
+  {
+    "slug": "ai-interface-layer",
+    "status": "queued",
+    "title": "[Blog]: The New AI Interface Layer Is the Real Enterprise Battleground",
+    "labels": ["blog-draft"],
+    "body": "## Thesis\nThe competitive layer in enterprise AI is shifting upward—from model quality alone to workflow shells, collaboration surfaces, and the interface layer where humans and agents actually coordinate work.\n\n## Audience\nEnterprise architects, digital workplace leaders, AI platform teams, and senior engineers.\n\n## Why this matters now\nThe newest AI competition is increasingly about who owns the operational interface layer where agents, approvals, documents, and workflows come together.\n\n## Key points to cover\n- Why the interface layer matters more than the model layer in enterprise adoption\n- The role of approvals, memory, context, and collaboration surfaces\n- How agent shells become control planes\n- What enterprises should copy and what they should avoid\n\n## Required diagrams\n- AI interface-layer architecture\n- Human-agent collaboration loop\n- Control-plane boundaries across app, workflow, and model layers\n\n## Constraints\n- Keep the post architecture-first\n- Avoid superficial vendor-comparison framing\n- Draft only\n- Add TODO markers for any fact-check items\n\n## Done condition\nOpen a draft PR with:\n- the post draft\n- inline SVG diagrams for each major workflow\n- suggested internal links\n- a list of fact-check items"
+  }
+]
