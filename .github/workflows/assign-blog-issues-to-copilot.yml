@@ -1,0 +1,55 @@
+name: Assign blog issues to Copilot
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  assign-to-copilot:
+    if: github.event.label.name == 'blog-draft' || github.event.label.name == 'blog-refresh'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign issue to Copilot via GraphQL
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_PAT }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          BOT_ID=$(gh api graphql -f query='
+          query($owner:String!, $repo:String!) {
+            repository(owner:$owner, name:$repo) {
+              suggestedActors(capabilities:[CAN_BE_ASSIGNED], first:100) {
+                nodes {
+                  __typename
+                  ... on Bot { id login }
+                  ... on User { id login }
+                }
+              }
+            }
+          }' -f owner="$OWNER" -f repo="$REPO" --jq '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id')
+
+          ISSUE_ID=$(gh api graphql -f query='
+          query($owner:String!, $repo:String!, $number:Int!) {
+            repository(owner:$owner, name:$repo) {
+              issue(number:$number) { id }
+            }
+          }' -f owner="$OWNER" -f repo="$REPO" -F number="$ISSUE_NUMBER" --jq '.data.repository.issue.id')
+
+          gh api graphql -f query='
+          mutation($issueId:ID!, $botId:ID!) {
+            replaceActorsForAssignable(input:{assignableId:$issueId, actorIds:[$botId]}) {
+              assignable {
+                ... on Issue {
+                  id
+                  assignees(first:10) { nodes { login } }
+                }
+              }
+            }
+          }' -f issueId="$ISSUE_ID" -f botId="$BOT_ID"
