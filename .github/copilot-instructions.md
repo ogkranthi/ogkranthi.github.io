@@ -39,3 +39,22 @@ For any post that describes a system, workflow, control plane, agent loop, or mu
   - accessible text or title where practical
 - If the article includes sections on orchestration, escalation, evaluation, or approvals, those sections should usually have a corresponding diagram.
 - When opening a PR, explicitly list which diagrams were added and which sections they support.
+
+## Publishing contract for blog posts
+
+A blog post is not complete if only a standalone HTML page is created.
+
+For every new post or significant refresh, also update:
+- the homepage listing in index.html
+- the homepage post count
+- the featured essay section if the post is the newest featured article
+- any related-reading links that should point to the new post
+
+When opening a PR for a new post, include:
+- new file created
+- exact homepage sections updated
+- whether the featured essay changed
+- whether the post count changed
+- any internal links added or updated
+
+Do not leave the homepage stale after adding a live article.
