@@ -28,84 +28,49 @@ jobs:
         run: |
           set -euo pipefail
 
+          gh auth status >/dev/null
+
+          gh issue list \
+            --repo "$REPO" \
+            --state all \
+            --limit 200 \
+            --json title > existing_issues.json
+
           python3 - <<'PY'
           import json
+          import os
           from pathlib import Path
 
-          path = Path(".github/blog-topic-queue.json")
-          data = json.loads(path.read_text())
+          queue = json.loads(Path(".github/blog-topic-queue.json").read_text())
+          existing = json.loads(Path("existing_issues.json").read_text())
+          existing_titles = {item["title"] for item in existing}
 
-          out = Path("candidates.json")
-          out.write_text(json.dumps(data))
+          selected = None
+          for item in queue:
+              if item["title"] not in existing_titles:
+                  selected = item
+                  break
+
+          out = Path(os.environ["GITHUB_OUTPUT"])
+
+          if not selected:
+              with out.open("a") as f:
+                  f.write("FOUND=false\n")
+              raise SystemExit(0)
+
+          labels = ",".join(selected.get("labels", []))
+
+          with out.open("a") as f:
+              f.write("FOUND=true\n")
+              f.write(f"SLUG={selected['slug']}\n")
+              f.write("TITLE<<EOF\n")
+              f.write(selected["title"] + "\n")
+              f.write("EOF\n")
+              f.write(f"LABELS={labels}\n")
+              f.write("BODY<<EOF\n")
+              f.write(selected["body"] + "\n")
+              f.write("EOF\n")
           PY
-
-          found="false"
-
-          count=$(python3 - <<'PY'
-          import json
-          data=json.load(open("candidates.json"))
-          print(len(data))
-          PY
-          )
-
-          for i in $(seq 0 $((count-1))); do
-            title=$(python3 - <<PY
-          import json
-          data=json.load(open("candidates.json"))
-          print(data[$i]["title"])
-          PY
-            )
-
-            exists=$(gh issue list \
-              --repo "$REPO" \
-              --search "in:title \"$title\"" \
-              --state all \
-              --limit 50 \
-              --json title \
-              --jq --arg TITLE "$title" '[.[] | select(.title == $TITLE)] | length')
-
-            if [ "$exists" = "0" ]; then
-              slug=$(python3 - <<PY
-          import json
-          data=json.load(open("candidates.json"))
-          print(data[$i]["slug"])
-          PY
-              )
-
-              labels=$(python3 - <<PY
-          import json
-          data=json.load(open("candidates.json"))
-          print(",".join(data[$i].get("labels", [])))
-          PY
-              )
-
-              body=$(python3 - <<PY
-          import json
-          data=json.load(open("candidates.json"))
-          print(data[$i]["body"])
-          PY
-              )
-
-              {
-                echo "FOUND=true"
-                echo "SLUG=$slug"
-                echo "TITLE<<EOF"
-                echo "$title"
-                echo "EOF"
-                echo "LABELS=$labels"
-                echo "BODY<<EOF"
-                echo "$body"
-                echo "EOF"
-              } >> "$GITHUB_OUTPUT"
-
-              found="true"
-              break
-            fi
-          done
-
-          if [ "$found" != "true" ]; then
-            echo "FOUND=false" >> "$GITHUB_OUTPUT"
-          fi
 
       - name: Stop if nothing queued
         if: steps.pick.outputs.FOUND != 'true'
