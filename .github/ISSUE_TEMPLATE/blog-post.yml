@@ -69,6 +69,17 @@ body:
       label: Sources or notes
       description: Paste links or notes here
   
+  - type: checkboxes
+    id: publishing_updates
+    attributes:
+      label: Publishing updates required
+      options:
+        - label: Create or update the post HTML file
+        - label: Add/update homepage blog tile in index.html
+        - label: Update homepage post count
+        - label: Evaluate whether featured essay should change
+        - label: Add/update internal links where relevant
+      
   - type: textarea
     id: done
     attributes:
@@ -82,3 +93,8 @@ body:
         - the new or updated post draft
         - inline SVG diagrams for each major workflow
         - summary of which sections each diagram supports
+        - New post file created or updated
+        - Homepage updated to include the post
+        - Post count updated if needed
+        - Featured essay reviewed and updated if needed
+        - Draft PR includes a summary of all homepage changes
