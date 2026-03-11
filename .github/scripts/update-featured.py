@@ -1,29 +1,39 @@
 #!/usr/bin/env python3
-"""Auto-update the featured post and post count in index.html.
+"""Auto-update the featured post, post count, RSS feed, and sitemap.
 
 Reads the first post card in the grid (newest post), pulls takeaway
 headings from the actual post HTML, and rewrites the featured section.
-Also syncs the "N Posts" counter.
+Also syncs the "N Posts" counter, generates feed.xml and sitemap.xml.
 """
 
+import datetime
+import os
 import re
 import sys
 from pathlib import Path
 
+SITE_URL = "https://ogkranthi.github.io"
+
+MONTH_MAP = {
+    "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
+    "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12,
+}
+
+CARD_PATTERN = re.compile(
+    r'<article\s+class="post-card[^"]*"[^>]*'
+    r"onclick=\"window\.location\.href='([^']+)'\""
+    r'[^>]*>'
+    r'.*?<h3>(.*?)</h3>'
+    r'.*?<p\s+class="post-excerpt">(.*?)</p>'
+    r'.*?<span\s+class="post-date">(.*?)</span>'
+    r'.*?</article>',
+    re.DOTALL,
+)
+
 
 def extract_first_card(html):
     """Extract info from the first post-card in the posts-grid."""
-    m = re.search(
-        r'<article\s+class="post-card[^"]*"[^>]*'
-        r"onclick=\"window\.location\.href='([^']+)'\""
-        r'[^>]*>'
-        r'.*?<h3>(.*?)</h3>'
-        r'.*?<p\s+class="post-excerpt">(.*?)</p>'
-        r'.*?<span\s+class="post-date">(.*?)</span>'
-        r'.*?</article>',
-        html,
-        re.DOTALL,
-    )
+    m = CARD_PATTERN.search(html)
     if not m:
         return None
     return {
@@ -32,6 +42,22 @@ def extract_first_card(html):
         "excerpt": m.group(3).strip(),
         "date_line": m.group(4).strip(),
     }
+
+
+def extract_all_cards(html):
+    """Extract all post cards from index.html."""
+    cards = []
+    for m in CARD_PATTERN.finditer(html):
+        href = m.group(1).strip()
+        if href == "#":
+            continue
+        cards.append({
+            "href": href,
+            "title": m.group(2).strip(),
+            "excerpt": m.group(3).strip(),
+            "date_line": m.group(4).strip(),
+        })
+    return cards
 
 
 def current_featured_href(html):
@@ -101,6 +127,104 @@ def build_featured_section(card, takeaways):
     )
 
 
+def escape_xml(text):
+    """Escape XML special characters."""
+    return (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def parse_post_date(date_line):
+    """Parse 'Mar 2026 · 15 min' into an RFC 822 date string."""
+    m = re.match(r"(\w+)\s+(\d{4})", date_line)
+    if not m:
+        return ""
+    month_str, year = m.group(1), int(m.group(2))
+    month = MONTH_MAP.get(month_str, 1)
+    dt = datetime.datetime(year, month, 1, tzinfo=datetime.timezone.utc)
+    return dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
+
+
+def generate_feed(html):
+    """Generate feed.xml from post cards in index.html."""
+    cards = extract_all_cards(html)
+    if not cards:
+        print("No real post cards found, skipping feed generation")
+        return
+
+    items = []
+    for card in cards:
+        pub_date = parse_post_date(card["date_line"])
+        date_tag = f"\n      <pubDate>{pub_date}</pubDate>" if pub_date else ""
+        items.append(
+            f"    <item>\n"
+            f"      <title>{escape_xml(card['title'])}</title>\n"
+            f"      <link>{SITE_URL}/{card['href']}</link>\n"
+            f"      <guid>{SITE_URL}/{card['href']}</guid>\n"
+            f"      <description>{escape_xml(card['excerpt'])}</description>"
+            f"{date_tag}\n"
+            f"    </item>"
+        )
+
+    feed = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n'
+        "  <channel>\n"
+        "    <title>Kranthi Manchikanti</title>\n"
+        f"    <link>{SITE_URL}</link>\n"
+        f'    <atom:link href="{SITE_URL}/feed.xml" rel="self"'
+        f' type="application/rss+xml"/>\n'
+        "    <description>Technical deep-dives on AI Agents, AI Architectures,"
+        " Reinforcement Learning, HITL frameworks, and AI safety.</description>\n"
+        "    <language>en-us</language>\n"
+        + "\n".join(items)
+        + "\n"
+        "  </channel>\n"
+        "</rss>\n"
+    )
+
+    Path("feed.xml").write_text(feed, encoding="utf-8")
+    print(f"feed.xml generated with {len(cards)} items")
+
+
+def generate_sitemap():
+    """Generate sitemap.xml from HTML files on disk."""
+    pages = ["index.html"]
+    for f in sorted(Path(".").glob("*.html")):
+        if f.name != "index.html":
+            pages.append(f.name)
+
+    entries = []
+    for page in pages:
+        path = Path(page)
+        if not path.exists():
+            continue
+        mtime = datetime.datetime.fromtimestamp(
+            os.path.getmtime(path), tz=datetime.timezone.utc
+        )
+        lastmod = mtime.strftime("%Y-%m-%d")
+        entries.append(
+            f"  <url>\n"
+            f"    <loc>{SITE_URL}/{page}</loc>\n"
+            f"    <lastmod>{lastmod}</lastmod>\n"
+            f"  </url>"
+        )
+
+    sitemap = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(entries)
+        + "\n"
+        "</urlset>\n"
+    )
+
+    Path("sitemap.xml").write_text(sitemap, encoding="utf-8")
+    print(f"sitemap.xml generated with {len(entries)} URLs")
+
+
 def main():
     index_path = Path("index.html")
     html = index_path.read_text(encoding="utf-8")
@@ -155,6 +279,10 @@ def main():
         print("index.html written")
     else:
         print("No changes needed")
+
+    # ── Generate feed and sitemap ──
+    generate_feed(html)
+    generate_sitemap()
 
 
 if __name__ == "__main__":
