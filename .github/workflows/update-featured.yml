@@ -22,9 +22,9 @@ jobs:
 
       - name: Commit if changed
         run: |
-          git diff --quiet index.html && exit 0
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git commit -m "chore: auto-update featured post and post count"
+          git add index.html feed.xml sitemap.xml
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: auto-update featured post, feed, and sitemap"
           git push
