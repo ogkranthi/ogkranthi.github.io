@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kranthi Manchikanti</title>
+    <link>https://ogkranthi.github.io</link>
+    <atom:link href="https://ogkranthi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Technical deep-dives on AI Agents, AI Architectures, Reinforcement Learning, HITL frameworks, and AI safety.</description>
+    <language>en-us</language>
+    <item>
+      <title>Governed Agent Distribution Is Becoming the Enterprise Battleground</title>
+      <link>https://ogkranthi.github.io/governed-agent-distribution.html</link>
+      <guid>https://ogkranthi.github.io/governed-agent-distribution.html</guid>
+      <description>The next phase of enterprise AI adoption is not about model capability. It is about governed distribution: connectors, permissions, marketplaces, and admin controls that make agents deployable inside real enterprises.</description>
+      <pubDate>Sun, 01 Mar 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>AutoResearch, Harness Engineering, and the Next Layer of Agentic AI</title>
+      <link>https://ogkranthi.github.io/autoresearch-harness-engineering.html</link>
+      <guid>https://ogkranthi.github.io/autoresearch-harness-engineering.html</guid>
+      <description>The real innovation in AutoResearch isn't autonomy — it's the constraints. Bounded loops, narrow write surfaces, fixed evaluation budgets, and rollback discipline. The scaffolding pattern enterprises should study for production agentic AI.</description>
+      <pubDate>Sun, 01 Mar 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Your API Is a Training Dataset: How Distillation Attacks Work and How to Stop Them</title>
+      <link>https://ogkranthi.github.io/distillation-rl-guardrails.html</link>
+      <guid>https://ogkranthi.github.io/distillation-rl-guardrails.html</guid>
+      <description>DeepSeek, Moonshot, and MiniMax ran 16M+ exchanges to steal Claude's capabilities. How distillation attacks work mechanically — and a layered guardrail checklist for API and model builders.</description>
+      <pubDate>Sun, 01 Feb 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Fine-Tuning a 1.2B LLM for Pediatric Disaster Response on the Edge</title>
+      <link>https://ogkranthi.github.io/pediatric-disaster-edge-ai.html</link>
+      <guid>https://ogkranthi.github.io/pediatric-disaster-edge-ai.html</guid>
+      <description>How we fine-tuned LiquidAI's LFM2.5-1.2B on JumpSTART triage protocols using Unsloth + Hugging Face Jobs — and built a model that runs under 1GB RAM with zero internet connectivity on field devices.</description>
+      <pubDate>Sun, 01 Feb 2026 00:00:00 +0000</pubDate>
+    </item>
+  </channel>
+</rss>

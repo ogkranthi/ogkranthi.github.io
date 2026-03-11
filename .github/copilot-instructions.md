@@ -58,3 +58,35 @@ When opening a PR for a new post, include:
 - any internal links added or updated
 
 Do not leave the homepage stale after adding a live article.
+
+## SEO requirements for every page
+
+Every new blog post HTML must include these in `<head>`, after the `og:type` meta tag and before the Mailchimp script:
+
+1. Canonical URL:
+   `<link rel="canonical" href="https://ogkranthi.github.io/{filename}.html">`
+
+2. Twitter card meta tags:
+   ```html
+   <meta name="twitter:card" content="summary">
+   <meta name="twitter:site" content="@ogkranthi">
+   <meta name="twitter:title" content="{same as og:title}">
+   <meta name="twitter:description" content="{same as og:description}">
+   ```
+
+3. JSON-LD Article structured data:
+   ```html
+   <script type="application/ld+json">
+   {
+     "@context": "https://schema.org",
+     "@type": "Article",
+     "headline": "{article title}",
+     "description": "{meta description}",
+     "author": { "@type": "Person", "name": "Kranthi Manchikanti" },
+     "publisher": { "@type": "Person", "name": "Kranthi Manchikanti" },
+     "url": "https://ogkranthi.github.io/{filename}.html"
+   }
+   </script>
+   ```
+
+These are required. Do not publish a post without them.
