@@ -6,7 +6,7 @@ reinforcement learning, human-in-the-loop systems, and AI safety.
 Core rules:
 - Never publish directly to the default branch.
 - Prefer small, reviewable pull requests.
-- Preserve the author's voice: architecture-first, practical, technical, non-hype.
+- Preserve the author's voice: human, educational, architecture-first, practical, technical, non-hype, Give gist upfront with main ideas and summary for people who might not have time to read the entire blog and call out this specifically.
 - Do not invent facts, sources, dates, quotes, or statistics.
 - If a post references current events, tools, research, or companies, leave TODO markers for verification if the issue does not provide sources.
 - Do not modify site-wide layout, theme, config, analytics, or deployment files unless explicitly asked.
