@@ -510,8 +510,19 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
 <!-- DIAGRAM 1: AI Coworker Landscape by Control Plane -->
 <div class="diagram-wrap">
-  <div class="diagram-label">Fig. 1 — AI Coworker Landscape by Control Plane</div>
-  <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'JetBrains Mono', monospace">
+  <div class="diagram-label" id="fig1-label">Fig. 1 — AI Coworker Landscape by Control Plane</div>
+  <svg viewBox="0 0 760 380"
+       xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;display:block;"
+       font-family="'JetBrains Mono', monospace"
+       role="img"
+       aria-labelledby="fig1-label"
+       aria-describedby="fig1-caption">
+    <title>Fig. 1 — AI Coworker Landscape by Control Plane</title>
+    <desc>
+      Diagram comparing AI coworker categories by inherited control plane, showing categories,
+      their execution environments, primary tools, and best-fit use cases.
+    </desc>
     <defs>
       <marker id="d1arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
         <path d="M0,0 L0,7 L7,3.5 z" fill="#aaa"/>
@@ -608,7 +619,7 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <!-- Caption -->
     <text x="380" y="368" text-anchor="middle" fill="#999" font-size="7.5">Five AI coworker categories, each inheriting a different control plane. Control-plane fit determines audit trail, rollback, and policy enforcement.</text>
   </svg>
-  <p class="diagram-caption">Fig. 1 — AI coworker landscape by control plane. Each category inherits its governance surface from its execution environment.</p>
+  <p class="diagram-caption" id="fig1-caption">Fig. 1 — AI coworker landscape by control plane. Each category inherits its governance surface from its execution environment.</p>
 </div>
 
 <p>The categories are not product tiers. They are fundamentally different execution models. A team that evaluates them as a product ranking will make the wrong selection almost every time. The right evaluation asks: where does the work actually live, and does this agent's control plane give us the review, rollback, and policy hooks we need at that location?</p>
