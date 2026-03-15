@@ -134,6 +134,13 @@ nav a:hover::after { width: 100%; }
 .nav-cta:hover { background: var(--accent-dim); }
 .nav-cta::after { display: none; }
 
+.nav-cta-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+.nav-cta-outline:hover { background: var(--bg-elevated); color: var(--text-primary); }
+
 /* ── HERO ── */
 .hero {
   min-height: 90vh;
@@ -625,46 +632,10 @@ nav a:hover::after { width: 100%; }
   font-weight: 300;
 }
 
-.subscribe-form {
-  display: flex;
-  gap: 0.65rem;
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-.subscribe-form input {
-  flex: 1;
-  padding: 0.7rem 1.1rem;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+.subscribe iframe {
+  max-width: 100%;
   border-radius: 6px;
-  color: var(--text-primary);
-  font-family: var(--sans);
-  font-size: 0.85rem;
-  outline: none;
-  transition: border-color 0.2s;
 }
-
-.subscribe-form input:focus { border-color: var(--accent); }
-
-.subscribe-form input::placeholder { color: var(--text-muted); }
-
-.subscribe-form button {
-  padding: 0.7rem 1.75rem;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-family: var(--sans);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.subscribe-form button:hover { background: var(--accent-dim); }
 
 /* ── FOOTER ── */
 footer {
@@ -727,7 +698,6 @@ footer p {
   .about { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2rem; }
   .about-industries { flex-wrap: wrap; gap: 1rem; }
   .subscribe { padding: 3rem 1.5rem; }
-  .subscribe-form { flex-direction: column; }
   footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; }
 }
 </style>
@@ -740,7 +710,8 @@ footer p {
   <nav>
     <a href="#writing">Writing</a>
     <a href="#about">About</a>
-    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta">LinkedIn →</a>
+    <a href="https://aiengineerweekly.substack.com" target="_blank" class="nav-cta">Newsletter →</a>
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta nav-cta-outline">LinkedIn →</a>
   </nav>
 </header>
 
@@ -983,13 +954,7 @@ footer p {
 <section class="subscribe reveal">
   <h2>Stay in the loop</h2>
   <p>New posts on enterprise cloud architecture, AI/ML systems, and applied research. No spam, just technical depth.</p>
-  <form class="subscribe-form" action="https://us1.list-manage.com/subscribe/post?u=3d3eda9caaed2c475dba44126&amp;id=16912a443c" method="post" target="_blank" novalidate>
-    <input type="email" name="EMAIL" placeholder="your@email.com" required>
-    <div style="position:absolute;left:-5000px" aria-hidden="true">
-      <input type="text" name="b_3d3eda9caaed2c475dba44126_16912a443c" tabindex="-1" value="">
-    </div>
-    <button type="submit">Subscribe</button>
-  </form>
+  <iframe src="https://aiengineerweekly.substack.com/embed" width="480" height="320" style="border: 1px solid #EEE; background: white;" frameborder="0" scrolling="no"></iframe>
 </section>
 
 <!-- FOOTER -->
