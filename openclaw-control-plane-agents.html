@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw Isn't the Default: Why AI Coworkers Tied to Your Control Plane Usually Win | Kranthi Manchikanti</title>
+<meta name="description" content="The most important difference between OpenClaw and its alternatives is not model quality — it is execution model. A selection framework for enterprise AI coworkers by control-plane fit.">
+<meta property="og:title" content="OpenClaw Isn't the Default: Why AI Coworkers Tied to Your Control Plane Usually Win">
+<meta property="og:description" content="The wrong question is 'What's the best OpenClaw alternative?' The right question is: what execution surface should this agent inherit?">
+<meta property="og:type" content="article">
+<link rel="canonical" href="https://ogkranthi.github.io/openclaw-control-plane-agents.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ogkranthi">
+<meta name="twitter:title" content="OpenClaw Isn't the Default: Why AI Coworkers Tied to Your Control Plane Usually Win">
+<meta name="twitter:description" content="The wrong question is 'What's the best OpenClaw alternative?' The right question is: what execution surface should this agent inherit?">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "OpenClaw Isn't the Default: Why AI Coworkers Tied to Your Control Plane Usually Win",
+  "description": "The most important difference between OpenClaw and its alternatives is not model quality — it is execution model. A selection framework for enterprise AI coworkers by control-plane fit.",
+  "author": { "@type": "Person", "name": "Kranthi Manchikanti" },
+  "publisher": { "@type": "Person", "name": "Kranthi Manchikanti" },
+  "url": "https://ogkranthi.github.io/openclaw-control-plane-agents.html"
+}
+</script>
+<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/3d3eda9caaed2c475dba44126/f3ea9112071b1f2a08ad4ccce.js");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fafaf9;
+  --bg-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #999999;
+  --accent: #18181b;
+  --accent-dim: #09090b;
+  --accent-light: #f4f4f5;
+  --border: #e8e8e5;
+  --border-hover: #c4c4c0;
+  --serif: 'Newsreader', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── HEADER ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(250, 250, 249, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.logo span { color: var(--accent); }
+
+nav { display: flex; gap: 2rem; align-items: center; }
+
+nav a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+nav a:hover { color: var(--accent); }
+
+.nav-cta {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.nav-cta:hover { background: var(--accent-dim); color: #fff; }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 8rem 2.5rem 6rem;
+}
+
+/* ── ARTICLE HERO ── */
+.article-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.article-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+}
+
+.article-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.article-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.article-meta {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.article-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.article-meta-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.article-meta-value {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.article-body h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-top: 2.25rem;
+  margin-bottom: 0.65rem;
+  color: var(--text-primary);
+}
+
+.article-body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 1.35rem;
+  font-weight: 300;
+}
+
+.article-body p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.article-body ul, .article-body ol {
+  margin: 0.75rem 0 1.35rem 1.5rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.85;
+  font-weight: 300;
+}
+
+.article-body li { margin-bottom: 0.45rem; }
+.article-body li strong { color: var(--text-primary); font-weight: 600; }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: 2rem 0;
+}
+
+.callout p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.callout-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* ── DIAGRAM CONTAINER ── */
+.diagram-wrap {
+  margin: 2.5rem 0;
+  padding: 2rem;
+  background: #f8f8f7;
+  border: 1px solid #e8e8e5;
+  border-radius: 10px;
+}
+
+.diagram-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 1.25rem;
+}
+
+.diagram-caption {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-top: 0.85rem;
+  text-align: center;
+}
+
+/* ── COMPARISON TABLE ── */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.85rem;
+}
+
+.compare-table th {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border);
+  text-align: left;
+  background: var(--bg);
+}
+
+.compare-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+
+.compare-table td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* ── SECTION DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3.5rem 0;
+}
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2.5rem;
+  text-align: center;
+  margin-top: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+}
+
+.cta-section h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.cta-section p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 1.75rem;
+  font-weight: 300;
+}
+
+.cta-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.cta-btn:hover { background: var(--accent-dim); color: #fff; }
+
+.cta-btn-ghost {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.cta-btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── FOOTER ── */
+footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer p { font-size: 0.75rem; color: var(--text-muted); }
+
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 1rem 1.5rem; }
+  nav a:not(.nav-cta) { display: none; }
+  .article-wrap { padding: 6rem 1.5rem 4rem; }
+  footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="/" class="logo">Kranthi Manchikanti<span>.</span></a>
+  <nav>
+    <a href="/#writing">Writing</a>
+    <a href="/#about">About</a>
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" rel="noopener noreferrer" class="nav-cta">LinkedIn →</a>
+  </nav>
+</header>
+
+<!-- ARTICLE -->
+<div class="article-wrap">
+
+  <div class="article-label">AI Agents · Enterprise Architecture · Control Planes</div>
+  <h1 class="article-title">OpenClaw Isn't the Default: <em>Why AI Coworkers Tied to Your Control Plane Usually Win</em></h1>
+  <p class="article-subtitle">The most important difference between OpenClaw and its alternatives is not model quality. It is execution model. A practical selection framework for enterprise teams choosing between AI coworker categories — by control-plane fit, privilege scope, and reviewability.</p>
+  <div class="article-meta">
+    <div class="article-meta-item">
+      <span class="article-meta-label">Author</span>
+      <span class="article-meta-value">Kranthi Manchikanti</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Published</span>
+      <span class="article-meta-value">Mar 2026</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Read time</span>
+      <span class="article-meta-value">20 min</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Category</span>
+      <span class="article-meta-value">AI Agents · Architecture</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+<!-- GIST / TL;DR -->
+<div class="callout">
+  <div class="callout-label">Quick Read — Main Ideas</div>
+  <p>The market has split into five distinct AI coworker categories, each inheriting a different control plane: personal assistant agents (OpenClaw), repo-native coding agents (GitHub Copilot), terminal/editor-native agents (Claude Code, Cursor, Cline), browser/computer-use agents (Perplexity Computer), and scheduled task agents (ChatGPT Tasks). The best alternative to OpenClaw is not the strongest model — it is the agent whose execution surface already lives where your work lives. For enterprise teams, control-plane fit determines blast radius, reviewability, and policy enforcement more reliably than raw capability. The narrowest useful agent almost always wins in production settings.</p>
+</div>
+
+<h2>The Wrong Question</h2>
+
+<p>Every week another team asks: "What's the best alternative to OpenClaw?" The question is understandable. OpenClaw is well-positioned, well-documented, and growing. But it is also the wrong starting point for most enterprise decisions.</p>
+
+<p>The right question is: <strong>what execution surface should this agent inherit?</strong></p>
+
+<p>If the task belongs in a pull request, an agent that runs in chat will always be fighting its own architecture to get there. If the task belongs in a terminal loop with explicit approval gates, a browser-based agent is solving the wrong problem. The model quality gap between leading tools is narrowing fast. The control-plane gap is not.</p>
+
+<p>This post is a selection framework, not a product ranking. Its goal is to give enterprise architects, platform engineers, and DX teams a way to match agent category to workflow, rather than default to the broadest available tool and bolt on governance afterward.</p>
+
+<h2>What Is OpenClaw and Where It Actually Fits</h2>
+
+<p>OpenClaw — available at <a href="https://openclaw.ai/" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">openclaw.ai</a> and as open source via <a href="https://github.com/baryhuang/openclaw" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">github.com/baryhuang/openclaw</a> — is designed as a general-purpose personal automation agent. Its execution model is built around chat channels and a local gateway that can reach across apps, services, and operating system functions on a user's behalf.</p>
+
+<p>That model has real strengths. OpenClaw is the right choice when the task genuinely spans multiple apps — inbox plus calendar plus Slack plus a web form. It is strong for personal assistant workflows where the agent needs to move between tools that do not share a common control plane. It is built for end-user autonomy across consumer and SaaS surfaces.</p>
+
+<p>It is the wrong default when:</p>
+<ul>
+  <li>The task is fundamentally repo-centric and benefits from CI gating, PR review, and GitHub Actions policy enforcement</li>
+  <li>The task requires terminal-native tool calls with explicit hook-based approval before execution</li>
+  <li>The task is scheduled, recurring, and narrow enough that broad machine access is unnecessary risk</li>
+  <li>The organization needs a native audit trail, rollback path, and policy enforcement surface tied to an existing platform</li>
+</ul>
+
+<div class="callout">
+  <div class="callout-label">The framing line that matters</div>
+  <p>"The best AI coworker is usually the narrowest one that still fits the workflow. In production systems, control-plane fit matters more than raw generality."</p>
+</div>
+
+<h2>The AI Coworker Landscape by Control Plane</h2>
+
+<p>The market has split. What was once a single bucket called "AI agents" is now five meaningfully different categories, each defined by the control plane it inherits.</p>
+
+<!-- DIAGRAM 1: AI Coworker Landscape by Control Plane -->
+<div class="diagram-wrap">
+  <div class="diagram-label" id="fig1-label">Fig. 1 — AI Coworker Landscape by Control Plane</div>
+  <svg viewBox="0 0 760 380"
+       xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;display:block;"
+       font-family="'JetBrains Mono', monospace"
+       role="img"
+       aria-labelledby="fig1-label"
+       aria-describedby="fig1-caption">
+    <title>Fig. 1 — AI Coworker Landscape by Control Plane</title>
+    <desc>
+      Diagram comparing AI coworker categories by inherited control plane, showing categories,
+      their execution environments, primary tools, and best-fit use cases.
+    </desc>
+    <defs>
+      <marker id="d1arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="#aaa"/>
+      </marker>
+    </defs>
+    <!-- Header row -->
+    <rect x="0" y="0" width="760" height="36" rx="6" fill="#1a1a1a"/>
+    <text x="95" y="22" text-anchor="middle" fill="#fff" font-size="8" font-weight="700" letter-spacing="0.08em">CATEGORY</text>
+    <text x="275" y="22" text-anchor="middle" fill="#fff" font-size="8" font-weight="700" letter-spacing="0.08em">CONTROL PLANE</text>
+    <text x="450" y="22" text-anchor="middle" fill="#fff" font-size="8" font-weight="700" letter-spacing="0.08em">PRIMARY TOOLS</text>
+    <text x="640" y="22" text-anchor="middle" fill="#fff" font-size="8" font-weight="700" letter-spacing="0.08em">BEST FOR</text>
+
+    <!-- Row 1: Personal Assistant -->
+    <rect x="2" y="38" width="188" height="58" rx="4" fill="#f4f4f5" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="12" y="56" fill="#1a1a1a" font-size="9" font-weight="700">Personal Assistant</text>
+    <text x="12" y="72" fill="#555" font-size="8">Agent</text>
+    <rect x="192" y="38" width="168" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="202" y="58" fill="#555" font-size="8">Chat channels +</text>
+    <text x="202" y="72" fill="#555" font-size="8">local OS gateway</text>
+    <rect x="362" y="38" width="188" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="372" y="58" fill="#1a1a1a" font-size="8.5" font-weight="600">OpenClaw</text>
+    <rect x="552" y="38" width="206" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="562" y="56" fill="#555" font-size="8">Cross-app personal</text>
+    <text x="562" y="70" fill="#555" font-size="8">automation, inbox,</text>
+    <text x="562" y="84" fill="#555" font-size="8">calendar, consumer SaaS</text>
+
+    <!-- Row 2: Repo-Native -->
+    <rect x="2" y="98" width="188" height="58" rx="4" fill="#f4f4f5" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="12" y="116" fill="#1a1a1a" font-size="9" font-weight="700">Repo-Native</text>
+    <text x="12" y="132" fill="#555" font-size="8">Coding Agent</text>
+    <rect x="192" y="98" width="168" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="202" y="118" fill="#555" font-size="8">Issues, PRs, CI,</text>
+    <text x="202" y="132" fill="#555" font-size="8">Actions, review</text>
+    <rect x="362" y="98" width="188" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="372" y="118" fill="#1a1a1a" font-size="8.5" font-weight="600">GitHub Copilot</text>
+    <text x="372" y="132" fill="#555" font-size="8">Coding Agent</text>
+    <rect x="552" y="98" width="206" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="562" y="116" fill="#555" font-size="8">Software delivery,</text>
+    <text x="562" y="130" fill="#555" font-size="8">code review, CI-gated</text>
+    <text x="562" y="144" fill="#555" font-size="8">repo work</text>
+
+    <!-- Row 3: Terminal/Editor-Native -->
+    <rect x="2" y="158" width="188" height="58" rx="4" fill="#f4f4f5" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="12" y="176" fill="#1a1a1a" font-size="9" font-weight="700">Terminal / Editor</text>
+    <text x="12" y="192" fill="#555" font-size="8">Native Agent</text>
+    <rect x="192" y="158" width="168" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="202" y="178" fill="#555" font-size="8">Editor, terminal,</text>
+    <text x="202" y="192" fill="#555" font-size="8">hooks, tool calls</text>
+    <rect x="362" y="158" width="188" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="372" y="174" fill="#1a1a1a" font-size="8.5" font-weight="600">Claude Code</text>
+    <text x="372" y="188" fill="#1a1a1a" font-size="8.5" font-weight="600">Cursor · Cline</text>
+    <rect x="552" y="158" width="206" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="562" y="176" fill="#555" font-size="8">Engineering loops,</text>
+    <text x="562" y="190" fill="#555" font-size="8">editor-native, explicit</text>
+    <text x="562" y="204" fill="#555" font-size="8">approval required</text>
+
+    <!-- Row 4: Browser/Computer-Use -->
+    <rect x="2" y="218" width="188" height="58" rx="4" fill="#f4f4f5" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="12" y="236" fill="#1a1a1a" font-size="9" font-weight="700">Browser /</text>
+    <text x="12" y="252" fill="#1a1a1a" font-size="9" font-weight="700">Computer-Use</text>
+    <rect x="192" y="218" width="168" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="202" y="238" fill="#555" font-size="8">Web browser,</text>
+    <text x="202" y="252" fill="#555" font-size="8">skills library</text>
+    <rect x="362" y="218" width="188" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="372" y="240" fill="#1a1a1a" font-size="8.5" font-weight="600">Perplexity</text>
+    <text x="372" y="254" fill="#1a1a1a" font-size="8.5" font-weight="600">Computer</text>
+    <rect x="552" y="218" width="206" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="562" y="236" fill="#555" font-size="8">Web-heavy knowledge</text>
+    <text x="562" y="250" fill="#555" font-size="8">work, repeatable</text>
+    <text x="562" y="264" fill="#555" font-size="8">browser workflows</text>
+
+    <!-- Row 5: Scheduled Task -->
+    <rect x="2" y="278" width="188" height="58" rx="4" fill="#f4f4f5" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="12" y="296" fill="#1a1a1a" font-size="9" font-weight="700">Scheduled Task</text>
+    <text x="12" y="312" fill="#555" font-size="8">Agent</text>
+    <rect x="192" y="278" width="168" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="202" y="298" fill="#555" font-size="8">Prompt scheduler,</text>
+    <text x="202" y="312" fill="#555" font-size="8">no machine control</text>
+    <rect x="362" y="278" width="188" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="372" y="298" fill="#1a1a1a" font-size="8.5" font-weight="600">ChatGPT Tasks</text>
+    <rect x="552" y="278" width="206" height="58" rx="4" fill="#fff" stroke="#e0e0dc" stroke-width="1"/>
+    <text x="562" y="296" fill="#555" font-size="8">Recurring prompts,</text>
+    <text x="562" y="310" fill="#555" font-size="8">reminders, briefings,</text>
+    <text x="562" y="324" fill="#555" font-size="8">lightweight automation</text>
+
+    <!-- Column dividers -->
+    <line x1="190" y1="38" x2="190" y2="336" stroke="#e0e0dc" stroke-width="1"/>
+    <line x1="360" y1="38" x2="360" y2="336" stroke="#e0e0dc" stroke-width="1"/>
+    <line x1="550" y1="38" x2="550" y2="336" stroke="#e0e0dc" stroke-width="1"/>
+
+    <!-- Bottom border -->
+    <rect x="2" y="338" width="756" height="2" rx="1" fill="#e0e0dc"/>
+
+    <!-- Caption -->
+    <text x="380" y="368" text-anchor="middle" fill="#999" font-size="7.5">Five AI coworker categories, each inheriting a different control plane. Control-plane fit determines audit trail, rollback, and policy enforcement.</text>
+  </svg>
+  <p class="diagram-caption" id="fig1-caption">Fig. 1 — AI coworker landscape by control plane. Each category inherits its governance surface from its execution environment.</p>
+</div>
+
+<p>The categories are not product tiers. They are fundamentally different execution models. A team that evaluates them as a product ranking will make the wrong selection almost every time. The right evaluation asks: where does the work actually live, and does this agent's control plane give us the review, rollback, and policy hooks we need at that location?</p>
+
+<h2>Repo-Native: GitHub Copilot Coding Agent</h2>
+
+<p>Software delivery work — fixing bugs, implementing features, writing tests, resolving pull request comments — already has a control plane: GitHub. Issues define the unit of work. Pull requests define the review boundary. GitHub Actions run CI gates and policy checks. Runners execute code in isolated environments. The review queue enforces a human checkpoint before anything merges.</p>
+
+<p>GitHub Copilot's coding agent inherits all of that for free. When an agent works a GitHub issue, the output surfaces as a pull request. Every action the agent takes is visible in the PR diff. CI runs the same checks it always runs. Reviewers apply the same review standards. Policy enforcement via branch protection, required status checks, and CODEOWNERS is automatic — not bolted on.</p>
+
+<p>This is the key architectural advantage over a general-purpose desktop agent for repo work: <strong>the blast radius is bounded by the PR boundary</strong>. The agent can propose changes, but it cannot merge them without clearing existing review and CI requirements. You don't have to build audit trails — the PR history is the audit trail. You don't have to build rollback — revert is already there.</p>
+
+<div class="callout">
+  <div class="callout-label">TODO — Verify</div>
+  <p>Verify current details around GitHub Copilot coding agent's self-hosted runner support, exact agent environment customization options, and how the agent interacts with repository rulesets and CODEOWNERS from current docs at <a href="https://docs.github.com/copilot/concepts/agents/coding-agent/about-coding-agent" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">docs.github.com</a>.</p>
+</div>
+
+<!-- DIAGRAM 2: Repo-Native Agent Workflow -->
+<div class="diagram-wrap">
+  <div class="diagram-label">Fig. 2 — Repo-Native Agent Workflow (GitHub Copilot Coding Agent)</div>
+  <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'JetBrains Mono', monospace">
+    <defs>
+      <marker id="d2arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#888"/>
+      </marker>
+      <marker id="d2arr-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#d97706"/>
+      </marker>
+    </defs>
+
+    <!-- Step boxes: top row -->
+    <!-- Issue -->
+    <rect x="10" y="60" width="110" height="52" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="65" y="82" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">ISSUE</text>
+    <text x="65" y="96" text-anchor="middle" fill="#666" font-size="7.5">Task defined</text>
+    <text x="65" y="107" text-anchor="middle" fill="#666" font-size="7.5">in GitHub</text>
+
+    <!-- Arrow -->
+    <line x1="120" y1="86" x2="148" y2="86" stroke="#888" stroke-width="1.5" marker-end="url(#d2arr)"/>
+
+    <!-- Agent Sandbox -->
+    <rect x="150" y="60" width="120" height="52" rx="7" fill="#1a1a1a"/>
+    <text x="210" y="80" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">AGENT</text>
+    <text x="210" y="94" text-anchor="middle" fill="#ccc" font-size="7.5">Isolated sandbox</text>
+    <text x="210" y="105" text-anchor="middle" fill="#ccc" font-size="7.5">Reads codebase</text>
+
+    <!-- Arrow -->
+    <line x1="270" y1="86" x2="298" y2="86" stroke="#888" stroke-width="1.5" marker-end="url(#d2arr)"/>
+
+    <!-- Draft PR -->
+    <rect x="300" y="60" width="110" height="52" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="355" y="80" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">DRAFT PR</text>
+    <text x="355" y="94" text-anchor="middle" fill="#666" font-size="7.5">Diff visible</text>
+    <text x="355" y="105" text-anchor="middle" fill="#666" font-size="7.5">Audit trail begins</text>
+
+    <!-- Arrow -->
+    <line x1="410" y1="86" x2="438" y2="86" stroke="#888" stroke-width="1.5" marker-end="url(#d2arr)"/>
+
+    <!-- CI Gate -->
+    <rect x="440" y="50" width="110" height="72" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="495" y="74" text-anchor="middle" fill="#92400e" font-size="9" font-weight="700">CI GATE</text>
+    <text x="495" y="88" text-anchor="middle" fill="#78350f" font-size="7.5">GitHub Actions</text>
+    <text x="495" y="100" text-anchor="middle" fill="#78350f" font-size="7.5">Tests · Lint</text>
+    <text x="495" y="112" text-anchor="middle" fill="#78350f" font-size="7.5">Policy checks</text>
+
+    <!-- Arrow -->
+    <line x1="550" y1="86" x2="578" y2="86" stroke="#888" stroke-width="1.5" marker-end="url(#d2arr)"/>
+
+    <!-- Review Gate -->
+    <rect x="580" y="50" width="110" height="72" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="635" y="74" text-anchor="middle" fill="#92400e" font-size="9" font-weight="700">REVIEW</text>
+    <text x="635" y="88" text-anchor="middle" fill="#78350f" font-size="7.5">Human approval</text>
+    <text x="635" y="100" text-anchor="middle" fill="#78350f" font-size="7.5">CODEOWNERS</text>
+    <text x="635" y="112" text-anchor="middle" fill="#78350f" font-size="7.5">Branch rules</text>
+
+    <!-- Arrow down to Merge -->
+    <line x1="635" y1="122" x2="635" y2="152" stroke="#888" stroke-width="1.5" marker-end="url(#d2arr)"/>
+
+    <!-- Merge -->
+    <rect x="580" y="154" width="110" height="42" rx="7" fill="#1a1a1a"/>
+    <text x="635" y="174" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">MERGE</text>
+    <text x="635" y="188" text-anchor="middle" fill="#ccc" font-size="7.5">Revert always possible</text>
+
+    <!-- Fail path from CI gate -->
+    <path d="M495 122 Q495 200 355 200 Q210 200 210 112" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#d2arr-red)"/>
+    <text x="340" y="218" text-anchor="middle" fill="#d97706" font-size="7.5">CI/review fail → agent revises in sandbox</text>
+
+    <!-- Control points label -->
+    <text x="495" y="22" text-anchor="middle" fill="#999" font-size="7.5" font-weight="600" letter-spacing="0.06em">CONTROL POINTS</text>
+    <line x1="440" y1="28" x2="700" y2="28" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="380" y="240" text-anchor="middle" fill="#999" font-size="7">Every agent action surfaces as a reviewable PR diff. CI and review gates apply the same rules as human-authored changes.</text>
+  </svg>
+  <p class="diagram-caption">Fig. 2 — Repo-native agent workflow. The PR is the control surface: audit trail, CI policy enforcement, and human review are inherited, not added.</p>
+</div>
+
+<p>The practical implication: if a team's concern is "how do we govern AI-authored changes to our codebase?", GitHub Copilot's coding agent answers that question with infrastructure the team already has. The governance is already there. The agent uses it.</p>
+
+<p>A general-purpose desktop agent working on repo tasks has no equivalent. It can open a terminal, run git commands, and push — but it does not inherit branch protection rules, required reviewers, or CI gates unless someone builds connectors to enforce them externally. That is the wrong direction. Governance should not be an afterthought layered over execution.</p>
+
+<h2>Terminal and Editor-Native: Claude Code, Cursor, and Cline</h2>
+
+<p>Not all engineering work is repo-centric. Debugging a running process, scaffolding a new service, running database migrations, building a local development environment, executing multi-step test workflows — these live in the terminal and editor, not in pull requests. The right execution surface for these tasks is the terminal or editor, and the right agents are the ones built to run there.</p>
+
+<p><strong>Claude Code</strong> runs in the terminal and is designed for engineering tasks that require deep code context, multi-step reasoning, and direct file system access. Its <a href="https://docs.anthropic.com/en/docs/claude-code/hooks" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">hooks system</a> is the key governance primitive: shell commands that run before and after agent actions, allowing teams to intercept file writes, shell executions, and tool calls and route them through custom approval logic. You define the policy; hooks enforce it at the point of execution.</p>
+
+<p><strong>Cursor</strong> is an editor-native agent, and its background agent mode allows long-running tasks to execute in the editor context with full codebase awareness. The editor is the execution surface, which means every agent action is visible in the context where the developer works.</p>
+
+<p><strong>Cline</strong> emphasizes explicit, visible approval. Every tool call — file write, shell execution, API call — is surfaced to the user for confirmation before it runs. The model is pluggable, which means teams can select the model that matches their cost, capability, and data handling requirements. For teams that need to understand exactly what an agent did and why, Cline's explicit-approval model is the right default.</p>
+
+<div class="callout">
+  <div class="callout-label">TODO — Verify</div>
+  <p>Verify current Claude Code hooks system behavior (pre- and post-hook types, tool-level hooks), SDK details, and whether hooks support async approval flows from current Anthropic docs at <a href="https://docs.anthropic.com/en/docs/claude-code/hooks" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">docs.anthropic.com</a>. Verify Cursor's current background agent capabilities and enterprise governance controls from <a href="https://docs.cursor.com/background-agent" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">docs.cursor.com</a>.</p>
+</div>
+
+<!-- DIAGRAM 3: Terminal-Native Agent Workflow -->
+<div class="diagram-wrap">
+  <div class="diagram-label">Fig. 3 — Terminal / Editor-Native Agent Workflow (Claude Code · Cursor · Cline)</div>
+  <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'JetBrains Mono', monospace">
+    <defs>
+      <marker id="d3arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#888"/>
+      </marker>
+      <marker id="d3arr-approve" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#059669"/>
+      </marker>
+      <marker id="d3arr-deny" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#dc2626"/>
+      </marker>
+    </defs>
+
+    <!-- Task -->
+    <rect x="10" y="110" width="100" height="50" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="60" y="131" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">TASK</text>
+    <text x="60" y="145" text-anchor="middle" fill="#666" font-size="7.5">Engineering goal</text>
+    <text x="60" y="156" text-anchor="middle" fill="#666" font-size="7.5">in terminal/editor</text>
+
+    <!-- Arrow -->
+    <line x1="110" y1="135" x2="135" y2="135" stroke="#888" stroke-width="1.5" marker-end="url(#d3arr)"/>
+
+    <!-- Agent Reasoning -->
+    <rect x="137" y="110" width="110" height="50" rx="7" fill="#1a1a1a"/>
+    <text x="192" y="131" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">AGENT</text>
+    <text x="192" y="145" text-anchor="middle" fill="#ccc" font-size="7.5">Plan + propose</text>
+    <text x="192" y="156" text-anchor="middle" fill="#ccc" font-size="7.5">tool call</text>
+
+    <!-- Arrow -->
+    <line x1="247" y1="135" x2="275" y2="135" stroke="#888" stroke-width="1.5" marker-end="url(#d3arr)"/>
+
+    <!-- Hook / Approval Gate -->
+    <rect x="277" y="95" width="130" height="80" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="342" y="117" text-anchor="middle" fill="#92400e" font-size="9" font-weight="700">HOOK / APPROVAL</text>
+    <text x="342" y="131" text-anchor="middle" fill="#78350f" font-size="7.5">Pre-tool intercept</text>
+    <text x="342" y="143" text-anchor="middle" fill="#78350f" font-size="7.5">Policy check</text>
+    <text x="342" y="155" text-anchor="middle" fill="#78350f" font-size="7.5">Human confirm</text>
+    <text x="342" y="167" text-anchor="middle" fill="#78350f" font-size="7.5">(Cline: explicit)</text>
+
+    <!-- Approve arrow -->
+    <line x1="407" y1="120" x2="450" y2="90" stroke="#059669" stroke-width="1.5" marker-end="url(#d3arr-approve)"/>
+    <text x="440" y="108" fill="#059669" font-size="7.5">Approve</text>
+
+    <!-- Deny arrow -->
+    <line x1="407" y1="155" x2="450" y2="175" stroke="#dc2626" stroke-width="1.5" marker-end="url(#d3arr-deny)"/>
+    <text x="440" y="172" fill="#dc2626" font-size="7.5">Deny / revise</text>
+
+    <!-- Tool Call (approved) -->
+    <rect x="452" y="60" width="120" height="52" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="512" y="81" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">TOOL CALL</text>
+    <text x="512" y="95" text-anchor="middle" fill="#666" font-size="7.5">File write / shell exec</text>
+    <text x="512" y="107" text-anchor="middle" fill="#666" font-size="7.5">API call / search</text>
+
+    <!-- Arrow right to output -->
+    <line x1="572" y1="86" x2="620" y2="86" stroke="#888" stroke-width="1.5" marker-end="url(#d3arr)"/>
+
+    <!-- Post-Hook -->
+    <rect x="622" y="60" width="120" height="52" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="682" y="80" text-anchor="middle" fill="#92400e" font-size="9" font-weight="700">POST-HOOK</text>
+    <text x="682" y="94" text-anchor="middle" fill="#78350f" font-size="7.5">Log / audit action</text>
+    <text x="682" y="106" text-anchor="middle" fill="#78350f" font-size="7.5">Enforce constraints</text>
+
+    <!-- Output box (denied path) -->
+    <rect x="452" y="162" width="120" height="42" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="512" y="182" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">AGENT REVISES</text>
+    <text x="512" y="196" text-anchor="middle" fill="#666" font-size="7.5">Re-plan with</text>
+
+    <!-- Deny path back -->
+    <path d="M512 204 Q512 240 192 240 Q192 160 192 160" fill="none" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#d3arr-deny)"/>
+    <text x="350" y="252" text-anchor="middle" fill="#666" font-size="7.5">Reject loops back to agent; model choice pluggable (Cline)</text>
+
+    <!-- Label: control points region -->
+    <rect x="275" y="10" width="470" height="20" rx="4" fill="none" stroke="#d97706" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="510" y="24" text-anchor="middle" fill="#d97706" font-size="7.5" font-weight="700" letter-spacing="0.05em">CONTROL POINTS: HOOKS + EXPLICIT APPROVAL</text>
+  </svg>
+  <p class="diagram-caption">Fig. 3 — Terminal/editor-native agent workflow. Hooks intercept every tool call before execution; Cline's explicit-approval model surfaces each action for human confirmation.</p>
+</div>
+
+<p>The critical distinction from a broad desktop agent is <strong>granularity of approval</strong>. A general-purpose agent operating through chat channels makes it difficult to interpose at the tool-call level. Terminal-native agents expose the tool-call boundary natively. Claude Code hooks run before and after file writes and shell executions. Cline requires a confirmation click for every consequential action. This is not inconvenience — it is the production-grade control surface for engineering automation.</p>
+
+<h2>Browser and Computer-Use: Perplexity Computer</h2>
+
+<p>A separate class of work is genuinely browser-native: competitive research, form completion, web monitoring, multi-step procurement workflows, summarizing content across web sources. These tasks do not belong in a terminal. They belong in a browser, and they benefit from an agent that understands the browser as its primary execution surface.</p>
+
+<p>Perplexity Computer is built for this category. Its Custom Skills feature — reusable, parameterized workflows that can be triggered against variable inputs — is the key primitive for making browser automation repeatable rather than one-off. A skill for "summarize pricing pages from competitor list" or "check application status across N portals" can be defined once and reused with different inputs, which is the difference between ad hoc computer use and operational browser automation.</p>
+
+<div class="callout">
+  <div class="callout-label">TODO — Verify</div>
+  <p>Verify current Custom Skills behavior (parameterization, sharing, admin controls), checkpoint support, and enterprise/team controls for Perplexity Computer from current docs at <a href="https://www.perplexity.ai/help-center/en/articles/11918695-custom-skills-on-perplexity" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">perplexity.ai help center</a>. Verify whether team-level sharing or admin policy controls exist.</p>
+</div>
+
+<!-- DIAGRAM 4: Browser/Computer-Use Workflow -->
+<div class="diagram-wrap">
+  <div class="diagram-label">Fig. 4 — Browser / Computer-Use Agent Workflow (Perplexity Computer)</div>
+  <svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'JetBrains Mono', monospace">
+    <defs>
+      <marker id="d4arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#888"/>
+      </marker>
+    </defs>
+
+    <!-- Task -->
+    <rect x="10" y="90" width="100" height="52" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="60" y="112" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">TASK</text>
+    <text x="60" y="126" text-anchor="middle" fill="#666" font-size="7.5">Web / browser</text>
+    <text x="60" y="137" text-anchor="middle" fill="#666" font-size="7.5">work item</text>
+
+    <!-- Arrow -->
+    <line x1="110" y1="116" x2="138" y2="116" stroke="#888" stroke-width="1.5" marker-end="url(#d4arr)"/>
+
+    <!-- Skills Library -->
+    <rect x="140" y="75" width="120" height="82" rx="7" fill="#f4f4f5" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="200" y="98" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">SKILLS LIBRARY</text>
+    <text x="200" y="112" text-anchor="middle" fill="#666" font-size="7.5">Custom Skills check</text>
+    <text x="200" y="124" text-anchor="middle" fill="#666" font-size="7.5">Reusable workflow?</text>
+    <text x="200" y="138" text-anchor="middle" fill="#666" font-size="7.5">Parameterize inputs</text>
+    <text x="200" y="150" text-anchor="middle" fill="#666" font-size="7.5">(TODO: verify sharing)</text>
+
+    <!-- Arrow -->
+    <line x1="260" y1="116" x2="288" y2="116" stroke="#888" stroke-width="1.5" marker-end="url(#d4arr)"/>
+
+    <!-- Browser Execution -->
+    <rect x="290" y="90" width="120" height="52" rx="7" fill="#1a1a1a"/>
+    <text x="350" y="112" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">BROWSER</text>
+    <text x="350" y="126" text-anchor="middle" fill="#ccc" font-size="7.5">Agent executes</text>
+    <text x="350" y="137" text-anchor="middle" fill="#ccc" font-size="7.5">web steps</text>
+
+    <!-- Arrow -->
+    <line x1="410" y1="116" x2="438" y2="116" stroke="#888" stroke-width="1.5" marker-end="url(#d4arr)"/>
+
+    <!-- Checkpoint -->
+    <rect x="440" y="75" width="120" height="82" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="500" y="98" text-anchor="middle" fill="#92400e" font-size="9" font-weight="700">CHECKPOINT</text>
+    <text x="500" y="112" text-anchor="middle" fill="#78350f" font-size="7.5">Verify intermediate</text>
+    <text x="500" y="124" text-anchor="middle" fill="#78350f" font-size="7.5">state before</text>
+    <text x="500" y="136" text-anchor="middle" fill="#78350f" font-size="7.5">continuing</text>
+    <text x="500" y="150" text-anchor="middle" fill="#78350f" font-size="7.5">(TODO: verify)</text>
+
+    <!-- Arrow -->
+    <line x1="560" y1="116" x2="588" y2="116" stroke="#888" stroke-width="1.5" marker-end="url(#d4arr)"/>
+
+    <!-- Output -->
+    <rect x="590" y="90" width="130" height="52" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="655" y="112" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">OUTPUT</text>
+    <text x="655" y="126" text-anchor="middle" fill="#666" font-size="7.5">Result + summary</text>
+    <text x="655" y="137" text-anchor="middle" fill="#666" font-size="7.5">Skill updated</text>
+
+    <!-- Skill reuse loop -->
+    <path d="M655 142 Q655 200 200 200 Q200 157 200 157" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#d4arr)"/>
+    <text x="400" y="220" text-anchor="middle" fill="#999" font-size="7.5">Successful workflow saved as reusable Custom Skill for future parameterized runs</text>
+
+    <!-- Control point marker -->
+    <rect x="438" y="20" width="125" height="18" rx="4" fill="none" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="500" y="32" text-anchor="middle" fill="#d97706" font-size="7" font-weight="700" letter-spacing="0.05em">CONTROL POINT</text>
+  </svg>
+  <p class="diagram-caption">Fig. 4 — Browser/computer-use agent workflow. Custom Skills encode repeatable browser workflows; checkpoints gate continuation on intermediate state validation.</p>
+</div>
+
+<p>The important framing here is that browser/computer-use agents are a <strong>separate category</strong> from personal assistant agents, even though they may superficially resemble each other. Perplexity Computer is not a broad personal automation agent that happens to run a browser. It is a web-native execution agent with primitives specifically designed for repeatable, structured web workflows. OpenClaw and Perplexity Computer do different things well; conflating them leads to selecting a general agent where a specialized one would perform better.</p>
+
+<h2>Scheduled Automation: ChatGPT Tasks</h2>
+
+<p>A significant fraction of recurring AI work does not require broad machine access at all. Morning briefings. Competitive monitoring alerts. Periodic data summaries. Check-ins and reminders. These are fundamentally scheduled prompt automation tasks — and the right execution model for them is one without broad machine control.</p>
+
+<p>ChatGPT Tasks handles scheduled prompt automation: you define what prompt runs when, and the system executes it on schedule and surfaces results in chat. There is no code execution, no file system access, no broad tool use. The blast radius is bounded by what the model can say, not what it can do to a machine.</p>
+
+<p>That constraint is the point, not a limitation. For recurring lightweight automation, the narrowest possible execution surface is the right surface. An organization that reaches for a broad desktop agent to send a weekly competitive summary is introducing unnecessary risk and governance complexity for a task that does not require them.</p>
+
+<div class="callout">
+  <div class="callout-label">TODO — Verify</div>
+  <p>Verify current availability, plan scope (Plus/Team/Enterprise), trigger types, and output delivery options for ChatGPT Tasks from current OpenAI docs at <a href="https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">help.openai.com</a>.</p>
+</div>
+
+<!-- DIAGRAM 5: Scheduled Task Workflow vs Broad Autonomy -->
+<div class="diagram-wrap">
+  <div class="diagram-label">Fig. 5 — Scheduled Task Agent vs Broad Autonomy: Blast Radius Comparison</div>
+  <svg viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'JetBrains Mono', monospace">
+    <defs>
+      <marker id="d5arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+        <path d="M0,0 L0,7 L7,3.5 z" fill="#888"/>
+      </marker>
+    </defs>
+
+    <!-- LEFT: Scheduled Task Agent -->
+    <rect x="10" y="10" width="350" height="245" rx="8" fill="#f8f8f7" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="185" y="34" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="700" letter-spacing="0.04em">SCHEDULED TASK AGENT</text>
+    <text x="185" y="48" text-anchor="middle" fill="#555" font-size="8">(e.g. ChatGPT Tasks)</text>
+
+    <rect x="30" y="58" width="310" height="36" rx="5" fill="#fff" stroke="#d0d0cc" stroke-width="1"/>
+    <text x="185" y="74" text-anchor="middle" fill="#1a1a1a" font-size="8.5" font-weight="600">TRIGGER: Schedule (cron / natural language)</text>
+    <text x="185" y="86" text-anchor="middle" fill="#666" font-size="7.5">e.g. "Every Monday 8am"</text>
+
+    <line x1="185" y1="94" x2="185" y2="112" stroke="#888" stroke-width="1.5" marker-end="url(#d5arr)"/>
+
+    <rect x="30" y="114" width="310" height="36" rx="5" fill="#1a1a1a"/>
+    <text x="185" y="130" text-anchor="middle" fill="#fff" font-size="8.5" font-weight="600">PROMPT EXECUTED</text>
+    <text x="185" y="143" text-anchor="middle" fill="#ccc" font-size="7.5">LLM only · No tool calls · No file access</text>
+
+    <line x1="185" y1="150" x2="185" y2="168" stroke="#888" stroke-width="1.5" marker-end="url(#d5arr)"/>
+
+    <rect x="30" y="170" width="310" height="36" rx="5" fill="#fff" stroke="#d0d0cc" stroke-width="1"/>
+    <text x="185" y="186" text-anchor="middle" fill="#1a1a1a" font-size="8.5" font-weight="600">RESULT IN CHAT</text>
+    <text x="185" y="200" text-anchor="middle" fill="#666" font-size="7.5">Summary · Briefing · Alert text</text>
+
+    <!-- Blast radius indicator (small) -->
+    <circle cx="185" cy="235" r="16" fill="none" stroke="#059669" stroke-width="2"/>
+    <text x="185" y="230" text-anchor="middle" fill="#059669" font-size="7" font-weight="700">NARROW</text>
+    <text x="185" y="242" text-anchor="middle" fill="#059669" font-size="7">blast radius</text>
+
+    <!-- RIGHT: Broad Autonomy Agent -->
+    <rect x="400" y="10" width="350" height="245" rx="8" fill="#f8f8f7" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="575" y="34" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="700" letter-spacing="0.04em">BROAD AUTONOMY AGENT</text>
+    <text x="575" y="48" text-anchor="middle" fill="#555" font-size="8">(general-purpose desktop agent)</text>
+
+    <rect x="420" y="58" width="310" height="36" rx="5" fill="#fff" stroke="#d0d0cc" stroke-width="1"/>
+    <text x="575" y="74" text-anchor="middle" fill="#1a1a1a" font-size="8.5" font-weight="600">TRIGGER: User request or automation</text>
+    <text x="575" y="86" text-anchor="middle" fill="#666" font-size="7.5">Broad scope; hard to bound in advance</text>
+
+    <line x1="575" y1="94" x2="575" y2="112" stroke="#888" stroke-width="1.5" marker-end="url(#d5arr)"/>
+
+    <rect x="420" y="114" width="310" height="36" rx="5" fill="#1a1a1a"/>
+    <text x="575" y="130" text-anchor="middle" fill="#fff" font-size="8.5" font-weight="600">TOOL USE + EXECUTION</text>
+    <text x="575" y="143" text-anchor="middle" fill="#ccc" font-size="7.5">Files · APIs · Browser · OS · Apps</text>
+
+    <line x1="575" y1="150" x2="575" y2="168" stroke="#888" stroke-width="1.5" marker-end="url(#d5arr)"/>
+
+    <rect x="420" y="170" width="310" height="36" rx="5" fill="#fff" stroke="#d0d0cc" stroke-width="1"/>
+    <text x="575" y="186" text-anchor="middle" fill="#1a1a1a" font-size="8.5" font-weight="600">RESULT + SIDE EFFECTS</text>
+    <text x="575" y="200" text-anchor="middle" fill="#666" font-size="7.5">Output + system state changes</text>
+
+    <!-- Blast radius indicator (large) -->
+    <circle cx="575" cy="235" r="16" fill="none" stroke="#dc2626" stroke-width="2"/>
+    <text x="575" y="230" text-anchor="middle" fill="#dc2626" font-size="7" font-weight="700">WIDE</text>
+    <text x="575" y="242" text-anchor="middle" fill="#dc2626" font-size="7">blast radius</text>
+  </svg>
+  <p class="diagram-caption">Fig. 5 — Scheduled task agents bound blast radius by removing tool use entirely. For recurring lightweight automation, narrow execution surface is the right engineering choice.</p>
+</div>
+
+<p>The broader point is one that applies across all these categories: <strong>matching execution scope to task scope is a governance decision, not a capability trade-off</strong>. Choosing ChatGPT Tasks for a weekly summary over a full desktop agent is not settling for less capability. It is correctly scoping the agent to the problem.</p>
+
+<h2>What "Better" Actually Means</h2>
+
+<p>In most AI product comparisons, "better" means higher benchmark scores or more impressive demos. In enterprise agent selection, "better" means better-suited to the control requirements of the task. Six dimensions define this:</p>
+
+<ol>
+  <li><strong>Execution surface:</strong> Does the agent run on the surface where the work lives? A repo agent that forces repo work through chat is fighting its own architecture.</li>
+  <li><strong>Privilege scope:</strong> Does the agent's access surface match the task's actual requirements? Unnecessary privilege is unnecessary risk.</li>
+  <li><strong>Reviewability:</strong> Can a human inspect every consequential action the agent took, after the fact? Is the audit trail automatic or bolted on?</li>
+  <li><strong>Rollback:</strong> If the agent makes a mistake, can you undo it? Is rollback a native property of the execution surface (git revert, PR close) or something you have to build separately?</li>
+  <li><strong>Observability:</strong> Do you have logs, traces, and alerting for agent behavior without additional instrumentation? Or are you flying blind?</li>
+  <li><strong>Policy enforcement:</strong> Can you enforce organizational policy (who can approve what, what actions are never allowed, what requires escalation) at the execution surface, or only in external wrappers?</li>
+</ol>
+
+<p>Evaluating agents on these dimensions produces different rankings than evaluating on capability benchmarks. A highly capable model running through a broad desktop agent scores poorly on privilege scope and policy enforcement for most enterprise use cases. A repo-native coding agent with slightly lower benchmark scores but native CI gating and review requirements scores far higher on every governance dimension that matters in production.</p>
+
+<h2>A Selection Rubric for Choosing an OpenClaw Alternative</h2>
+
+<p>The decision is not about which agent is the most powerful. It is about which control plane fits the work. The following decision flow covers the most common enterprise cases.</p>
+
+<!-- DIAGRAM 6: Selection Rubric / Decision Flow -->
+<div class="diagram-wrap">
+  <div class="diagram-label">Fig. 6 — Selection Rubric: Choosing an AI Coworker by Control-Plane Fit</div>
+  <svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" font-family="'JetBrains Mono', monospace">
+    <defs>
+      <marker id="d6arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#888"/>
+      </marker>
+      <marker id="d6arr-yes" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#059669"/>
+      </marker>
+      <marker id="d6arr-no" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L0,8 L8,4 z" fill="#888"/>
+      </marker>
+    </defs>
+
+    <!-- START -->
+    <rect x="280" y="10" width="200" height="40" rx="20" fill="#1a1a1a"/>
+    <text x="380" y="35" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" letter-spacing="0.04em">START: Define the task</text>
+
+    <!-- Arrow down -->
+    <line x1="380" y1="50" x2="380" y2="78" stroke="#888" stroke-width="1.5" marker-end="url(#d6arr)"/>
+
+    <!-- Q1: Is it repo/code-centric? -->
+    <rect x="250" y="80" width="260" height="46" rx="8" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="380" y="100" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">Is the task repo- or code-centric?</text>
+    <text x="380" y="116" text-anchor="middle" fill="#666" font-size="7.5">Issues, PRs, code review, CI-gated changes</text>
+
+    <!-- YES right -->
+    <line x1="510" y1="103" x2="590" y2="103" stroke="#059669" stroke-width="1.5" marker-end="url(#d6arr-yes)"/>
+    <text x="548" y="96" text-anchor="middle" fill="#059669" font-size="8" font-weight="600">YES</text>
+    <!-- Answer box -->
+    <rect x="592" y="75" width="160" height="56" rx="7" fill="#1a1a1a"/>
+    <text x="672" y="95" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">GitHub Copilot</text>
+    <text x="672" y="109" text-anchor="middle" fill="#ccc" font-size="8">Coding Agent</text>
+    <text x="672" y="122" text-anchor="middle" fill="#999" font-size="7">PR · CI · review gates</text>
+
+    <!-- NO down -->
+    <line x1="380" y1="126" x2="380" y2="154" stroke="#888" stroke-width="1.5" marker-end="url(#d6arr-no)"/>
+    <text x="391" y="144" fill="#888" font-size="8">NO</text>
+
+    <!-- Q2: Terminal/editor-native? -->
+    <rect x="235" y="156" width="290" height="46" rx="8" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="380" y="176" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">Is the task terminal- or editor-native?</text>
+    <text x="380" y="192" text-anchor="middle" fill="#666" font-size="7.5">Debugging, scaffolding, multi-step engineering loops</text>
+
+    <!-- YES right -->
+    <line x1="525" y1="179" x2="590" y2="179" stroke="#059669" stroke-width="1.5" marker-end="url(#d6arr-yes)"/>
+    <text x="555" y="172" text-anchor="middle" fill="#059669" font-size="8" font-weight="600">YES</text>
+    <rect x="592" y="153" width="160" height="56" rx="7" fill="#1a1a1a"/>
+    <text x="672" y="173" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">Claude Code</text>
+    <text x="672" y="187" text-anchor="middle" fill="#ccc" font-size="8">Cursor · Cline</text>
+    <text x="672" y="200" text-anchor="middle" fill="#999" font-size="7">Hooks · explicit approval</text>
+
+    <!-- NO down -->
+    <line x1="380" y1="202" x2="380" y2="230" stroke="#888" stroke-width="1.5" marker-end="url(#d6arr-no)"/>
+    <text x="391" y="220" fill="#888" font-size="8">NO</text>
+
+    <!-- Q3: Browser/web-heavy? -->
+    <rect x="240" y="232" width="280" height="46" rx="8" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="380" y="252" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">Is the task browser- or web-heavy?</text>
+    <text x="380" y="268" text-anchor="middle" fill="#666" font-size="7.5">Research, form completion, web monitoring</text>
+
+    <!-- YES right -->
+    <line x1="520" y1="255" x2="590" y2="255" stroke="#059669" stroke-width="1.5" marker-end="url(#d6arr-yes)"/>
+    <text x="553" y="248" text-anchor="middle" fill="#059669" font-size="8" font-weight="600">YES</text>
+    <rect x="592" y="230" width="160" height="56" rx="7" fill="#1a1a1a"/>
+    <text x="672" y="250" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">Perplexity</text>
+    <text x="672" y="264" text-anchor="middle" fill="#ccc" font-size="8">Computer</text>
+    <text x="672" y="277" text-anchor="middle" fill="#999" font-size="7">Custom Skills · browser</text>
+
+    <!-- NO down -->
+    <line x1="380" y1="278" x2="380" y2="306" stroke="#888" stroke-width="1.5" marker-end="url(#d6arr-no)"/>
+    <text x="391" y="296" fill="#888" font-size="8">NO</text>
+
+    <!-- Q4: Recurring/scheduled? -->
+    <rect x="230" y="308" width="300" height="46" rx="8" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <text x="380" y="328" text-anchor="middle" fill="#1a1a1a" font-size="9" font-weight="700">Is the task recurring and narrow in scope?</text>
+    <text x="380" y="344" text-anchor="middle" fill="#666" font-size="7.5">Briefings, reminders, summaries on schedule</text>
+
+    <!-- YES right -->
+    <line x1="530" y1="331" x2="590" y2="331" stroke="#059669" stroke-width="1.5" marker-end="url(#d6arr-yes)"/>
+    <text x="558" y="324" text-anchor="middle" fill="#059669" font-size="8" font-weight="600">YES</text>
+    <rect x="592" y="307" width="160" height="56" rx="7" fill="#1a1a1a"/>
+    <text x="672" y="327" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">ChatGPT Tasks</text>
+    <text x="672" y="343" text-anchor="middle" fill="#ccc" font-size="8">Scheduled prompts</text>
+    <text x="672" y="356" text-anchor="middle" fill="#999" font-size="7">No machine access</text>
+
+    <!-- NO down -->
+    <line x1="380" y1="354" x2="380" y2="382" stroke="#888" stroke-width="1.5" marker-end="url(#d6arr-no)"/>
+    <text x="391" y="372" fill="#888" font-size="8">NO</text>
+
+    <!-- Default -->
+    <rect x="250" y="384" width="260" height="42" rx="8" fill="#52525b"/>
+    <text x="380" y="402" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">Cross-app personal automation?</text>
+    <text x="380" y="416" text-anchor="middle" fill="#ccc" font-size="8">OpenClaw — general-purpose assistant</text>
+
+    <!-- Note -->
+    <text x="380" y="455" text-anchor="middle" fill="#999" font-size="7.5">If none of the above, verify task scope and privilege requirements before selecting any broad agent.</text>
+  </svg>
+  <p class="diagram-caption">Fig. 6 — Selection rubric: choose the agent whose control plane already lives where the work lives. Audit the task scope before reaching for the broadest available tool.</p>
+</div>
+
+<p>This rubric is not exhaustive, but it captures the most common selection failures: teams defaulting to a general-purpose agent for tasks that already have a purpose-built control plane, then spending months building governance infrastructure that the right tool would have provided for free.</p>
+
+<h2>What Teams Should Build Before They Standardize on Any AI Coworker</h2>
+
+<p>Regardless of which agent category a team selects, certain infrastructure is required before any AI coworker is safe to standardize on in a production environment. These are the patterns that separate trustworthy deployments from dangerous ones.</p>
+
+<h3>Approval checkpoints</h3>
+<p>Identify every action the agent can take that is consequential — file modifications, external API calls, deployments, communications sent on behalf of a user — and ensure each has a defined approval requirement. Some actions may be auto-approved by policy; others require human confirmation; others should be blocked entirely. The key is that <strong>the checkpoint is explicit and enforced at execution time</strong>, not a general instruction in a system prompt.</p>
+
+<h3>Policy hooks</h3>
+<p>For terminal-native agents, hooks are the mechanism. For repo-native agents, branch protection rules and required status checks are the mechanism. For scheduled agents, input validation and output filtering are the mechanism. The principle is the same: policy should be enforced programmatically at the point where actions occur, not in prose instructions that the model may or may not follow. Related: <a href="distillation-rl-guardrails.html" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">guardrail layers for AI systems</a>.</p>
+
+<h3>Audit trails</h3>
+<p>Every action an AI coworker takes should produce a structured, queryable log entry. At minimum: what action was taken, what the agent's stated reason was, what the inputs were, what the output was, and what human (if any) approved it. This is the minimum viable audit trail for a regulated environment. For teams building <a href="autoresearch-harness-engineering.html" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">harness engineering patterns</a>, this is core scaffolding infrastructure.</p>
+
+<h3>Replayability</h3>
+<p>Can you replay what the agent did, either to reproduce it or to debug an incorrect output? Replayability requires deterministic or near-deterministic logs of tool calls and agent state. It is the difference between being able to answer "why did the agent do that?" and not.</p>
+
+<h3>Escalation boundaries</h3>
+<p>Define, in advance, the conditions under which the agent should stop and wait for a human decision rather than proceeding autonomously. These are not model-level instructions ("if unsure, ask"); they are execution-level gates that the agent's scaffolding enforces regardless of model behavior. Related: <a href="governed-agent-distribution.html" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">governed agent distribution patterns</a>.</p>
+
+<h3>Least-privilege execution</h3>
+<p>Every agent should run with the minimum access required to complete the task. This is not just a security principle — it is the most reliable way to bound blast radius. An agent that can only read and write to one repository cannot accidentally commit to another. An agent that can only access one API endpoint cannot accidentally call others. Scope the credentials first; expand only when required.</p>
+
+<h2>What to Avoid</h2>
+
+<p>The most common mistakes in enterprise AI coworker selection are not about choosing the wrong product — they are about choosing the wrong mental model.</p>
+
+<ul>
+  <li><strong>Using a broad desktop agent for narrowly scoped repo work.</strong> If the task is a pull request, use the tool that lives in pull requests. Routing it through a chat-and-gateway architecture adds complexity, removes native governance, and solves no problem the repo-native alternative wouldn't solve more cleanly.</li>
+  <li><strong>Confusing generality with governance.</strong> A general-purpose agent is not a governed agent. Generality means the agent can do more things. Governance means the agent operates within defined, enforceable constraints. These are orthogonal properties, and conflating them leads to broad agents deployed without adequate controls.</li>
+  <li><strong>Assuming stronger models compensate for weak controls.</strong> A more capable model in a poorly controlled environment is a larger blast radius, not a safety improvement. Model quality is not a substitute for execution surface governance.</li>
+  <li><strong>Selecting agents without a clear ownership and review path.</strong> Who is responsible when an AI coworker takes a wrong action? Before deployment, that answer should be explicit — and the agent's execution model should make review, rollback, and attribution natural rather than reconstructed after the fact.</li>
+  <li><strong>Treating all AI coworkers as one product category.</strong> The five categories in this post are meaningfully different execution models. An evaluation rubric that treats them as equivalent — and ranks them only on model quality — will consistently produce the wrong selection.</li>
+</ul>
+
+<h2>A Note on Grok and Other Schedulers</h2>
+
+<p>The product set in this comparison covers the primary tools across each category as of this writing. Grok (xAI) is worth monitoring for scheduler and task automation capabilities, but as of this draft, no first-party Grok Tasks feature with documented scheduler behavior is confirmed for inclusion in the main comparison.</p>
+
+<div class="callout">
+  <div class="callout-label">TODO — Verify</div>
+  <p>Verify whether Grok has a first-party tasks/scheduler feature worth including in the main comparison or an appendix. Check xAI's current documentation and product announcements.</p>
+</div>
+
+<hr class="divider">
+
+<h2>The Shift Nobody Is Talking About Clearly</h2>
+
+<p>The market's obsession with "which AI is smartest" is obscuring a more important transition. The question that will matter in production deployments for the next several years is not <em>which model</em> but <em>which control plane</em>.</p>
+
+<p>Every organization already has control planes: GitHub, their CI system, their terminal toolchain, their browser-based workflows, their scheduler. The AI tools that inherit these control planes will, in most cases, be more useful in production than tools that require organizations to build new governance infrastructure from scratch.</p>
+
+<p>OpenClaw is a good product in the category it belongs to — personal automation that genuinely spans apps without a common control plane. But defaulting to it for repo work, terminal work, browser work, or scheduled automation is choosing generality over fit. In production systems, fit wins.</p>
+
+<p>The best AI coworker is usually the narrowest one that still fits the workflow.</p>
+
+<div class="callout">
+  <div class="callout-label">Suggested Further Reading</div>
+  <p>Related posts on control-plane design and governed automation: <a href="governed-agent-distribution.html" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">Governed Agent Distribution</a> · <a href="autoresearch-harness-engineering.html" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">AutoResearch and Harness Engineering</a> · <a href="distillation-rl-guardrails.html" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">Guardrails for AI Systems</a></p>
+</div>
+
+</div><!-- /article-body -->
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Follow the Research</h2>
+    <p>More on AI agent architecture, control-plane design, and enterprise deployment patterns on LinkedIn and GitHub.</p>
+    <div class="cta-links">
+      <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" rel="noopener noreferrer" class="cta-btn">LinkedIn →</a>
+      <a href="https://github.com/ogkranthi" target="_blank" rel="noopener noreferrer" class="cta-btn-ghost">GitHub →</a>
+    </div>
+  </div>
+
+</div><!-- /article-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Kranthi Manchikanti. Built with intent.</p>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://github.com/ogkranthi" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://x.com/ogkranthi" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+  </div>
+</footer>
+
+</body>
+</html>
