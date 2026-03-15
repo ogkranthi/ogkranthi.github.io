@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everything You Need to Know About the Claude Certified Architect Exam | Kranthi Manchikanti</title>
+<meta name="description" content="Complete guide to Anthropic's Claude Certified Architect — Foundations certification: exam format, five content domains, six scenarios, preparation strategy, and free resources.">
+<meta property="og:title" content="Everything You Need to Know About the Claude Certified Architect Exam">
+<meta property="og:description" content="60 questions, 5 domains, 6 scenarios, 720 passing score. The definitive guide to Anthropic's first professional certification for AI architects.">
+<meta property="og:type" content="article">
+<link rel="canonical" href="https://ogkranthi.github.io/claude-certified-architect-guide.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@ogkranthi">
+<meta name="twitter:title" content="Everything You Need to Know About the Claude Certified Architect Exam">
+<meta name="twitter:description" content="60 questions, 5 domains, 6 scenarios, 720 passing score. The definitive guide to Anthropic's first professional certification for AI architects.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Everything You Need to Know About the Claude Certified Architect Exam",
+  "description": "Complete guide to Anthropic's Claude Certified Architect — Foundations certification: exam format, five content domains, six scenarios, preparation strategy, and free resources.",
+  "author": { "@type": "Person", "name": "Kranthi Manchikanti" },
+  "publisher": { "@type": "Person", "name": "Kranthi Manchikanti" },
+  "url": "https://ogkranthi.github.io/claude-certified-architect-guide.html"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fafaf9;
+  --bg-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #999999;
+  --accent: #18181b;
+  --accent-dim: #09090b;
+  --accent-light: #f4f4f5;
+  --border: #e8e8e5;
+  --border-hover: #c4c4c0;
+  --serif: 'Newsreader', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── HEADER ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(250, 250, 249, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.logo span { color: var(--accent); }
+
+nav { display: flex; gap: 2rem; align-items: center; }
+
+nav a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+nav a:hover { color: var(--accent); }
+
+.nav-cta {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.nav-cta:hover { background: var(--accent-dim); color: #fff; }
+
+.nav-cta-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.nav-cta-outline:hover { background: var(--bg-elevated); color: var(--text-primary); }
+
+/* ── ARTICLE LAYOUT ── */
+.article-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 8rem 2.5rem 6rem;
+}
+
+/* ── ARTICLE HERO ── */
+.article-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.article-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+}
+
+.article-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.article-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.article-meta {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.article-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.article-meta-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.article-meta-value {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.article-body h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-top: 2.25rem;
+  margin-bottom: 0.65rem;
+  color: var(--text-primary);
+}
+
+.article-body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 1.35rem;
+  font-weight: 300;
+}
+
+.article-body p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.article-body ul, .article-body ol {
+  margin: 0.75rem 0 1.35rem 1.5rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.85;
+  font-weight: 300;
+}
+
+.article-body li { margin-bottom: 0.45rem; }
+.article-body li strong { color: var(--text-primary); font-weight: 600; }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: 2rem 0;
+}
+
+.callout p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.callout-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* ── ARCHITECTURE BLOCK ── */
+.arch-block {
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 1.75rem 2rem;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.arch-block pre {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.75;
+  color: #e2e8f0;
+  white-space: pre;
+}
+
+.arch-block .comment { color: #64748b; }
+.arch-block .highlight { color: #60a5fa; }
+.arch-block .accent2 { color: #34d399; }
+.arch-block .warn { color: #f59e0b; }
+.arch-block .red { color: #f87171; }
+
+/* ── COMPARISON TABLE ── */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.85rem;
+}
+
+.compare-table th {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border);
+  text-align: left;
+  background: var(--bg);
+}
+
+.compare-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+
+.compare-table td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* ── SECTION DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3.5rem 0;
+}
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2.5rem;
+  text-align: center;
+  margin-top: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+}
+
+.cta-section h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.cta-section p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 1.75rem;
+  font-weight: 300;
+}
+
+.cta-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.cta-btn:hover { background: var(--accent-dim); color: #fff; }
+
+.cta-btn-ghost {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.cta-btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── FOOTER ── */
+footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer p { font-size: 0.75rem; color: var(--text-muted); }
+
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 1rem 1.5rem; }
+  nav a:not(.nav-cta) { display: none; }
+  .article-wrap { padding: 6rem 1.5rem 4rem; }
+  footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+  .arch-block { padding: 1.25rem; }
+  .arch-block pre { font-size: 0.65rem; }
+  .compare-table { font-size: 0.78rem; }
+  .compare-table th, .compare-table td { padding: 0.6rem 0.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="/" class="logo">Kranthi Manchikanti<span>.</span></a>
+  <nav>
+    <a href="/#writing">Writing</a>
+    <a href="/#about">About</a>
+    <a href="https://aiengineerweekly.substack.com" target="_blank" class="nav-cta">Newsletter →</a>
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta nav-cta-outline">LinkedIn →</a>
+  </nav>
+</header>
+
+<!-- ARTICLE -->
+<div class="article-wrap">
+
+  <div class="article-label">Certification · Claude · Agentic Architecture</div>
+  <h1 class="article-title">Everything You Need to Know About <em>the Claude Certified Architect Exam</em></h1>
+  <p class="article-subtitle">Anthropic just launched the first professional certification from a frontier AI lab. Here is every detail you need: exam format, content domains, scenario breakdowns, preparation strategy, and the free resources that will get you to a 720.</p>
+  <div class="article-meta">
+    <div class="article-meta-item">
+      <span class="article-meta-label">Author</span>
+      <span class="article-meta-value">Kranthi Manchikanti</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Read time</span>
+      <span class="article-meta-value">15 min</span>
+    </div>
+    <div class="article-meta-item">
+      <span class="article-meta-label">Category</span>
+      <span class="article-meta-value">Certification · AI Architecture</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+<h2>Why This Certification Matters</h2>
+
+<p>Anthropic has done something no other frontier AI lab has done: launched a formal, architect-level professional certification. The <strong>Claude Certified Architect — Foundations</strong> is not a course completion badge or a participation certificate. It is a proctored, scenario-based exam that tests whether you can design production AI systems using Claude's architecture stack.</p>
+
+<p>This is the first credential in the industry that validates the ability to build real agentic systems — not just prompt a chatbot, but architect multi-agent workflows, design tool integrations, configure production environments, and engineer for reliability at scale.</p>
+
+<p>The certification launched as part of Anthropic's <strong>$100 million Claude Partner Network</strong> investment for 2026. It is currently available to partner organizations, with early access free for the first 5,000 partner company employees. Membership in the partner network is free and open to any organization bringing Claude to market.</p>
+
+<div class="callout">
+  <div class="callout-label">Key Fact</div>
+  <p>This is a Foundations-level certification. Anthropic has confirmed additional certifications for sellers, architects, and developers will roll out later in 2026. Getting certified at the Foundations level now positions you ahead of the curve as the program expands.</p>
+</div>
+
+<h2>Exam Format and Logistics</h2>
+
+<p>The exam is straightforward in format but demanding in depth. Here are the numbers:</p>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Detail</th>
+      <th>Specification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Questions</td>
+      <td>60 multiple-choice (1 correct answer, 3 distractors)</td>
+    </tr>
+    <tr>
+      <td>Structure</td>
+      <td>Scenario-based: 4 of 6 scenarios selected at random</td>
+    </tr>
+    <tr>
+      <td>Scoring</td>
+      <td>Scaled score of 100–1,000</td>
+    </tr>
+    <tr>
+      <td>Passing Score</td>
+      <td>720 out of 1,000</td>
+    </tr>
+    <tr>
+      <td>Cost</td>
+      <td>Free (currently partner-exclusive)</td>
+    </tr>
+    <tr>
+      <td>Platform</td>
+      <td>Anthropic Academy on Skilljar</td>
+    </tr>
+    <tr>
+      <td>Access</td>
+      <td>Access request via Skilljar registration page</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The scenario-based structure is worth understanding. You will not see 60 isolated questions. Instead, the exam presents <strong>4 realistic production scenarios</strong>, each framing a set of questions around a specific architecture challenge. The scenarios are drawn randomly from a pool of 6, which means you cannot predict which subset you will get. You need to be prepared for all of them.</p>
+
+<div class="callout">
+  <div class="callout-label">Scoring Note</div>
+  <p>A 720 out of 1,000 on a scaled score is not a simple 72% correct. Scaled scoring adjusts for question difficulty. Some questions carry more weight than others. The practical implication: you cannot afford to skip an entire domain and hope to pass on strength in the others.</p>
+</div>
+
+<h2>The Five Content Domains</h2>
+
+<p>The exam covers five domains, each weighted differently. The weights tell you where to allocate study time — and they tell you what Anthropic considers the core competencies of a Claude architect.</p>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Domain</th>
+      <th>Weight</th>
+      <th>Focus</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>D1: Agentic Architecture & Orchestration</td>
+      <td>27%</td>
+      <td>Multi-agent patterns, coordinator-subagent design, task decomposition, escalation flows, bounded loops</td>
+    </tr>
+    <tr>
+      <td>D2: Tool Design & MCP Integration</td>
+      <td>18%</td>
+      <td>Model Context Protocol, MCP servers/clients, tool schemas, permission models, external system integration</td>
+    </tr>
+    <tr>
+      <td>D3: Claude Code Configuration & Workflows</td>
+      <td>20%</td>
+      <td>CLAUDE.md configuration, plan mode, slash commands, hooks, IDE integration, permission modes</td>
+    </tr>
+    <tr>
+      <td>D4: Prompt Engineering & Structured Output</td>
+      <td>20%</td>
+      <td>System prompts, chain-of-thought, structured output schemas, JSON mode, tool use patterns, validation</td>
+    </tr>
+    <tr>
+      <td>D5: Context Management & Reliability</td>
+      <td>15%</td>
+      <td>Context windows, token budgets, conversation compression, caching, error handling, retry logic</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Domain 1: Agentic Architecture & Orchestration (27%)</h3>
+
+<p>This is the heaviest domain for a reason. Anthropic is making a clear statement: the future of Claude is agentic, and architects need to understand how to design agent systems that are bounded, observable, and production-grade.</p>
+
+<p>Key concepts to master:</p>
+<ul>
+  <li><strong>Coordinator-subagent patterns</strong> — how to decompose complex tasks across multiple specialized agents with clear handoff protocols</li>
+  <li><strong>Bounded agentic loops</strong> — fixed evaluation budgets, narrow write surfaces, rollback discipline. Production agents are not autonomous — they are constrained.</li>
+  <li><strong>Escalation flows</strong> — when and how an agent should hand off to a human or a higher-authority system</li>
+  <li><strong>Task decomposition</strong> — breaking down ambiguous user requests into discrete, verifiable subtasks</li>
+</ul>
+
+<h3>Domain 2: Tool Design & MCP Integration (18%)</h3>
+
+<p>The Model Context Protocol is Anthropic's answer to the question of how AI systems interact with external tools and data sources. This domain tests whether you understand MCP architecturally — not just how to call a tool, but how to design tool interfaces that are safe, well-scoped, and composable.</p>
+
+<ul>
+  <li><strong>MCP architecture</strong> — servers, clients, transport layers, and how they compose</li>
+  <li><strong>Tool schema design</strong> — defining clear input/output contracts that models can reliably invoke</li>
+  <li><strong>Permission models</strong> — scoping what tools can access and what side effects they can produce</li>
+  <li><strong>Error handling</strong> — what happens when a tool call fails, times out, or returns unexpected data</li>
+</ul>
+
+<h3>Domain 3: Claude Code Configuration & Workflows (20%)</h3>
+
+<p>Claude Code is the primary developer interface for working with Claude in production development workflows. This domain is intensely practical — it tests configuration, customization, and workflow design.</p>
+
+<ul>
+  <li><strong>CLAUDE.md configuration</strong> — project-level and user-level instruction files that shape Claude's behavior</li>
+  <li><strong>Plan mode</strong> — using structured planning to align on approach before implementation</li>
+  <li><strong>Hooks and commands</strong> — extending Claude Code with custom automation triggers</li>
+  <li><strong>Permission modes</strong> — understanding the security model for tool execution</li>
+</ul>
+
+<h3>Domain 4: Prompt Engineering & Structured Output (20%)</h3>
+
+<p>This is not chatbot-level prompt engineering. This domain tests production prompt design: building prompts that produce consistent, parseable, schema-validated output for automated pipelines.</p>
+
+<ul>
+  <li><strong>System prompts for production</strong> — designing instructions that constrain model behavior reliably across thousands of invocations</li>
+  <li><strong>Structured output schemas</strong> — JSON mode, tool use patterns, and how to enforce output format</li>
+  <li><strong>Validation and retry</strong> — handling malformed output, schema violations, and graceful degradation</li>
+  <li><strong>Few-shot and chain-of-thought</strong> — when and how to use each technique for different output quality requirements</li>
+</ul>
+
+<h3>Domain 5: Context Management & Reliability (15%)</h3>
+
+<p>The smallest domain by weight, but the one that separates demo-grade systems from production-grade systems. Every scenario on the exam implicitly tests these concepts.</p>
+
+<ul>
+  <li><strong>Context window management</strong> — token budgets, conversation compression, and what to prioritize when context gets full</li>
+  <li><strong>Caching strategies</strong> — prompt caching, response caching, and when each applies</li>
+  <li><strong>Error handling at scale</strong> — rate limiting, retry logic, circuit breakers, and graceful degradation</li>
+  <li><strong>Reliability engineering</strong> — designing systems that degrade gracefully under load, latency spikes, or partial failures</li>
+</ul>
+
+<h2>The Six Exam Scenarios</h2>
+
+<p>The exam draws 4 scenarios at random from a pool of 6. Each scenario presents a realistic production context and frames a set of questions around it. Here is what you need to prepare for:</p>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Scenario</th>
+      <th>Core Challenge</th>
+      <th>Primary Domains Tested</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1. Customer Support Resolution Agent</td>
+      <td>Build an agent that handles customer tickets using SDK, MCP tools, and escalation rules</td>
+      <td>D1, D2, D5</td>
+    </tr>
+    <tr>
+      <td>2. Code Generation with Claude Code</td>
+      <td>Configure Claude Code for a development team: CLAUDE.md, plan mode, slash commands</td>
+      <td>D3, D4</td>
+    </tr>
+    <tr>
+      <td>3. Multi-Agent Research System</td>
+      <td>Design a coordinator-subagent architecture for parallel research tasks</td>
+      <td>D1, D5</td>
+    </tr>
+    <tr>
+      <td>4. Developer Productivity with Claude</td>
+      <td>Set up MCP servers, tool configurations, and exploration workflows for a dev team</td>
+      <td>D2, D3</td>
+    </tr>
+    <tr>
+      <td>5. Claude Code for CI/CD</td>
+      <td>Integrate Claude into CI/CD pipelines: structured output, batch API, multi-pass code review</td>
+      <td>D3, D4, D5</td>
+    </tr>
+    <tr>
+      <td>6. Structured Data Extraction</td>
+      <td>Design extraction pipelines with schemas, tool use, and validation-retry loops</td>
+      <td>D4, D5</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <div class="callout-label">Preparation Strategy</div>
+  <p>Since you only see 4 of 6 scenarios, you cannot strategically skip any. The strongest preparation approach is to build a small working prototype for each scenario. Even a minimal implementation forces you to confront the real architecture decisions the exam tests.</p>
+</div>
+
+<p>Notice the pattern: every scenario is a production architecture problem. There are no questions about ML theory, training procedures, or benchmark performance. This is a certification for people who <strong>build systems with Claude</strong>, not people who study Claude as a research artifact.</p>
+
+<h2>Preparation Strategy</h2>
+
+<p>The recommended preparation timeline is <strong>12 weeks at approximately 1 hour per day</strong>, totaling roughly 85 hours of study time. Here is how to allocate that time by domain, proportional to exam weight:</p>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Domain</th>
+      <th>Weight</th>
+      <th>Study Hours</th>
+      <th>Recommended Focus</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>D1: Agentic Architecture</td>
+      <td>27%</td>
+      <td>~23 hours</td>
+      <td>Build a multi-agent prototype. Study coordinator patterns, bounded loops, escalation flows.</td>
+    </tr>
+    <tr>
+      <td>D2: Tool Design & MCP</td>
+      <td>18%</td>
+      <td>~15 hours</td>
+      <td>Build an MCP server. Understand tool schemas, permission scoping, error handling.</td>
+    </tr>
+    <tr>
+      <td>D3: Claude Code Config</td>
+      <td>20%</td>
+      <td>~17 hours</td>
+      <td>Use Claude Code daily. Write CLAUDE.md files, experiment with plan mode and hooks.</td>
+    </tr>
+    <tr>
+      <td>D4: Prompt Engineering</td>
+      <td>20%</td>
+      <td>~17 hours</td>
+      <td>Design production prompts with structured output. Practice schema validation and retry patterns.</td>
+    </tr>
+    <tr>
+      <td>D5: Context & Reliability</td>
+      <td>15%</td>
+      <td>~13 hours</td>
+      <td>Study context window limits, caching, rate limiting. Build error-handling wrappers.</td>
+    </tr>
+    <tr>
+      <td>Practice Exams</td>
+      <td>—</td>
+      <td>~5 hours</td>
+      <td>Take full-length practice exams under timed conditions. Review wrong answers by domain.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Week-by-Week Approach</h3>
+
+<p><strong>Weeks 1–3: Foundations.</strong> Complete the Anthropic Academy courses for Claude 101 and the API course. Get comfortable with the SDK, basic tool use, and the mental model for how Claude processes prompts. If you have not used Claude Code, install it and work through the official course.</p>
+
+<p><strong>Weeks 4–6: Deep domains.</strong> Focus on D1 (Agentic Architecture) and D3 (Claude Code). Build a small multi-agent system. Write CLAUDE.md configurations for a real project. These two domains together account for 47% of the exam.</p>
+
+<p><strong>Weeks 7–9: Integration domains.</strong> Focus on D2 (MCP/Tools) and D4 (Prompt Engineering). Build an MCP server that connects to a real data source. Design prompts that produce structured, schema-validated output. Practice tool-use patterns.</p>
+
+<p><strong>Weeks 10–11: Reliability and scenarios.</strong> Focus on D5 (Context Management and Reliability). Study error handling, caching, and rate limiting. Then walk through each of the 6 exam scenarios and map them to domain concepts. Build at least a sketch implementation for each.</p>
+
+<p><strong>Week 12: Practice and review.</strong> Take practice exams. Identify weak areas by domain. Review wrong answers. Focus final study on the domains where you scored lowest.</p>
+
+<h2>Free Resources: Anthropic Academy</h2>
+
+<p>Anthropic Academy on Skilljar offers <strong>13 free courses</strong> that cover the certification's knowledge base. These are not third-party courses — they are Anthropic's official training materials, built by the same team that designed the certification.</p>
+
+<p>Key courses for exam preparation:</p>
+
+<ul>
+  <li><strong>Claude 101</strong> — foundational understanding of Claude's capabilities and architecture</li>
+  <li><strong>Building with the Claude API</strong> — system prompts, tool use, context windows, architecture patterns. Over 8 hours of content.</li>
+  <li><strong>Claude Code in Action</strong> — practical Claude Code usage, configuration, and workflow design</li>
+  <li><strong>Introduction to Model Context Protocol (MCP)</strong> — how to build MCP servers and clients, connect AI systems to databases and APIs</li>
+  <li><strong>Claude with Amazon Bedrock</strong> — deploying Claude in AWS environments</li>
+  <li><strong>Claude with Google Cloud's Vertex AI</strong> — deploying Claude in GCP environments</li>
+</ul>
+
+<div class="callout">
+  <div class="callout-label">Access</div>
+  <p>All Anthropic Academy courses are completely free. No paid Claude subscription required. Create a free Skilljar account at anthropic.skilljar.com and you can start immediately. Each course awards a certificate of completion that you can add to your LinkedIn profile.</p>
+</div>
+
+<p>Beyond the official courses, hands-on practice is non-negotiable. The exam tests applied knowledge, not recall. Reading documentation is necessary but not sufficient — you need to have built things with Claude's tool stack to answer scenario questions with confidence.</p>
+
+<h2>Who Should Take This Certification</h2>
+
+<p>The certification is designed for professionals who build production systems with Claude. But the career leverage varies depending on where you sit:</p>
+
+<h3>High priority</h3>
+<ul>
+  <li><strong>Solution architects at consulting firms</strong> — your clients will start asking about Claude architecture. Being certified before they ask puts you in a position to lead the engagement.</li>
+  <li><strong>AI platform engineers at enterprises</strong> — if your organization is adopting Claude, this certification validates your ability to design the internal platform correctly.</li>
+  <li><strong>Independent consultants building on Claude</strong> — in a market where every consultant claims AI expertise, a vendor certification is a concrete differentiator.</li>
+</ul>
+
+<h3>Worth pursuing</h3>
+<ul>
+  <li><strong>Senior developers transitioning to AI architecture roles</strong> — the exam's focus on systems thinking (orchestration, reliability, tool design) maps directly to the skills gap between developer and architect.</li>
+  <li><strong>Technical leads evaluating Claude for their teams</strong> — the preparation process alone will give you a structured understanding of Claude's architecture capabilities.</li>
+</ul>
+
+<h3>Can wait</h3>
+<ul>
+  <li><strong>Researchers and ML engineers</strong> — this is not a research certification. If your work is primarily model training, fine-tuning, or evaluation, the exam content will feel peripheral.</li>
+  <li><strong>Junior developers without production experience</strong> — the scenario-based format assumes you have designed production systems before. Build that experience first, then certify.</li>
+</ul>
+
+<h2>The Bigger Picture</h2>
+
+<p>This certification is a Foundations credential. The word matters. Anthropic has confirmed that additional certification tiers — for architects, developers, and sellers — are coming later in 2026. The Foundations level establishes the baseline. Advanced credentials will follow.</p>
+
+<p>For the AI industry as a whole, this is a maturity signal. The shift from "experiment with AI" to "certify professionals who build production AI systems" follows the exact pattern cloud computing took a decade ago. AWS launched Solutions Architect in 2013. By 2016, it was a hiring filter at every enterprise. Claude Certified Architect could follow the same trajectory for the agentic AI wave.</p>
+
+<p>The practical advice is simple: if you are building production systems with Claude, or plan to, start preparing now. The exam is free, the preparation resources are free, and the credential will carry more weight the earlier you earn it.</p>
+
+<hr class="divider">
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Preparing for the Exam?</h2>
+    <p>I publish weekly deep-dives on agentic architecture, MCP integration, prompt engineering, and AI systems design — the exact topics this certification tests. Subscribe to get preparation tips and technical breakdowns delivered to your inbox.</p>
+    <div class="cta-links">
+      <a href="https://aiengineerweekly.substack.com" target="_blank" class="cta-btn">Subscribe →</a>
+      <a href="/" class="cta-btn-ghost">Read More Essays →</a>
+    </div>
+  </div>
+
+</div>
+</div><!-- /article-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 Kranthi Manchikanti. Built with intent.</p>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/ogkranthi" target="_blank">GitHub</a>
+    <a href="https://x.com/ogkranthi" target="_blank">X / Twitter</a>
+  </div>
+</footer>
+
+</body>
+</html>

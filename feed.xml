@@ -7,6 +7,27 @@
     <description>Technical deep-dives on AI Agents, AI Architectures, Reinforcement Learning, HITL frameworks, and AI safety.</description>
     <language>en-us</language>
     <item>
+      <title>Breaking Down the Five Domains of the Claude Certified Architect Exam</title>
+      <link>https://ogkranthi.github.io/claude-certified-architect-domains.html</link>
+      <guid>https://ogkranthi.github.io/claude-certified-architect-domains.html</guid>
+      <description>A domain-by-domain technical analysis of what the exam actually tests, what the architectural patterns look like in practice, and a 12-week study roadmap to get you from zero to 720.</description>
+      <pubDate>Sun, 15 Mar 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Why the Claude Certified Architect Matters More Than You Think</title>
+      <link>https://ogkranthi.github.io/claude-certified-architect-strategy.html</link>
+      <guid>https://ogkranthi.github.io/claude-certified-architect-strategy.html</guid>
+      <description>Anthropic is the first frontier AI lab to launch a professional architect-level certification. What it signals about industry maturity, career strategy, and the future of AI architecture.</description>
+      <pubDate>Sun, 15 Mar 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Everything You Need to Know About the Claude Certified Architect Exam</title>
+      <link>https://ogkranthi.github.io/claude-certified-architect-guide.html</link>
+      <guid>https://ogkranthi.github.io/claude-certified-architect-guide.html</guid>
+      <description>Complete guide to Anthropic's Claude Certified Architect — Foundations certification: exam format, five content domains, six scenarios, preparation strategy, and free resources.</description>
+      <pubDate>Sun, 15 Mar 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
       <title>Governed Agent Distribution Is Becoming the Enterprise Battleground</title>
       <link>https://ogkranthi.github.io/governed-agent-distribution.html</link>
       <guid>https://ogkranthi.github.io/governed-agent-distribution.html</guid>
