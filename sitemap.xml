@@ -2,38 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ogkranthi.github.io/index.html</loc>
-    <lastmod>2026-03-15</lastmod>
-  </url>
-  <url>
-    <loc>https://ogkranthi.github.io/claude-certified-architect-guide.html</loc>
-    <lastmod>2026-03-15</lastmod>
-  </url>
-  <url>
-    <loc>https://ogkranthi.github.io/claude-certified-architect-strategy.html</loc>
-    <lastmod>2026-03-15</lastmod>
-  </url>
-  <url>
-    <loc>https://ogkranthi.github.io/claude-certified-architect-domains.html</loc>
-    <lastmod>2026-03-15</lastmod>
+    <lastmod>2026-03-16</lastmod>
   </url>
   <url>
     <loc>https://ogkranthi.github.io/autoresearch-harness-engineering.html</loc>
-    <lastmod>2026-03-11</lastmod>
+    <lastmod>2026-03-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ogkranthi.github.io/claude-certified-architect-domains.html</loc>
+    <lastmod>2026-03-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ogkranthi.github.io/claude-certified-architect-guide.html</loc>
+    <lastmod>2026-03-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ogkranthi.github.io/claude-certified-architect-strategy.html</loc>
+    <lastmod>2026-03-16</lastmod>
   </url>
   <url>
     <loc>https://ogkranthi.github.io/distillation-rl-guardrails.html</loc>
-    <lastmod>2026-03-11</lastmod>
+    <lastmod>2026-03-16</lastmod>
   </url>
   <url>
     <loc>https://ogkranthi.github.io/engram.html</loc>
-    <lastmod>2026-03-11</lastmod>
+    <lastmod>2026-03-16</lastmod>
   </url>
   <url>
     <loc>https://ogkranthi.github.io/governed-agent-distribution.html</loc>
-    <lastmod>2026-03-11</lastmod>
+    <lastmod>2026-03-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ogkranthi.github.io/openclaw-control-plane-agents.html</loc>
+    <lastmod>2026-03-16</lastmod>
   </url>
   <url>
     <loc>https://ogkranthi.github.io/pediatric-disaster-edge-ai.html</loc>
-    <lastmod>2026-03-11</lastmod>
+    <lastmod>2026-03-16</lastmod>
   </url>
 </urlset>
