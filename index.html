@@ -23,7 +23,6 @@
   "description": "Technical deep-dives on AI Agents, AI Architectures, Reinforcement Learning, HITL frameworks, and AI safety."
 }
 </script>
-<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/3d3eda9caaed2c475dba44126/f3ea9112071b1f2a08ad4ccce.js");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -42,11 +41,11 @@
   --accent-light: #f4f4f5;
   --border: #e8e8e5;
   --border-hover: #c4c4c0;
-  --tag-cloud: #52525b;
-  --tag-llm: #52525b;
-  --tag-robotics: #52525b;
-  --tag-safety: #52525b;
-  --tag-hitl: #52525b;
+  --tag-cloud: #1e40af;
+  --tag-llm: #0f766e;
+  --tag-robotics: #854d0e;
+  --tag-safety: #991b1b;
+  --tag-hitl: #3730a3;
   --serif: 'Newsreader', Georgia, serif;
   --sans: 'Inter', -apple-system, sans-serif;
   --mono: 'JetBrains Mono', monospace;
@@ -346,10 +345,12 @@ nav a:hover::after { width: 100%; }
   margin-bottom: 0.85rem;
 }
 
-.post-tag.cloud { color: var(--tag-cloud); }
-.post-tag.llm { color: var(--tag-llm); }
-.post-tag.robotics { color: var(--tag-robotics); }
-.post-tag.safety { color: var(--tag-safety); }
+.post-tag.cloud { color: #1e40af; background: #dbeafe; border-radius: 4px; padding: 2px 8px; }
+.post-tag.llm { color: #0f766e; background: #ccfbf1; border-radius: 4px; padding: 2px 8px; }
+.post-tag.robotics { color: #854d0e; background: #fef9c3; border-radius: 4px; padding: 2px 8px; }
+.post-tag.safety { color: #991b1b; background: #fee2e2; border-radius: 4px; padding: 2px 8px; }
+.post-tag.hitl { color: #3730a3; background: #e0e7ff; border-radius: 4px; padding: 2px 8px; }
+.post-tag.cert { color: #7e22ce; background: #f3e8ff; border-radius: 4px; padding: 2px 8px; }
 
 .post-card h3 {
   font-family: var(--serif);
@@ -409,7 +410,7 @@ nav a:hover::after { width: 100%; }
   border-radius: 10px;
   padding: 2.75rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 2.5rem;
   cursor: pointer;
   transition: all 0.3s;
@@ -750,43 +751,39 @@ footer p {
 
 <!-- FEATURED POST -->
 <section class="featured reveal" id="writing">
-  <div class="featured-card" onclick="window.location.href='governed-agent-distribution.html'">
-    <div class="featured-left">
-      <div class="featured-label">Featured Essay</div>
-      <h3>Governed Agent Distribution Is Becoming the Enterprise Battleground</h3>
-      <p class="featured-excerpt">The next phase of enterprise AI adoption is not about model capability. It is about governed distribution: connectors, permissions, marketplaces, and admin controls that make agents deployable inside real enterprises.</p>
-      <div class="post-footer" style="margin-top:1.5rem">
-        <span class="post-date">Mar 2026 · 15 min read</span>
-        <span class="post-read">Read essay →</span>
+    <div class="featured-card" id="featured-card" onclick="window.location.href='openclaw-control-plane-agents.html'">
+      <div class="featured-left">
+        <div class="featured-label">Latest Post</div>
+        <h3 id="featured-title">Loading…</h3>
+        <p class="featured-excerpt" id="featured-excerpt"></p>
+        <div class="post-footer" style="margin-top:1.5rem">
+          <span class="post-date" id="featured-date"></span>
+          <span class="post-read">Read essay →</span>
+        </div>
       </div>
     </div>
-    <div class="featured-right">
-      <div class="featured-takeaway">
-        <span class="featured-takeaway-num">01</span>
-        <p>The Shift Nobody Is Talking About Clearly</p>
-      </div>
-      <div class="featured-takeaway">
-        <span class="featured-takeaway-num">02</span>
-        <p>Why Connectors and Marketplaces Change Everything</p>
-      </div>
-      <div class="featured-takeaway">
-        <span class="featured-takeaway-num">03</span>
-        <p>Governed Distribution Matters More Than Raw Capability</p>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- POSTS GRID -->
 <div class="section-header reveal">
   <h2>Recent Writing</h2>
-  <span class="count">15 Posts</span>
+  <span class="count">16 Posts</span>
 </div>
 
 <div class="posts-grid">
 
-  <article class="post-card reveal" data-category="llm" onclick="window.location.href='claude-certified-architect-domains.html'">
-    <span class="post-tag llm">Certification · Deep Dive · Study Guide</span>
+  <article class="post-card reveal" data-category="cloud" data-date="2026-03-16" onclick="window.location.href='openclaw-control-plane-agents.html'">
+    <span class="post-tag cloud">AI Agents</span>
+    <h3>OpenClaw Isn't the Default: Why AI Coworkers Tied to Your Control Plane Usually Win</h3>
+    <p class="post-excerpt">The most important difference between OpenClaw and its alternatives is not model quality — it is execution model. A selection framework for enterprise AI coworkers by control-plane fit.</p>
+    <div class="post-footer">
+      <span class="post-date">Mar 2026 · 20 min</span>
+      <span class="post-read">Read →</span>
+    </div>
+  </article>
+
+  <article class="post-card reveal" data-category="llm" data-date="2026-03-14" onclick="window.location.href='claude-certified-architect-domains.html'">
+    <span class="post-tag cert">Certification</span>
     <h3>Breaking Down the Five Domains of the Claude Certified Architect Exam</h3>
     <p class="post-excerpt">A domain-by-domain technical analysis of what the exam actually tests, what the architectural patterns look like in practice, and a 12-week study roadmap to get you from zero to 720.</p>
     <div class="post-footer">
@@ -795,8 +792,8 @@ footer p {
     </div>
   </article>
 
-  <article class="post-card reveal" data-category="llm" onclick="window.location.href='claude-certified-architect-strategy.html'">
-    <span class="post-tag llm">AI Strategy · Certification · Career</span>
+  <article class="post-card reveal" data-category="llm" data-date="2026-03-13" onclick="window.location.href='claude-certified-architect-strategy.html'">
+    <span class="post-tag cert">Certification</span>
     <h3>Why the Claude Certified Architect Matters More Than You Think</h3>
     <p class="post-excerpt">Anthropic is the first frontier AI lab to launch a professional architect-level certification. What it signals about industry maturity, career strategy, and the future of AI architecture.</p>
     <div class="post-footer">
@@ -805,8 +802,8 @@ footer p {
     </div>
   </article>
 
-  <article class="post-card reveal" data-category="llm" onclick="window.location.href='claude-certified-architect-guide.html'">
-    <span class="post-tag llm">Certification · Claude · Agentic Architecture</span>
+  <article class="post-card reveal" data-category="llm" data-date="2026-03-12" onclick="window.location.href='claude-certified-architect-guide.html'">
+    <span class="post-tag cert">Certification</span>
     <h3>Everything You Need to Know About the Claude Certified Architect Exam</h3>
     <p class="post-excerpt">Complete guide to Anthropic's Claude Certified Architect — Foundations certification: exam format, five content domains, six scenarios, preparation strategy, and free resources.</p>
     <div class="post-footer">
@@ -815,8 +812,8 @@ footer p {
     </div>
   </article>
 
-  <article class="post-card reveal" data-category="cloud" onclick="window.location.href='governed-agent-distribution.html'">
-    <span class="post-tag cloud">AI Agents · Enterprise Architecture</span>
+  <article class="post-card reveal" data-category="cloud" data-date="2026-03-08" onclick="window.location.href='governed-agent-distribution.html'">
+    <span class="post-tag cloud">AI Agents</span>
     <h3>Governed Agent Distribution Is Becoming the Enterprise Battleground</h3>
     <p class="post-excerpt">The next phase of enterprise AI adoption is not about model capability. It is about governed distribution: connectors, permissions, marketplaces, and admin controls that make agents deployable inside real enterprises.</p>
     <div class="post-footer">
@@ -825,8 +822,8 @@ footer p {
     </div>
   </article>
 
-  <article class="post-card reveal" data-category="cloud" onclick="window.location.href='autoresearch-harness-engineering.html'">
-    <span class="post-tag cloud">AI Agents · Agentic AI</span>
+  <article class="post-card reveal" data-category="cloud" data-date="2026-03-05" onclick="window.location.href='autoresearch-harness-engineering.html'">
+    <span class="post-tag cloud">AI Agents</span>
     <h3>AutoResearch, Harness Engineering, and the Next Layer of Agentic AI</h3>
     <p class="post-excerpt">The real innovation in AutoResearch isn't autonomy — it's the constraints. Bounded loops, narrow write surfaces, fixed evaluation budgets, and rollback discipline. The scaffolding pattern enterprises should study for production agentic AI.</p>
     <div class="post-footer">
@@ -835,8 +832,8 @@ footer p {
     </div>
   </article>
 
-  <article class="post-card reveal" data-category="safety" onclick="window.location.href='distillation-rl-guardrails.html'">
-    <span class="post-tag safety">AI Security · Model Defense</span>
+  <article class="post-card reveal" data-category="safety" data-date="2026-02-20" onclick="window.location.href='distillation-rl-guardrails.html'">
+    <span class="post-tag safety">AI Safety</span>
     <h3>Your API Is a Training Dataset: How Distillation Attacks Work and How to Stop Them</h3>
     <p class="post-excerpt">DeepSeek, Moonshot, and MiniMax ran 16M+ exchanges to steal Claude's capabilities. How distillation attacks work mechanically — and a layered guardrail checklist for API and model builders.</p>
     <div class="post-footer">
@@ -845,8 +842,8 @@ footer p {
     </div>
   </article>
 
-  <article class="post-card reveal" data-category="llm" onclick="window.location.href='pediatric-disaster-edge-ai.html'">
-    <span class="post-tag llm">Edge AI · Fine-Tuning</span>
+  <article class="post-card reveal" data-category="llm" data-date="2026-02-15" onclick="window.location.href='pediatric-disaster-edge-ai.html'">
+    <span class="post-tag hitl">Edge AI</span>
     <h3>Fine-Tuning a 1.2B LLM for Pediatric Disaster Response on the Edge</h3>
     <p class="post-excerpt">How we fine-tuned LiquidAI's LFM2.5-1.2B on JumpSTART triage protocols using Unsloth + Hugging Face Jobs — and built a model that runs under 1GB RAM with zero internet connectivity on field devices.</p>
     <div class="post-footer">
@@ -1010,6 +1007,25 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+</script>
+
+<script>
+// Auto-update featured post from latest dated card
+(function() {
+  var cards = Array.from(document.querySelectorAll('.post-card[data-date]'));
+  if (!cards.length) return;
+  var latest = cards.reduce(function(a, b) { return a.dataset.date > b.dataset.date ? a : b; });
+  var fc = document.getElementById('featured-card');
+  if (!fc) return;
+  var m = (latest.getAttribute('onclick') || '').match(/'([^']+)'/);
+  if (m) fc.setAttribute('onclick', "window.location.href='" + m[1] + "'");
+  var t = document.getElementById('featured-title');
+  var e = document.getElementById('featured-excerpt');
+  var d = document.getElementById('featured-date');
+  if (t) t.textContent = (latest.querySelector('h3') || {}).textContent || '';
+  if (e) e.textContent = (latest.querySelector('.post-excerpt') || {}).textContent || '';
+  if (d) d.textContent = (latest.querySelector('.post-date') || {}).textContent || '';
+})();
 </script>
 
 </body>
