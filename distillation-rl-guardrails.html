@@ -37,9 +37,9 @@
   --text-primary: #1a1a1a;
   --text-secondary: #555555;
   --text-muted: #999999;
-  --accent: #18181b;
-  --accent-dim: #09090b;
-  --accent-light: #f4f4f5;
+  --accent: #1e40af;
+  --accent-dim: #1e3a8a;
+  --accent-light: #dbeafe;
   --border: #e8e8e5;
   --border-hover: #c4c4c0;
   --serif: 'Newsreader', Georgia, serif;
@@ -110,6 +110,13 @@ nav a:hover { color: var(--accent); }
 }
 
 .nav-cta:hover { background: var(--accent-dim); color: #fff; }
+
+.nav-cta-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+.nav-cta-outline:hover { background: var(--bg-elevated); color: var(--text-primary); }
 
 /* ── ARTICLE LAYOUT ── */
 .article-wrap {
@@ -492,7 +499,8 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
   <nav>
     <a href="/#writing">Writing</a>
     <a href="/#about">About</a>
-    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta">LinkedIn →</a>
+    <a href="https://aiengineerweekly.substack.com" target="_blank" class="nav-cta">Newsletter →</a>
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta nav-cta-outline">LinkedIn →</a>
   </nav>
 </header>
 
@@ -676,15 +684,15 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
       </marker>
     </defs>
     <!-- Command Center -->
-    <rect x="280" y="10" width="240" height="50" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
+    <rect x="280" y="10" width="240" height="56" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
     <text x="400" y="32" text-anchor="middle" fill="#7f1d1d" font-size="14" font-weight="700">COMMAND CENTER</text>
-    <text x="400" y="48" text-anchor="middle" fill="#991b1b" font-size="12">(hidden from API provider)</text>
+    <text x="400" y="50" text-anchor="middle" fill="#991b1b" font-size="12">(hidden from API provider)</text>
     <!-- Dashed arrows down -->
-    <line x1="330" y1="60" x2="90" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
-    <line x1="360" y1="60" x2="240" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
-    <line x1="400" y1="60" x2="400" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
-    <line x1="440" y1="60" x2="560" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
-    <line x1="470" y1="60" x2="710" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
+    <line x1="330" y1="66" x2="90" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
+    <line x1="360" y1="66" x2="240" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
+    <line x1="400" y1="66" x2="400" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
+    <line x1="440" y1="66" x2="560" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
+    <line x1="470" y1="66" x2="710" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr3)"/>
     <!-- Account circles -->
     <circle cx="90" cy="130" r="30" fill="#fff" stroke="#cbd5e1" stroke-width="1.5"/>
     <text x="90" y="128" text-anchor="middle" fill="#333" font-size="12">Acct #1</text>
@@ -708,9 +716,9 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <line x1="560" y1="160" x2="450" y2="200" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr3)"/>
     <line x1="710" y1="160" x2="480" y2="200" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr3)"/>
     <!-- Target API -->
-    <rect x="280" y="200" width="240" height="50" rx="8" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
-    <text x="400" y="222" text-anchor="middle" fill="#1e3a8a" font-size="14" font-weight="700">TARGET API</text>
-    <text x="400" y="238" text-anchor="middle" fill="#1e40af" font-size="12">Looks normal in isolation</text>
+    <rect x="280" y="200" width="240" height="56" rx="8" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+    <text x="400" y="224" text-anchor="middle" fill="#1e3a8a" font-size="14" font-weight="700">TARGET API</text>
+    <text x="400" y="242" text-anchor="middle" fill="#1e40af" font-size="12">Looks normal in isolation</text>
     <!-- Summary -->
     <text x="400" y="318" text-anchor="middle" fill="#64748b" font-size="12">~24,000 accounts · 16M+ exchanges · Rotate on detection · Pivot within 24h</text>
   </svg>
