@@ -24,7 +24,6 @@
   "url": "https://ogkranthi.github.io/engram.html"
 }
 </script>
-<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/3d3eda9caaed2c475dba44126/f3ea9112071b1f2a08ad4ccce.js");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -659,23 +658,23 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <!-- HAND-DRAWN DIAGRAM -->
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
     <div style="margin:2.5rem -2rem;background:#fdfcfb;border:1.5px solid var(--border);border-radius:12px;padding:2rem;overflow-x:auto;">
-      <svg viewBox="0 0 780 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;display:block;margin:0 auto;font-family:'Caveat',cursive;">
+      <svg viewBox="0 0 780 616" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;display:block;margin:0 auto;font-family:'Caveat',cursive;">
 
         <!-- title -->
-        <text x="390" y="32" text-anchor="middle" font-size="21" fill="#1a1a1a" font-weight="700">Engram: How It Fits Inside a Transformer</text>
+        <text x="390" y="32" text-anchor="middle" font-size="27" fill="#1a1a1a" font-weight="700">Engram: How It Fits Inside a Transformer</text>
 
         <!-- ── INPUT TOKENS ── -->
         <rect x="220" y="52" width="320" height="50" rx="8" fill="#ffffff" stroke="#c7c7c3" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <text x="380" y="74" text-anchor="middle" font-size="16" fill="#555">Input Tokens</text>
-        <text x="380" y="93" text-anchor="middle" font-size="14" fill="#999">[the]  [patient]  [has]  [a]  [fever]</text>
+        <text x="380" y="74" text-anchor="middle" font-size="21" fill="#555">Input Tokens</text>
+        <text x="380" y="93" text-anchor="middle" font-size="18" fill="#999">[the]  [patient]  [has]  [a]  [fever]</text>
 
         <!-- arrow down from tokens -->
         <line x1="380" y1="102" x2="380" y2="132" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
 
         <!-- ── N-GRAM HASH ── -->
         <rect x="272" y="132" width="216" height="48" rx="8" fill="#f4f4f5" stroke="#a1a1aa" stroke-width="1.5"/>
-        <text x="380" y="153" text-anchor="middle" font-size="16" fill="#18181b" font-weight="600">n-gram hash address</text>
-        <text x="380" y="172" text-anchor="middle" font-size="13" fill="#71717a">O(1) · computed before forward pass</text>
+        <text x="380" y="153" text-anchor="middle" font-size="21" fill="#18181b" font-weight="600">n-gram hash address</text>
+        <text x="380" y="172" text-anchor="middle" font-size="17" fill="#71717a">O(1) · computed before forward pass</text>
 
         <!-- arrow left to CPU DRAM -->
         <path d="M 272 156 Q 160 156 145 228" stroke="#18181b" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrblu)"/>
@@ -684,36 +683,36 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
         <!-- ── CPU DRAM BOX ── -->
         <rect x="14" y="220" width="206" height="130" rx="10" fill="#f9f9f8" stroke="#a1a1aa" stroke-width="1.5" stroke-dasharray="6,3"/>
-        <text x="117" y="246" text-anchor="middle" font-size="15" fill="#18181b" font-weight="700">CPU DRAM</text>
-        <text x="117" y="267" text-anchor="middle" font-size="14" fill="#555">Engram Table</text>
-        <text x="117" y="287" text-anchor="middle" font-size="13" fill="#888">billions of embeddings</text>
-        <text x="117" y="306" text-anchor="middle" font-size="13" fill="#888">cheap · large · static</text>
-        <text x="117" y="325" text-anchor="middle" font-size="13" fill="#52525b">prefetched in parallel ↗</text>
+        <text x="117" y="246" text-anchor="middle" font-size="20" fill="#18181b" font-weight="700">CPU DRAM</text>
+        <text x="117" y="267" text-anchor="middle" font-size="18" fill="#555">Engram Table</text>
+        <text x="117" y="287" text-anchor="middle" font-size="17" fill="#888">billions of embeddings</text>
+        <text x="117" y="306" text-anchor="middle" font-size="17" fill="#888">cheap · large · static</text>
+        <text x="117" y="325" text-anchor="middle" font-size="17" fill="#52525b">prefetched in parallel ↗</text>
 
         <!-- arrow right from CPU to residual inject -->
         <path d="M 220 283 Q 288 283 288 362" stroke="#18181b" stroke-width="1.5" fill="none" marker-end="url(#arrgrn)"/>
-        <text x="238" y="330" font-size="13" fill="#52525b">e_engram</text>
+        <text x="238" y="330" font-size="17" fill="#52525b">e_engram</text>
 
         <!-- ── GPU HBM BOX ── -->
         <rect x="252" y="220" width="268" height="130" rx="10" fill="#ffffff" stroke="#18181b" stroke-width="1.5"/>
-        <text x="386" y="246" text-anchor="middle" font-size="15" fill="#18181b" font-weight="700">GPU HBM</text>
-        <text x="386" y="267" text-anchor="middle" font-size="14" fill="#555">Transformer Layers</text>
-        <text x="386" y="287" text-anchor="middle" font-size="13" fill="#888">Attention  ·  MoE Experts</text>
-        <text x="386" y="306" text-anchor="middle" font-size="13" fill="#888">KV Cache  ·  MLP weights</text>
-        <text x="386" y="325" text-anchor="middle" font-size="13" fill="#71717a">expensive · limited · dynamic</text>
+        <text x="386" y="246" text-anchor="middle" font-size="20" fill="#18181b" font-weight="700">GPU HBM</text>
+        <text x="386" y="267" text-anchor="middle" font-size="18" fill="#555">Transformer Layers</text>
+        <text x="386" y="287" text-anchor="middle" font-size="17" fill="#888">Attention  ·  MoE Experts</text>
+        <text x="386" y="306" text-anchor="middle" font-size="17" fill="#888">KV Cache  ·  MLP weights</text>
+        <text x="386" y="325" text-anchor="middle" font-size="17" fill="#71717a">expensive · limited · dynamic</text>
 
         <!-- freed capacity note -->
         <rect x="542" y="238" width="220" height="94" rx="8" fill="#fafaf9" stroke="#e8e8e5" stroke-width="1.2" stroke-dasharray="4,3"/>
-        <text x="652" y="262" text-anchor="middle" font-size="13" fill="#999">static patterns no</text>
-        <text x="652" y="281" text-anchor="middle" font-size="13" fill="#999">longer stored here</text>
-        <text x="652" y="300" text-anchor="middle" font-size="13" fill="#52525b">→ freed capacity</text>
-        <text x="652" y="319" text-anchor="middle" font-size="13" fill="#52525b">for reasoning</text>
+        <text x="652" y="262" text-anchor="middle" font-size="17" fill="#999">static patterns no</text>
+        <text x="652" y="281" text-anchor="middle" font-size="17" fill="#999">longer stored here</text>
+        <text x="652" y="300" text-anchor="middle" font-size="17" fill="#52525b">→ freed capacity</text>
+        <text x="652" y="319" text-anchor="middle" font-size="17" fill="#52525b">for reasoning</text>
         <line x1="520" y1="283" x2="542" y2="283" stroke="#ccc" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arrgry)"/>
 
         <!-- ── RESIDUAL INJECTION ── -->
         <rect x="252" y="382" width="268" height="54" rx="8" fill="#f4f4f5" stroke="#a1a1aa" stroke-width="1.5"/>
-        <text x="386" y="406" text-anchor="middle" font-size="15" fill="#18181b" font-weight="600">Residual Stream Injection</text>
-        <text x="386" y="426" text-anchor="middle" font-size="13" fill="#71717a">h = TransformerLayer(h) + α · e_engram</text>
+        <text x="386" y="406" text-anchor="middle" font-size="20" fill="#18181b" font-weight="600">Residual Stream Injection</text>
+        <text x="386" y="426" text-anchor="middle" font-size="17" fill="#71717a">h = TransformerLayer(h) + α · e_engram</text>
 
         <!-- arrow down from GPU to injection -->
         <line x1="386" y1="350" x2="386" y2="382" stroke="#aaa" stroke-width="1.5" marker-end="url(#arr)"/>
@@ -723,16 +722,16 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
         <!-- ── OUTPUT ── -->
         <rect x="272" y="466" width="216" height="48" rx="8" fill="#ffffff" stroke="#c7c7c3" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <text x="380" y="488" text-anchor="middle" font-size="16" fill="#1a1a1a" font-weight="600">Output</text>
-        <text x="380" y="506" text-anchor="middle" font-size="13" fill="#999">richer knowledge · zero added latency</text>
+        <text x="380" y="488" text-anchor="middle" font-size="21" fill="#1a1a1a" font-weight="600">Output</text>
+        <text x="380" y="506" text-anchor="middle" font-size="17" fill="#999">richer knowledge · zero added latency</text>
 
         <!-- ── LEGEND ── -->
-        <line x1="30" y1="534" x2="62" y2="534" stroke="#18181b" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <text x="70" y="539" font-size="13" fill="#555">lookup / prefetch path</text>
-        <line x1="240" y1="534" x2="272" y2="534" stroke="#18181b" stroke-width="1.5"/>
-        <text x="280" y="539" font-size="13" fill="#555">embedding injection</text>
-        <line x1="460" y1="534" x2="492" y2="534" stroke="#aaa" stroke-width="1.5"/>
-        <text x="500" y="539" font-size="13" fill="#555">forward pass flow</text>
+        <line x1="30" y1="587" x2="62" y2="587" stroke="#18181b" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="70" y="593" font-size="17" fill="#555">lookup / prefetch path</text>
+        <line x1="240" y1="587" x2="272" y2="587" stroke="#18181b" stroke-width="1.5"/>
+        <text x="280" y="593" font-size="17" fill="#555">embedding injection</text>
+        <line x1="460" y1="587" x2="492" y2="587" stroke="#aaa" stroke-width="1.5"/>
+        <text x="500" y="593" font-size="17" fill="#555">forward pass flow</text>
 
         <!-- ARROWHEAD MARKERS -->
         <defs>
@@ -1172,14 +1171,14 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
     <!-- CTA -->
     <div class="cta-section">
-      <h2>Working on AI Memory Systems?</h2>
-      <p>If you're researching model-level memory architectures, building production memory infrastructure, or deploying full-stack AI memory systems in regulated industries — I'd like to connect. Whether you're a researcher, engineer, or enterprise architect, reach out.</p>
-      <div class="cta-links">
-        <a href="mailto:ogkranthi22@gmail.com" class="cta-btn">Email Me →</a>
-        <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="cta-btn-ghost">Connect on LinkedIn</a>
-        <a href="https://x.com/ogkranthi" target="_blank" class="cta-btn-ghost">Find Me on X</a>
-      </div>
-    </div>
+  <h2>Stay in the loop</h2>
+  <p>New posts on AI agents, architectures, and applied research — delivered weekly.</p>
+  <iframe src="https://aiengineerweekly.substack.com/embed" width="480" height="200" style="border:1px solid #e8e8e5;border-radius:8px;background:white;max-width:100%;display:block;margin:1.5rem auto 0;" frameborder="0" scrolling="no"></iframe>
+  <div class="cta-links" style="margin-top:1.25rem;">
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" rel="noopener noreferrer" class="cta-btn-ghost">LinkedIn →</a>
+    <a href="https://github.com/ogkranthi" target="_blank" rel="noopener noreferrer" class="cta-btn-ghost">GitHub →</a>
+  </div>
+</div>
 
   </div><!-- end article-body -->
 </div><!-- end article-wrap -->
