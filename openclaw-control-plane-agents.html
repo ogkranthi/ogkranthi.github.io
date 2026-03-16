@@ -659,59 +659,59 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
 
     <!-- Step boxes: top row -->
     <!-- Issue -->
-    <rect x="10" y="60" width="110" height="52" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <rect x="10" y="60" width="110" height="64" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
     <text x="65" y="82" text-anchor="middle" fill="#1a1a1a" font-size="13" font-weight="700">ISSUE</text>
     <text x="65" y="96" text-anchor="middle" fill="#475569" font-size="11">Task defined</text>
-    <text x="65" y="107" text-anchor="middle" fill="#475569" font-size="11">in GitHub</text>
+    <text x="65" y="110" text-anchor="middle" fill="#475569" font-size="11">in GitHub</text>
 
     <!-- Arrow -->
     <line x1="120" y1="86" x2="148" y2="86" stroke="#64748b" stroke-width="1.5" marker-end="url(#d2arr)"/>
 
     <!-- Agent Sandbox -->
-    <rect x="150" y="60" width="120" height="52" rx="7" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+    <rect x="150" y="60" width="120" height="64" rx="7" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
     <text x="210" y="80" text-anchor="middle" fill="#1e3a8a" font-size="13" font-weight="700">AGENT</text>
     <text x="210" y="94" text-anchor="middle" fill="#1e40af" font-size="11">Isolated sandbox</text>
-    <text x="210" y="105" text-anchor="middle" fill="#1e40af" font-size="11">Reads codebase</text>
+    <text x="210" y="108" text-anchor="middle" fill="#1e40af" font-size="11">Reads codebase</text>
 
     <!-- Arrow -->
     <line x1="270" y1="86" x2="298" y2="86" stroke="#64748b" stroke-width="1.5" marker-end="url(#d2arr)"/>
 
     <!-- Draft PR -->
-    <rect x="300" y="60" width="110" height="52" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <rect x="300" y="60" width="110" height="64" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
     <text x="355" y="80" text-anchor="middle" fill="#1a1a1a" font-size="13" font-weight="700">DRAFT PR</text>
     <text x="355" y="94" text-anchor="middle" fill="#475569" font-size="11">Diff visible</text>
-    <text x="355" y="105" text-anchor="middle" fill="#475569" font-size="11">Audit trail begins</text>
+    <text x="355" y="108" text-anchor="middle" fill="#475569" font-size="11">Audit trail begins</text>
 
     <!-- Arrow -->
     <line x1="410" y1="86" x2="438" y2="86" stroke="#64748b" stroke-width="1.5" marker-end="url(#d2arr)"/>
 
     <!-- CI Gate -->
-    <rect x="440" y="50" width="110" height="72" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <rect x="440" y="50" width="110" height="80" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
     <text x="495" y="74" text-anchor="middle" fill="#92400e" font-size="13" font-weight="700">CI GATE</text>
     <text x="495" y="88" text-anchor="middle" fill="#78350f" font-size="11">GitHub Actions</text>
-    <text x="495" y="100" text-anchor="middle" fill="#78350f" font-size="11">Tests · Lint</text>
-    <text x="495" y="112" text-anchor="middle" fill="#78350f" font-size="11">Policy checks</text>
+    <text x="495" y="102" text-anchor="middle" fill="#78350f" font-size="11">Tests · Lint</text>
+    <text x="495" y="116" text-anchor="middle" fill="#78350f" font-size="11">Policy checks</text>
 
     <!-- Arrow -->
     <line x1="550" y1="86" x2="578" y2="86" stroke="#64748b" stroke-width="1.5" marker-end="url(#d2arr)"/>
 
     <!-- Review Gate -->
-    <rect x="580" y="50" width="110" height="72" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <rect x="580" y="50" width="110" height="80" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
     <text x="635" y="74" text-anchor="middle" fill="#92400e" font-size="13" font-weight="700">REVIEW</text>
     <text x="635" y="88" text-anchor="middle" fill="#78350f" font-size="11">Human approval</text>
-    <text x="635" y="100" text-anchor="middle" fill="#78350f" font-size="11">CODEOWNERS</text>
-    <text x="635" y="112" text-anchor="middle" fill="#78350f" font-size="11">Branch rules</text>
+    <text x="635" y="102" text-anchor="middle" fill="#78350f" font-size="11">CODEOWNERS</text>
+    <text x="635" y="116" text-anchor="middle" fill="#78350f" font-size="11">Branch rules</text>
 
     <!-- Arrow down to Merge -->
-    <line x1="635" y1="122" x2="635" y2="152" stroke="#64748b" stroke-width="1.5" marker-end="url(#d2arr)"/>
+    <line x1="635" y1="130" x2="635" y2="152" stroke="#64748b" stroke-width="1.5" marker-end="url(#d2arr)"/>
 
     <!-- Merge -->
-    <rect x="580" y="154" width="110" height="42" rx="7" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+    <rect x="580" y="154" width="110" height="52" rx="7" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
     <text x="635" y="174" text-anchor="middle" fill="#1e3a8a" font-size="13" font-weight="700">MERGE</text>
     <text x="635" y="188" text-anchor="middle" fill="#1e40af" font-size="11">Revert always possible</text>
 
     <!-- Fail path from CI gate -->
-    <path d="M495 122 Q495 200 355 200 Q210 200 210 112" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#d2arr-red)"/>
+    <path d="M495 130 Q495 200 355 200 Q210 200 210 124" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#d2arr-red)"/>
     <text x="340" y="218" text-anchor="middle" fill="#d97706" font-size="11">CI/review fail → agent revises in sandbox</text>
 
     <!-- Control points label -->
@@ -758,30 +758,30 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     </defs>
 
     <!-- Task -->
-    <rect x="10" y="110" width="100" height="50" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <rect x="10" y="110" width="100" height="62" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
     <text x="60" y="131" text-anchor="middle" fill="#1a1a1a" font-size="13" font-weight="700">TASK</text>
     <text x="60" y="145" text-anchor="middle" fill="#475569" font-size="11">Engineering goal</text>
-    <text x="60" y="156" text-anchor="middle" fill="#475569" font-size="11">in terminal/editor</text>
+    <text x="60" y="159" text-anchor="middle" fill="#475569" font-size="11">in terminal/editor</text>
 
     <!-- Arrow -->
     <line x1="110" y1="135" x2="135" y2="135" stroke="#64748b" stroke-width="1.5" marker-end="url(#d3arr)"/>
 
     <!-- Agent Reasoning -->
-    <rect x="137" y="110" width="110" height="50" rx="7" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+    <rect x="137" y="110" width="110" height="62" rx="7" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
     <text x="192" y="131" text-anchor="middle" fill="#1e3a8a" font-size="13" font-weight="700">AGENT</text>
     <text x="192" y="145" text-anchor="middle" fill="#1e40af" font-size="11">Plan + propose</text>
-    <text x="192" y="156" text-anchor="middle" fill="#1e40af" font-size="11">tool call</text>
+    <text x="192" y="159" text-anchor="middle" fill="#1e40af" font-size="11">tool call</text>
 
     <!-- Arrow -->
     <line x1="247" y1="135" x2="275" y2="135" stroke="#64748b" stroke-width="1.5" marker-end="url(#d3arr)"/>
 
     <!-- Hook / Approval Gate -->
-    <rect x="277" y="95" width="130" height="80" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <rect x="277" y="95" width="130" height="90" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
     <text x="342" y="117" text-anchor="middle" fill="#92400e" font-size="13" font-weight="700">HOOK / APPROVAL</text>
     <text x="342" y="131" text-anchor="middle" fill="#78350f" font-size="11">Pre-tool intercept</text>
-    <text x="342" y="143" text-anchor="middle" fill="#78350f" font-size="11">Policy check</text>
-    <text x="342" y="155" text-anchor="middle" fill="#78350f" font-size="11">Human confirm</text>
-    <text x="342" y="167" text-anchor="middle" fill="#78350f" font-size="11">(Cline: explicit)</text>
+    <text x="342" y="145" text-anchor="middle" fill="#78350f" font-size="11">Policy check</text>
+    <text x="342" y="159" text-anchor="middle" fill="#78350f" font-size="11">Human confirm</text>
+    <text x="342" y="173" text-anchor="middle" fill="#78350f" font-size="11">(Cline: explicit)</text>
 
     <!-- Approve arrow -->
     <line x1="407" y1="120" x2="450" y2="90" stroke="#059669" stroke-width="1.5" marker-end="url(#d3arr-approve)"/>
@@ -792,27 +792,27 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <text x="440" y="172" fill="#dc2626" font-size="11">Deny / revise</text>
 
     <!-- Tool Call (approved) -->
-    <rect x="452" y="60" width="120" height="52" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <rect x="452" y="60" width="120" height="64" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
     <text x="512" y="81" text-anchor="middle" fill="#1a1a1a" font-size="13" font-weight="700">TOOL CALL</text>
     <text x="512" y="95" text-anchor="middle" fill="#475569" font-size="11">File write / shell exec</text>
-    <text x="512" y="107" text-anchor="middle" fill="#475569" font-size="11">API call / search</text>
+    <text x="512" y="109" text-anchor="middle" fill="#475569" font-size="11">API call / search</text>
 
     <!-- Arrow right to output -->
     <line x1="572" y1="86" x2="620" y2="86" stroke="#64748b" stroke-width="1.5" marker-end="url(#d3arr)"/>
 
     <!-- Post-Hook -->
-    <rect x="622" y="60" width="120" height="52" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <rect x="622" y="60" width="120" height="64" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
     <text x="682" y="80" text-anchor="middle" fill="#92400e" font-size="13" font-weight="700">POST-HOOK</text>
     <text x="682" y="94" text-anchor="middle" fill="#78350f" font-size="11">Log / audit action</text>
-    <text x="682" y="106" text-anchor="middle" fill="#78350f" font-size="11">Enforce constraints</text>
+    <text x="682" y="108" text-anchor="middle" fill="#78350f" font-size="11">Enforce constraints</text>
 
     <!-- Output box (denied path) -->
-    <rect x="452" y="162" width="120" height="42" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
+    <rect x="452" y="162" width="120" height="52" rx="7" fill="#fff" stroke="#d0d0cc" stroke-width="1.5"/>
     <text x="512" y="182" text-anchor="middle" fill="#1a1a1a" font-size="13" font-weight="700">AGENT REVISES</text>
     <text x="512" y="196" text-anchor="middle" fill="#475569" font-size="11">Re-plan with</text>
 
     <!-- Deny path back -->
-    <path d="M512 204 Q512 240 192 240 Q192 160 192 160" fill="none" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#d3arr-deny)"/>
+    <path d="M512 214 Q512 255 192 255 Q192 172 192 172" fill="none" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#d3arr-deny)"/>
     <text x="350" y="302" text-anchor="middle" fill="#94a3b8" font-size="11">Reject loops back to agent; model choice pluggable (Cline)</text>
 
     <!-- Label: control points region -->
@@ -1035,10 +1035,10 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <line x1="510" y1="103" x2="590" y2="103" stroke="#059669" stroke-width="1.5" marker-end="url(#d6arr-yes)"/>
     <text x="548" y="96" text-anchor="middle" fill="#059669" font-size="12" font-weight="600">YES</text>
     <!-- Answer box -->
-    <rect x="592" y="75" width="160" height="56" rx="7" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="592" y="75" width="160" height="64" rx="7" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
     <text x="672" y="95" text-anchor="middle" fill="#134e4a" font-size="13" font-weight="700">GitHub Copilot</text>
     <text x="672" y="109" text-anchor="middle" fill="#0f766e" font-size="11">Coding Agent</text>
-    <text x="672" y="122" text-anchor="middle" fill="#94a3b8" font-size="11">PR · CI · review gates</text>
+    <text x="672" y="123" text-anchor="middle" fill="#94a3b8" font-size="11">PR · CI · review gates</text>
 
     <!-- NO down -->
     <line x1="380" y1="126" x2="380" y2="154" stroke="#64748b" stroke-width="1.5" marker-end="url(#d6arr-no)"/>
@@ -1052,10 +1052,10 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <!-- YES right -->
     <line x1="525" y1="179" x2="590" y2="179" stroke="#059669" stroke-width="1.5" marker-end="url(#d6arr-yes)"/>
     <text x="555" y="172" text-anchor="middle" fill="#059669" font-size="12" font-weight="600">YES</text>
-    <rect x="592" y="153" width="160" height="56" rx="7" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="592" y="153" width="160" height="64" rx="7" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
     <text x="672" y="173" text-anchor="middle" fill="#134e4a" font-size="13" font-weight="700">Claude Code</text>
     <text x="672" y="187" text-anchor="middle" fill="#0f766e" font-size="11">Cursor · Cline</text>
-    <text x="672" y="200" text-anchor="middle" fill="#94a3b8" font-size="11">Hooks · explicit approval</text>
+    <text x="672" y="201" text-anchor="middle" fill="#94a3b8" font-size="11">Hooks · explicit approval</text>
 
     <!-- NO down -->
     <line x1="380" y1="202" x2="380" y2="230" stroke="#64748b" stroke-width="1.5" marker-end="url(#d6arr-no)"/>
@@ -1069,10 +1069,10 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <!-- YES right -->
     <line x1="520" y1="255" x2="590" y2="255" stroke="#059669" stroke-width="1.5" marker-end="url(#d6arr-yes)"/>
     <text x="553" y="248" text-anchor="middle" fill="#059669" font-size="12" font-weight="600">YES</text>
-    <rect x="592" y="230" width="160" height="56" rx="7" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="592" y="230" width="160" height="64" rx="7" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
     <text x="672" y="250" text-anchor="middle" fill="#134e4a" font-size="13" font-weight="700">Perplexity</text>
     <text x="672" y="264" text-anchor="middle" fill="#0f766e" font-size="11">Computer</text>
-    <text x="672" y="277" text-anchor="middle" fill="#94a3b8" font-size="11">Custom Skills · browser</text>
+    <text x="672" y="278" text-anchor="middle" fill="#94a3b8" font-size="11">Custom Skills · browser</text>
 
     <!-- NO down -->
     <line x1="380" y1="278" x2="380" y2="306" stroke="#64748b" stroke-width="1.5" marker-end="url(#d6arr-no)"/>
@@ -1086,10 +1086,10 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
     <!-- YES right -->
     <line x1="530" y1="331" x2="590" y2="331" stroke="#059669" stroke-width="1.5" marker-end="url(#d6arr-yes)"/>
     <text x="558" y="324" text-anchor="middle" fill="#059669" font-size="12" font-weight="600">YES</text>
-    <rect x="592" y="307" width="160" height="56" rx="7" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="592" y="307" width="160" height="64" rx="7" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
     <text x="672" y="327" text-anchor="middle" fill="#134e4a" font-size="13" font-weight="700">ChatGPT Tasks</text>
     <text x="672" y="343" text-anchor="middle" fill="#0f766e" font-size="11">Scheduled prompts</text>
-    <text x="672" y="356" text-anchor="middle" fill="#94a3b8" font-size="11">No machine access</text>
+    <text x="672" y="357" text-anchor="middle" fill="#94a3b8" font-size="11">No machine access</text>
 
     <!-- NO down -->
     <line x1="380" y1="354" x2="380" y2="382" stroke="#64748b" stroke-width="1.5" marker-end="url(#d6arr-no)"/>
