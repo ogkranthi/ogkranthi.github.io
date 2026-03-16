@@ -37,9 +37,9 @@
   --text-primary: #1a1a1a;
   --text-secondary: #555555;
   --text-muted: #999999;
-  --accent: #18181b;
-  --accent-dim: #09090b;
-  --accent-light: #f4f4f5;
+  --accent: #1e40af;
+  --accent-dim: #1e3a8a;
+  --accent-light: #dbeafe;
   --border: #e8e8e5;
   --border-hover: #c4c4c0;
   --serif: 'Newsreader', Georgia, serif;
@@ -110,6 +110,13 @@ nav a:hover { color: var(--accent); }
 }
 
 .nav-cta:hover { background: var(--accent-dim); color: #fff; }
+
+.nav-cta-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+.nav-cta-outline:hover { background: var(--bg-elevated); color: var(--text-primary); }
 
 /* ── ARTICLE LAYOUT ── */
 .article-wrap {
@@ -435,7 +442,8 @@ footer p { font-size: 0.75rem; color: var(--text-muted); }
   <nav>
     <a href="/#writing">Writing</a>
     <a href="/#about">About</a>
-    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta">LinkedIn →</a>
+    <a href="https://aiengineerweekly.substack.com" target="_blank" class="nav-cta">Newsletter →</a>
+    <a href="https://www.linkedin.com/in/kranthimanchikanti/" target="_blank" class="nav-cta nav-cta-outline">LinkedIn →</a>
   </nav>
 </header>
 
