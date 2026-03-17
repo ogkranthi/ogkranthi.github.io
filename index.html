@@ -673,8 +673,7 @@ nav a:hover::after { width: 100%; }
 
 .post-card:hover .post-read { gap: 0.6rem; }
 
-/* ── CARD PHOTO STRIPS ── */
-.talk-card-photo,
+/* ── PROJECT CARD PHOTO STRIPS (logos/badges/diagrams only) ── */
 .project-card-photo {
   width: calc(100% + 3rem);
   height: 160px;
@@ -685,7 +684,6 @@ nav a:hover::after { width: 100%; }
   flex-shrink: 0;
 }
 
-.talk-card-photo img,
 .project-card-photo img {
   width: 100%;
   height: 100%;
@@ -694,59 +692,55 @@ nav a:hover::after { width: 100%; }
   display: block;
 }
 
-/* ── AWARD STRIP ── */
-.award-strip {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  margin-top: 2.5rem;
-  padding-top: 2.5rem;
-  border-top: 1px solid var(--border);
-}
-
-.award-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-
-.award-item:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-}
-
-.award-photo {
-  width: 52px;
-  height: 52px;
-  border-radius: 8px;
+/* ── PHOTO MARQUEE ── */
+.photo-marquee {
   overflow: hidden;
-  flex-shrink: 0;
-  background: var(--accent-light);
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
 }
 
-.award-photo img {
-  width: 100%;
-  height: 100%;
+.marquee-row { overflow: hidden; }
+
+.marquee-track {
+  display: flex;
+  gap: 0.85rem;
+  width: max-content;
+  animation: marquee-left 40s linear infinite;
+}
+
+.marquee-row-reverse .marquee-track {
+  animation: marquee-right 40s linear infinite;
+}
+
+.photo-marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-track img {
+  height: 210px;
+  width: auto;
+  border-radius: 8px;
   object-fit: cover;
-}
-
-.award-text strong {
+  flex-shrink: 0;
   display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.15rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
-.award-text span {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-family: var(--mono);
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
 }
 
 /* ── VIEW ALL WRITING ── */
@@ -987,6 +981,40 @@ footer p {
   </div>
 </section>
 
+<!-- PHOTO MARQUEE -->
+<div class="photo-marquee">
+  <div class="marquee-row">
+    <div class="marquee-track">
+      <img src="images/aws_kk.jpg" alt="AWS event">
+      <img src="images/ChainfAgent_kk.jpg" alt="Chain of Verification Agent — poster presentation">
+      <img src="images/judge_KK.jpg" alt="Boston Debate League — judge">
+      <img src="images/elec_kk.jpg" alt="Oracle Built &amp; Deployed">
+      <img src="images/raise%20thebar_kk.jpg" alt="AWS Raising the Bar 2023">
+      <!-- duplicate for seamless loop -->
+      <img src="images/aws_kk.jpg" alt="AWS event">
+      <img src="images/ChainfAgent_kk.jpg" alt="Chain of Verification Agent — poster presentation">
+      <img src="images/judge_KK.jpg" alt="Boston Debate League — judge">
+      <img src="images/elec_kk.jpg" alt="Oracle Built &amp; Deployed">
+      <img src="images/raise%20thebar_kk.jpg" alt="AWS Raising the Bar 2023">
+    </div>
+  </div>
+  <div class="marquee-row marquee-row-reverse">
+    <div class="marquee-track">
+      <img src="images/elec_kk.jpg" alt="Oracle Built &amp; Deployed">
+      <img src="images/judge_KK.jpg" alt="Boston Debate League — judge">
+      <img src="images/raise%20thebar_kk.jpg" alt="AWS Raising the Bar 2023">
+      <img src="images/aws_kk.jpg" alt="AWS event">
+      <img src="images/ChainfAgent_kk.jpg" alt="Poster presentation">
+      <!-- duplicate -->
+      <img src="images/elec_kk.jpg" alt="Oracle Built &amp; Deployed">
+      <img src="images/judge_KK.jpg" alt="Boston Debate League — judge">
+      <img src="images/raise%20thebar_kk.jpg" alt="AWS Raising the Bar 2023">
+      <img src="images/aws_kk.jpg" alt="AWS event">
+      <img src="images/ChainfAgent_kk.jpg" alt="Poster presentation">
+    </div>
+  </div>
+</div>
+
 <!-- SPEAKING & WORKSHOPS -->
 <section class="brand-section reveal" id="speaking">
   <div class="brand-section-inner">
@@ -996,9 +1024,6 @@ footer p {
     <div class="talk-grid">
 
       <div class="talk-card">
-        <div class="talk-card-photo">
-          <img src="images/aws_kk.jpg" alt="AWS re:Invent 2022">
-        </div>
         <div class="talk-card-header">
           <span class="talk-event">AWS re:Invent · 2022</span>
           <span class="talk-type workshop">Workshop</span>
@@ -1035,9 +1060,6 @@ footer p {
       </div>
 
       <div class="talk-card">
-        <div class="talk-card-photo">
-          <img src="images/ChainfAgent_kk.jpg" alt="Chain of Verification Agent — Poster Presentation" style="object-position: center 15%;">
-        </div>
         <div class="talk-card-header">
           <span class="talk-event">Amazon Foundation Model Science Symposium · 2024</span>
           <span class="talk-type poster">Poster</span>
@@ -1063,9 +1085,6 @@ footer p {
       </div>
 
       <div class="talk-card">
-        <div class="talk-card-photo">
-          <img src="images/mlads_kk.jpg" alt="MLADS June 2024 Conference Presenter" style="object-fit: contain; background: #f0fdf4; padding: 1rem;">
-        </div>
         <div class="talk-card-header">
           <span class="talk-event">MLADS · Microsoft · June 2024</span>
           <span class="talk-type talk">Talk</span>
@@ -1075,9 +1094,6 @@ footer p {
       </div>
 
       <div class="talk-card">
-        <div class="talk-card-photo">
-          <img src="images/HITL_kk.jpg" alt="Human-in-the-Loop AI Workflow Diagram">
-        </div>
         <div class="talk-card-header">
           <span class="talk-event">Microsoft Tech Community · 2025</span>
           <span class="talk-type talk">Talk</span>
@@ -1103,27 +1119,6 @@ footer p {
       <span class="speaking-topic">Cloud + AI Integration</span>
       <span class="speaking-topic">Responsible AI</span>
       <span class="speaking-topic">Blockchain &amp; Web3</span>
-    </div>
-
-    <div class="award-strip">
-      <div class="award-item">
-        <div class="award-photo">
-          <img src="images/raise%20thebar_kk.jpg" alt="AWS Raising the Bar 2023">
-        </div>
-        <div class="award-text">
-          <strong>AWS East ENT M/L — Raising the Bar</strong>
-          <span>2023</span>
-        </div>
-      </div>
-      <div class="award-item">
-        <div class="award-photo">
-          <img src="images/judge_KK.jpg" alt="Boston Debate League Judge">
-        </div>
-        <div class="award-text">
-          <strong>Boston Debate League — Judge</strong>
-          <span>Community</span>
-        </div>
-      </div>
     </div>
 
     <div class="section-cta">
