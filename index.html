@@ -137,7 +137,7 @@ nav a:hover::after { width: 100%; }
 .hero {
   min-height: 90vh;
   display: grid;
-  grid-template-columns: 1fr 260px;
+  grid-template-columns: 1fr 340px;
   align-items: center;
   gap: 4rem;
   padding: 8rem 2.5rem 5rem;
@@ -161,8 +161,8 @@ nav a:hover::after { width: 100%; }
 }
 
 .hero-photo {
-  width: 240px;
-  height: 300px;
+  width: 320px;
+  height: 410px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -202,7 +202,7 @@ nav a:hover::after { width: 100%; }
 
 .hero h1 {
   font-family: var(--serif);
-  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  font-size: clamp(1.55rem, 2.8vw, 2.2rem);
   line-height: 1.15;
   letter-spacing: -0.03em;
   color: var(--text-primary);
@@ -361,6 +361,19 @@ nav a:hover::after { width: 100%; }
 }
 
 /* ── TALK CARDS ── */
+.talk-category {
+  grid-column: 1 / -1;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-top: 1.25rem;
+}
+.talk-category:first-child { margin-top: 0; }
+
 .talk-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1023,22 +1036,50 @@ footer p {
 
     <div class="talk-grid">
 
+      <div class="talk-category">AI &amp; Agentic Systems</div>
+
       <div class="talk-card">
         <div class="talk-card-header">
-          <span class="talk-event">AWS re:Invent · 2022</span>
+          <span class="talk-event">Microsoft Agentic AI Workshop · Boston · 2025</span>
           <span class="talk-type workshop">Workshop</span>
         </div>
-        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
-        <a href="https://reinvent.awsevents.com/" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
+        <div class="talk-title">Agentic AI Workshop</div>
+        <a href="https://info.visionet.com/microsoft-agentic-ai-workshop-boston" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
       </div>
 
       <div class="talk-card">
         <div class="talk-card-header">
-          <span class="talk-event">AWS Summits · 2022–2023</span>
-          <span class="talk-type workshop">Workshop</span>
+          <span class="talk-event">MLADS · Microsoft · June 2024</span>
+          <span class="talk-type talk">Talk</span>
         </div>
-        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
-        <a href="https://aws.amazon.com/events/summits/" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
+        <div class="talk-title">ML &amp; Data Science Presenter</div>
+        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7212158420643102720/" target="_blank" rel="noopener" class="talk-link">View post ↗</a>
+      </div>
+
+      <div class="talk-card">
+        <div class="talk-card-header">
+          <span class="talk-event">Amazon Foundation Model Science Symposium · 2024</span>
+          <span class="talk-type poster">Poster</span>
+        </div>
+        <div class="talk-title">Chain of Verification Agent</div>
+      </div>
+
+      <div class="talk-card">
+        <div class="talk-card-header">
+          <span class="talk-event">Microsoft Tech Community · 2025</span>
+          <span class="talk-type talk">Talk</span>
+        </div>
+        <div class="talk-title">Building Human-in-the-Loop AI Workflows with Microsoft Agent Framework</div>
+        <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-human-in-the-loop-ai-workflows-with-microsoft-agent-framework/4460342" target="_blank" rel="noopener" class="talk-link">Read article ↗</a>
+      </div>
+
+      <div class="talk-card">
+        <div class="talk-card-header">
+          <span class="talk-event">Community Talk · 2024</span>
+          <span class="talk-type talk">Talk</span>
+        </div>
+        <div class="talk-title">Evaluations in RAG</div>
+        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7200964669820256256/" target="_blank" rel="noopener" class="talk-link">View post ↗</a>
       </div>
 
       <div class="talk-card">
@@ -1059,21 +1100,24 @@ footer p {
         <a href="https://www.youtube.com/watch?v=NBgn4b8B1l0" target="_blank" rel="noopener" class="talk-link">Watch on YouTube ↗</a>
       </div>
 
+      <div class="talk-category">Cloud &amp; Other</div>
+
       <div class="talk-card">
         <div class="talk-card-header">
-          <span class="talk-event">Amazon Foundation Model Science Symposium · 2024</span>
-          <span class="talk-type poster">Poster</span>
+          <span class="talk-event">AWS re:Invent · 2022</span>
+          <span class="talk-type workshop">Workshop</span>
         </div>
-        <div class="talk-title">Chain of Verification Agent</div>
+        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
+        <a href="https://reinvent.awsevents.com/" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
       </div>
 
       <div class="talk-card">
         <div class="talk-card-header">
-          <span class="talk-event">Microsoft Agentic AI Workshop · Boston · 2025</span>
+          <span class="talk-event">AWS Summits · 2022–2023</span>
           <span class="talk-type workshop">Workshop</span>
         </div>
-        <div class="talk-title">Agentic AI Workshop</div>
-        <a href="https://info.visionet.com/microsoft-agentic-ai-workshop-boston" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
+        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
+        <a href="https://aws.amazon.com/events/summits/" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
       </div>
 
       <div class="talk-card">
@@ -1082,33 +1126,6 @@ footer p {
           <span class="talk-type talk">Talk</span>
         </div>
         <div class="talk-title">Perimeterless Security</div>
-      </div>
-
-      <div class="talk-card">
-        <div class="talk-card-header">
-          <span class="talk-event">MLADS · Microsoft · June 2024</span>
-          <span class="talk-type talk">Talk</span>
-        </div>
-        <div class="talk-title">ML &amp; Data Science Presenter</div>
-        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7212158420643102720/" target="_blank" rel="noopener" class="talk-link">View post ↗</a>
-      </div>
-
-      <div class="talk-card">
-        <div class="talk-card-header">
-          <span class="talk-event">Microsoft Tech Community · 2025</span>
-          <span class="talk-type talk">Talk</span>
-        </div>
-        <div class="talk-title">Building Human-in-the-Loop AI Workflows with Microsoft Agent Framework</div>
-        <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-human-in-the-loop-ai-workflows-with-microsoft-agent-framework/4460342" target="_blank" rel="noopener" class="talk-link">Read article ↗</a>
-      </div>
-
-      <div class="talk-card">
-        <div class="talk-card-header">
-          <span class="talk-event">Community Talk · 2024</span>
-          <span class="talk-type talk">Talk</span>
-        </div>
-        <div class="talk-title">Evaluations in RAG</div>
-        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7200964669820256256/" target="_blank" rel="noopener" class="talk-link">View post ↗</a>
       </div>
 
     </div>
@@ -1136,13 +1153,14 @@ footer p {
 
     <div class="project-grid">
 
-      <div class="project-card">
+      <a href="https://github.com/Azure/gpt-rag" target="_blank" rel="noopener" class="project-card">
         <div class="project-card-header">
           <span class="project-tag open-source">Open Source</span>
         </div>
         <div class="project-title">GPT-RAG</div>
-        <div class="project-desc">Original contribution to retrieval-augmented generation architecture.</div>
-      </div>
+        <div class="project-desc">Retrieval-augmented generation architecture for enterprise AI — contributed to core design.</div>
+        <span class="project-link">View on GitHub ↗</span>
+      </a>
 
       <div class="project-card">
         <div class="project-card-header">
@@ -1205,7 +1223,7 @@ footer p {
           <span class="project-tag standards">Standards</span>
         </div>
         <div class="project-title">NIST AI Agents Response</div>
-        <div class="project-desc">Peer review: Practices for Automated Benchmark Evaluations of LLMs.</div>
+        <div class="project-desc">Practices for Automated Benchmark Evaluations of LLMs.</div>
       </div>
 
       <div class="project-card">
@@ -1213,15 +1231,15 @@ footer p {
           <span class="project-tag standards">Standards</span>
         </div>
         <div class="project-title">Cloud Security Alliance</div>
-        <div class="project-desc">Co-authored: Quantum Computing &amp; Artificial Intelligence.</div>
+        <div class="project-desc">Quantum Computing &amp; Artificial Intelligence.</div>
       </div>
 
       <a href="https://catalog.workshops.aws/buildweb3/en-US/module2" target="_blank" rel="noopener" class="project-card">
         <div class="project-card-header">
-          <span class="project-tag workshop">Workshop</span>
+          <span class="project-tag talk">Talk</span>
         </div>
-        <div class="project-title">GenAI Component in Web3 Workshop</div>
-        <div class="project-desc">Embedded GenAI module into AWS Blockchain workshop.</div>
+        <div class="project-title">GenAI in Web3</div>
+        <div class="project-desc">Thought leadership talk on integrating generative AI into Web3 and blockchain architectures.</div>
         <span class="project-link">View module ↗</span>
       </a>
 
@@ -1230,7 +1248,7 @@ footer p {
           <span class="project-tag open-source">Open Source</span>
         </div>
         <div class="project-title">RAGAs Framework</div>
-        <div class="project-desc">Customer-deployed evaluation framework for RAG applications.</div>
+        <div class="project-desc">Deployed across multiple customers for AI RAG evaluations.</div>
       </div>
 
       <a href="https://www.youtube.com/watch?v=6qsUOEuqO-0" target="_blank" rel="noopener" class="project-card">
