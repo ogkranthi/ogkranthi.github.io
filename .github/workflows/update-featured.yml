@@ -21,14 +21,23 @@ jobs:
       - name: Run update-featured script
         run: python3 .github/scripts/update-featured.py
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          commit-message: "chore: auto-update feed and sitemap"
-          branch: auto/update-featured-${{ github.run_id }}
-          title: "chore: auto-update feed and sitemap"
-          body: "Automatically generated — updates feed.xml and sitemap.xml after new post merged to main."
-          base: main
-          add-paths: |
-            feed.xml
-            sitemap.xml
+      - name: Commit and open PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add feed.xml sitemap.xml
+          if git diff --cached --quiet; then
+            echo "No changes — skipping PR"
+            exit 0
+          fi
+          BRANCH="auto/update-featured-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git commit -m "chore: auto-update feed and sitemap"
+          git push origin "$BRANCH"
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "chore: auto-update feed and sitemap" \
+            --body "Automatically generated — updates feed.xml and sitemap.xml after new post merged to main."
