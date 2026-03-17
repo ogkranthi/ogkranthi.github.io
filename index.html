@@ -672,6 +672,82 @@ nav a:hover::after { width: 100%; }
 
 .post-card:hover .post-read { gap: 0.6rem; }
 
+/* ── CARD PHOTO STRIPS ── */
+.talk-card-photo,
+.project-card-photo {
+  width: calc(100% + 3rem);
+  height: 160px;
+  margin: -1.5rem -1.5rem 1.25rem;
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+  background: var(--accent-light);
+  flex-shrink: 0;
+}
+
+.talk-card-photo img,
+.project-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* ── AWARD STRIP ── */
+.award-strip {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.award-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.award-item:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+.award-photo {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--accent-light);
+}
+
+.award-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.award-text strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+}
+
+.award-text span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--mono);
+}
+
 /* ── VIEW ALL WRITING ── */
 .view-all-writing {
   max-width: 1100px;
@@ -902,11 +978,10 @@ footer p {
     </div>
   </div>
   <div class="hero-visual">
-    <!-- Replace the placeholder below with your headshot:
-         <img src="images/kranthi.jpg" alt="Kranthi Manchikanti">
-         Recommended: 480×600px or higher, portrait orientation -->
     <div class="hero-photo">
-      <div class="hero-photo-placeholder">KM</div>
+      <img src="images/kranthi.jpg" alt="Kranthi Manchikanti"
+           onerror="this.style.display='none';this.parentElement.querySelector('.hero-photo-placeholder').style.display='flex'">
+      <div class="hero-photo-placeholder" style="display:none">KM</div>
     </div>
   </div>
 </section>
@@ -920,6 +995,9 @@ footer p {
     <div class="talk-grid">
 
       <div class="talk-card">
+        <div class="talk-card-photo">
+          <img src="images/aws-summit-group.jpg" alt="AWS re:Invent 2022">
+        </div>
         <div class="talk-card-header">
           <span class="talk-event">AWS re:Invent · 2022</span>
           <span class="talk-type workshop">Workshop</span>
@@ -929,6 +1007,9 @@ footer p {
       </div>
 
       <div class="talk-card">
+        <div class="talk-card-photo">
+          <img src="images/aws-summit-group.jpg" alt="AWS Summits 2022–2023">
+        </div>
         <div class="talk-card-header">
           <span class="talk-event">AWS Summits · 2022–2023</span>
           <span class="talk-type workshop">Workshop</span>
@@ -955,6 +1036,9 @@ footer p {
       </div>
 
       <div class="talk-card">
+        <div class="talk-card-photo">
+          <img src="images/kranthi.jpg" alt="Chain of Verification Agent — AWS Symposium 2024" style="object-position: center 15%;">
+        </div>
         <div class="talk-card-header">
           <span class="talk-event">AWS Symposium · 2024</span>
           <span class="talk-type talk">Talk</span>
@@ -981,8 +1065,11 @@ footer p {
       </div>
 
       <div class="talk-card">
+        <div class="talk-card-photo">
+          <img src="images/mlads-badge.jpg" alt="MLADS June 2024 Conference Presenter" style="object-fit: contain; background: #f0fdf4; padding: 1rem;">
+        </div>
         <div class="talk-card-header">
-          <span class="talk-event">MLADS · Microsoft</span>
+          <span class="talk-event">MLADS · Microsoft · June 2024</span>
           <span class="talk-type talk">Talk</span>
         </div>
         <div class="talk-title">ML &amp; Data Science Presenter</div>
@@ -990,6 +1077,9 @@ footer p {
       </div>
 
       <div class="talk-card">
+        <div class="talk-card-photo">
+          <img src="images/hitl-workflow.jpg" alt="Human-in-the-Loop AI Workflow Diagram">
+        </div>
         <div class="talk-card-header">
           <span class="talk-event">Microsoft Tech Community · 2025</span>
           <span class="talk-type talk">Talk</span>
@@ -1015,6 +1105,27 @@ footer p {
       <span class="speaking-topic">Cloud + AI Integration</span>
       <span class="speaking-topic">Responsible AI</span>
       <span class="speaking-topic">Blockchain &amp; Web3</span>
+    </div>
+
+    <div class="award-strip">
+      <div class="award-item">
+        <div class="award-photo">
+          <img src="images/aws-award.jpg" alt="AWS Raising the Bar 2023">
+        </div>
+        <div class="award-text">
+          <strong>AWS East ENT M/L — Raising the Bar</strong>
+          <span>2023</span>
+        </div>
+      </div>
+      <div class="award-item">
+        <div class="award-photo">
+          <img src="images/boston-debate.jpg" alt="Boston Debate League Judge">
+        </div>
+        <div class="award-text">
+          <strong>Boston Debate League — Judge</strong>
+          <span>Community</span>
+        </div>
+      </div>
     </div>
 
     <div class="section-cta">
@@ -1084,6 +1195,9 @@ footer p {
       </div>
 
       <a href="https://training.linuxfoundation.org/training/hyperledger-fabric-for-developers-lfd272/" target="_blank" rel="noopener" class="project-card">
+        <div class="project-card-photo">
+          <img src="images/hyperledger-cert.jpg" alt="Hyperledger Fabric Certified Developer" style="object-fit: contain; background: #f0f9ff; padding: 1rem;">
+        </div>
         <div class="project-card-header">
           <span class="project-tag certification">Certification</span>
         </div>
@@ -1126,6 +1240,9 @@ footer p {
       </div>
 
       <a href="https://www.youtube.com/watch?v=6qsUOEuqO-0" target="_blank" rel="noopener" class="project-card">
+        <div class="project-card-photo">
+          <img src="images/oracle-oci-video.jpg" alt="Built & Deployed: ML Spend Analytics on OCI">
+        </div>
         <div class="project-card-header">
           <span class="project-tag video">Video</span>
         </div>
