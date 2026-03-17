@@ -136,13 +136,57 @@ nav a:hover::after { width: 100%; }
 /* ── HERO ── */
 .hero {
   min-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  align-items: center;
+  gap: 4rem;
   padding: 8rem 2.5rem 5rem;
   max-width: 1100px;
   margin: 0 auto;
   position: relative;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.5s forwards;
+}
+
+.hero-photo {
+  width: 240px;
+  height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.09);
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.hero-photo-placeholder {
+  font-family: var(--serif);
+  font-size: 4.5rem;
+  color: var(--accent);
+  font-weight: 400;
+  opacity: 0.35;
+  user-select: none;
 }
 
 .hero-label {
@@ -158,11 +202,10 @@ nav a:hover::after { width: 100%; }
 
 .hero h1 {
   font-family: var(--serif);
-  font-size: clamp(2.5rem, 5.5vw, 4rem);
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
   line-height: 1.15;
   letter-spacing: -0.03em;
   color: var(--text-primary);
-  max-width: 850px;
   font-weight: 400;
   opacity: 0;
   animation: fadeUp 0.8s ease 0.4s forwards;
@@ -463,6 +506,8 @@ nav a:hover::after { width: 100%; }
 .project-tag.case-study { color: #854d0e; background: #fef9c3; }
 .project-tag.certification { color: #7e22ce; background: #f3e8ff; }
 .project-tag.standards { color: #991b1b; background: #fee2e2; }
+.project-tag.video { color: #b45309; background: #fef3c7; }
+.project-tag.blog { color: #0369a1; background: #e0f2fe; }
 
 .project-title {
   font-family: var(--serif);
@@ -790,7 +835,8 @@ footer p {
   header { padding: 1rem 1.5rem; }
   nav { gap: 1rem; }
   nav a:not(.nav-cta) { display: none; }
-  .hero { padding: 7rem 1.5rem 3.5rem; min-height: auto; }
+  .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3.5rem; min-height: auto; gap: 2rem; }
+  .hero-visual { display: none; }
   .hero h1 { font-size: clamp(2rem, 8vw, 2.75rem); }
   .hero-ctas { flex-direction: column; align-items: flex-start; }
   .stats-strip { grid-template-columns: repeat(2, auto); gap: 1.5rem 0; width: auto; }
@@ -828,29 +874,39 @@ footer p {
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-label">AI Architect · Speaker · Builder</div>
-  <h1>I design AI agent systems that make it from <em>research to production</em> — and I'm available to speak, collaborate, and build.</h1>
-  <p class="hero-sub">Enterprise AI architecture across high tech, finance, healthcare, and regulated industries. Production systems at scale, not proof-of-concepts.</p>
-  <div class="hero-ctas">
-    <a href="#connect" class="cta-btn">Invite Me to Speak →</a>
-    <a href="#connect" class="cta-btn-ghost">Start a Project →</a>
+  <div class="hero-content">
+    <div class="hero-label">AI Architect · Speaker · Builder</div>
+    <h1>I design AI agent systems that make it from <em>research to production</em> — and I'm available to speak, collaborate, and build.</h1>
+    <p class="hero-sub">Enterprise AI architecture across high tech, finance, healthcare, and regulated industries. Production systems at scale, not proof-of-concepts.</p>
+    <div class="hero-ctas">
+      <a href="#connect" class="cta-btn">Invite Me to Speak →</a>
+      <a href="#connect" class="cta-btn-ghost">Start a Project →</a>
+    </div>
+    <div class="stats-strip">
+      <div class="stat-item">
+        <span class="stat-value">100+</span>
+        <span class="stat-label">Architectures Piloted</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">6+</span>
+        <span class="stat-label">Industries</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">10+</span>
+        <span class="stat-label">Conferences &amp; Workshops</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">Weekly</span>
+        <span class="stat-label">Publishing</span>
+      </div>
+    </div>
   </div>
-  <div class="stats-strip">
-    <div class="stat-item">
-      <span class="stat-value">100+</span>
-      <span class="stat-label">Architectures Piloted</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-value">6+</span>
-      <span class="stat-label">Industries</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-value">10+</span>
-      <span class="stat-label">Conferences &amp; Workshops</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-value">Weekly</span>
-      <span class="stat-label">Publishing</span>
+  <div class="hero-visual">
+    <!-- Replace the placeholder below with your headshot:
+         <img src="images/kranthi.jpg" alt="Kranthi Manchikanti">
+         Recommended: 480×600px or higher, portrait orientation -->
+    <div class="hero-photo">
+      <div class="hero-photo-placeholder">KM</div>
     </div>
   </div>
 </section>
@@ -869,7 +925,7 @@ footer p {
           <span class="talk-type workshop">Workshop</span>
         </div>
         <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
-        <a href="https://catalog.us-east-1.prod.workshops.aws/workshops/fa60245b-9832-4910-8183-0616997a9ebf/en-US" target="_blank" rel="noopener" class="talk-link">View workshop ↗</a>
+        <a href="https://reinvent.awsevents.com/" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
       </div>
 
       <div class="talk-card">
@@ -878,7 +934,7 @@ footer p {
           <span class="talk-type workshop">Workshop</span>
         </div>
         <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
-        <a href="https://catalog.us-east-1.prod.workshops.aws/workshops/fa60245b-9832-4910-8183-0616997a9ebf/en-US" target="_blank" rel="noopener" class="talk-link">View workshop ↗</a>
+        <a href="https://aws.amazon.com/events/summits/" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
       </div>
 
       <div class="talk-card">
@@ -891,10 +947,20 @@ footer p {
 
       <div class="talk-card">
         <div class="talk-card-header">
+          <span class="talk-event">DevOps Summit Canada</span>
+          <span class="talk-type talk">Talk</span>
+        </div>
+        <div class="talk-title">AI in Software Development</div>
+        <a href="https://www.youtube.com/watch?v=NBgn4b8B1l0" target="_blank" rel="noopener" class="talk-link">Watch on YouTube ↗</a>
+      </div>
+
+      <div class="talk-card">
+        <div class="talk-card-header">
           <span class="talk-event">AWS Symposium · 2024</span>
           <span class="talk-type talk">Talk</span>
         </div>
         <div class="talk-title">Chain of Verification Agent</div>
+        <a href="https://aws.amazon.com/events/summits/" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
       </div>
 
       <div class="talk-card">
@@ -903,6 +969,7 @@ footer p {
           <span class="talk-type workshop">Workshop</span>
         </div>
         <div class="talk-title">Agentic AI Workshop</div>
+        <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-human-in-the-loop-ai-workflows-with-microsoft-agent-framework/4460342" target="_blank" rel="noopener" class="talk-link">Read writeup ↗</a>
       </div>
 
       <div class="talk-card">
@@ -911,6 +978,33 @@ footer p {
           <span class="talk-type talk">Talk</span>
         </div>
         <div class="talk-title">Perimeterless Security</div>
+      </div>
+
+      <div class="talk-card">
+        <div class="talk-card-header">
+          <span class="talk-event">MLADS · Microsoft</span>
+          <span class="talk-type talk">Talk</span>
+        </div>
+        <div class="talk-title">ML &amp; Data Science Presenter</div>
+        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7212158420643102720/" target="_blank" rel="noopener" class="talk-link">View post ↗</a>
+      </div>
+
+      <div class="talk-card">
+        <div class="talk-card-header">
+          <span class="talk-event">Microsoft Tech Community · 2025</span>
+          <span class="talk-type talk">Talk</span>
+        </div>
+        <div class="talk-title">Building Human-in-the-Loop AI Workflows with Microsoft Agent Framework</div>
+        <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-human-in-the-loop-ai-workflows-with-microsoft-agent-framework/4460342" target="_blank" rel="noopener" class="talk-link">Read article ↗</a>
+      </div>
+
+      <div class="talk-card">
+        <div class="talk-card-header">
+          <span class="talk-event">Community Talk · 2024</span>
+          <span class="talk-type talk">Talk</span>
+        </div>
+        <div class="talk-title">Evaluations in RAG</div>
+        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7200964669820256256/" target="_blank" rel="noopener" class="talk-link">View post ↗</a>
       </div>
 
     </div>
@@ -1030,6 +1124,24 @@ footer p {
         <div class="project-title">RAGAs Framework</div>
         <div class="project-desc">Customer-deployed evaluation framework for RAG applications.</div>
       </div>
+
+      <a href="https://www.youtube.com/watch?v=6qsUOEuqO-0" target="_blank" rel="noopener" class="project-card">
+        <div class="project-card-header">
+          <span class="project-tag video">Video</span>
+        </div>
+        <div class="project-title">Built &amp; Deployed: ML Spend Analytics on OCI</div>
+        <div class="project-desc">Featured in Oracle Cloud Infrastructure's "Built &amp; Deployed" series — running ElectrifAi machine learning spend analytics on OCI.</div>
+        <span class="project-link">Watch on YouTube ↗</span>
+      </a>
+
+      <a href="https://blogs.oracle.com/cloud-infrastructure/deploying-sisense-on-oracle-cloud-infrastructure-part-1" target="_blank" rel="noopener" class="project-card">
+        <div class="project-card-header">
+          <span class="project-tag blog">Blog</span>
+        </div>
+        <div class="project-title">Deploying Sisense on Oracle Cloud Infrastructure</div>
+        <div class="project-desc">Technical guide for deploying Sisense analytics platform on OCI — published on the Oracle Cloud Infrastructure blog.</div>
+        <span class="project-link">Read on Oracle Blog ↗</span>
+      </a>
 
     </div>
 
