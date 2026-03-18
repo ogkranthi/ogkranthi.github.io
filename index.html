@@ -388,9 +388,25 @@ nav a:hover::after { width: 100%; }
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
+
+.talk-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: #e8e8e5;
+}
+
+.talk-card:has(.talk-type.workshop)::before { background: #2563eb; }
+.talk-card:has(.talk-type.talk)::before { background: var(--accent); }
+.talk-card:has(.talk-type.poster)::before { background: #7e22ce; }
+.talk-card:has(.talk-type.panel)::before { background: #0f766e; }
 
 .talk-card:hover {
   border-color: var(--border-hover);
@@ -398,19 +414,35 @@ nav a:hover::after { width: 100%; }
   box-shadow: 0 8px 30px rgba(0,0,0,0.06);
 }
 
-.talk-card-header {
+a.talk-card:hover .talk-title { color: var(--accent); }
+
+.talk-title {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.45;
+  color: var(--text-primary);
+  font-weight: 400;
+  flex: 1;
+  padding-top: 0.65rem;
+  padding-bottom: 1rem;
+  transition: color 0.2s ease;
+}
+
+.talk-card-footer {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
 }
 
 .talk-event {
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: var(--text-muted);
-  letter-spacing: 0.03em;
-  line-height: 1.5;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
 .talk-type {
@@ -428,28 +460,6 @@ nav a:hover::after { width: 100%; }
 .talk-type.talk { color: #374151; background: #f3f4f6; }
 .talk-type.panel { color: #0f766e; background: #ccfbf1; }
 .talk-type.poster { color: #7e22ce; background: #f3e8ff; }
-
-.talk-title {
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  line-height: 1.4;
-  color: var(--text-primary);
-  font-weight: 400;
-  flex: 1;
-}
-
-.talk-link {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--accent);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: gap 0.2s;
-  align-self: flex-start;
-}
-
-.talk-link:hover { gap: 0.5rem; }
 
 /* ── SPEAKING TOPICS ── */
 .speaking-topics {
@@ -1038,94 +1048,86 @@ footer p {
 
       <div class="talk-category">AI &amp; Agentic Systems</div>
 
-      <div class="talk-card">
-        <div class="talk-card-header">
+      <a href="https://boston.aitinkerers.org/talks/rsvp_1fsFWgcFzFY" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-title">GPT-RAG: Semantic Kernel Load Testing</div>
+        <div class="talk-card-footer">
+          <span class="talk-event">AI Tinkerers · Boston</span>
+          <span class="talk-type talk">Talk</span>
+        </div>
+      </a>
+
+      <a href="https://info.visionet.com/microsoft-agentic-ai-workshop-boston" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-title">Agentic AI Workshop</div>
+        <div class="talk-card-footer">
           <span class="talk-event">Microsoft Agentic AI Workshop · Boston · 2025</span>
           <span class="talk-type workshop">Workshop</span>
         </div>
-        <div class="talk-title">Agentic AI Workshop</div>
-        <a href="https://info.visionet.com/microsoft-agentic-ai-workshop-boston" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
-      </div>
+      </a>
 
-      <div class="talk-card">
-        <div class="talk-card-header">
+      <a href="https://www.linkedin.com/feed/update/urn:li:activity:7212158420643102720/" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-title">ML &amp; Data Science Presenter</div>
+        <div class="talk-card-footer">
           <span class="talk-event">MLADS · Microsoft · June 2024</span>
           <span class="talk-type talk">Talk</span>
         </div>
-        <div class="talk-title">ML &amp; Data Science Presenter</div>
-        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7212158420643102720/" target="_blank" rel="noopener" class="talk-link">View post ↗</a>
-      </div>
+      </a>
 
       <div class="talk-card">
-        <div class="talk-card-header">
+        <div class="talk-title">Chain of Verification Agent</div>
+        <div class="talk-card-footer">
           <span class="talk-event">Amazon Foundation Model Science Symposium · 2024</span>
           <span class="talk-type poster">Poster</span>
         </div>
-        <div class="talk-title">Chain of Verification Agent</div>
       </div>
 
-      <div class="talk-card">
-        <div class="talk-card-header">
+      <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-human-in-the-loop-ai-workflows-with-microsoft-agent-framework/4460342" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-title">Building Human-in-the-Loop AI Workflows with Microsoft Agent Framework</div>
+        <div class="talk-card-footer">
           <span class="talk-event">Microsoft Tech Community · 2025</span>
           <span class="talk-type talk">Talk</span>
         </div>
-        <div class="talk-title">Building Human-in-the-Loop AI Workflows with Microsoft Agent Framework</div>
-        <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-human-in-the-loop-ai-workflows-with-microsoft-agent-framework/4460342" target="_blank" rel="noopener" class="talk-link">Read article ↗</a>
-      </div>
+      </a>
 
-      <div class="talk-card">
-        <div class="talk-card-header">
+      <a href="https://www.linkedin.com/feed/update/urn:li:activity:7200964669820256256/" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-title">Evaluations in RAG</div>
+        <div class="talk-card-footer">
           <span class="talk-event">Community Talk · 2024</span>
           <span class="talk-type talk">Talk</span>
         </div>
-        <div class="talk-title">Evaluations in RAG</div>
-        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7200964669820256256/" target="_blank" rel="noopener" class="talk-link">View post ↗</a>
-      </div>
+      </a>
 
-      <div class="talk-card">
-        <div class="talk-card-header">
-          <span class="talk-event">DevOps Summit Canada · 2023</span>
-          <span class="talk-type talk">Talk</span>
-        </div>
-        <div class="talk-title">Unleashing the Power of Amazon CodeWhisperer</div>
-        <a href="https://www.youtube.com/watch?v=NBgn4b8B1l0" target="_blank" rel="noopener" class="talk-link">Watch on YouTube ↗</a>
-      </div>
-
-      <div class="talk-card">
-        <div class="talk-card-header">
+      <a href="https://www.youtube.com/watch?v=NBgn4b8B1l0" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-title">AI in Software Development</div>
+        <div class="talk-card-footer">
           <span class="talk-event">DevOps Summit Canada</span>
           <span class="talk-type talk">Talk</span>
         </div>
-        <div class="talk-title">AI in Software Development</div>
-        <a href="https://www.youtube.com/watch?v=NBgn4b8B1l0" target="_blank" rel="noopener" class="talk-link">Watch on YouTube ↗</a>
-      </div>
+      </a>
 
       <div class="talk-category">Cloud &amp; Other</div>
 
-      <div class="talk-card">
-        <div class="talk-card-header">
+      <a href="https://reinvent.awsevents.com/" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
+        <div class="talk-card-footer">
           <span class="talk-event">AWS re:Invent · 2022</span>
           <span class="talk-type workshop">Workshop</span>
         </div>
-        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
-        <a href="https://reinvent.awsevents.com/" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
-      </div>
+      </a>
 
-      <div class="talk-card">
-        <div class="talk-card-header">
+      <a href="https://aws.amazon.com/events/summits/" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
+        <div class="talk-card-footer">
           <span class="talk-event">AWS Summits · 2022–2023</span>
           <span class="talk-type workshop">Workshop</span>
         </div>
-        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
-        <a href="https://aws.amazon.com/events/summits/" target="_blank" rel="noopener" class="talk-link">View event ↗</a>
-      </div>
+      </a>
 
       <div class="talk-card">
-        <div class="talk-card-header">
+        <div class="talk-title">Perimeterless Security</div>
+        <div class="talk-card-footer">
           <span class="talk-event">Midwest Architecture Talk</span>
           <span class="talk-type talk">Talk</span>
         </div>
-        <div class="talk-title">Perimeterless Security</div>
       </div>
 
     </div>
