@@ -406,51 +406,11 @@ nav a:hover::after { width: 100%; }
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-/* Large corner glow */
-.talk-card::after {
-  content: '';
-  position: absolute;
-  top: -55px;
-  right: -55px;
-  width: 190px;
-  height: 190px;
-  border-radius: 50%;
-  opacity: 0.1;
-  pointer-events: none;
-}
-
-/* Type-based: flat tint + dot-grid texture */
-.talk-card:has(.talk-type.talk) {
-  background-color: #edf0ff;
-  background-image: radial-gradient(circle, rgba(79,70,229,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #c7d2fe;
-}
-.talk-card:has(.talk-type.talk)::after { background: #4f46e5; }
-
-.talk-card:has(.talk-type.workshop) {
-  background-color: #ebf5ff;
-  background-image: radial-gradient(circle, rgba(37,99,235,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #bfdbfe;
-}
-.talk-card:has(.talk-type.workshop)::after { background: #2563eb; }
-
-.talk-card:has(.talk-type.poster) {
-  background-color: #f4edff;
-  background-image: radial-gradient(circle, rgba(126,34,206,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #e9d5ff;
-}
-.talk-card:has(.talk-type.poster)::after { background: #7e22ce; }
-
-.talk-card:has(.talk-type.panel) {
-  background-color: #ecfdf5;
-  background-image: radial-gradient(circle, rgba(15,118,110,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #a7f3d0;
-}
-.talk-card:has(.talk-type.panel)::after { background: #0f766e; }
+/* Type-based: very subtle background tint + border */
+.talk-card:has(.talk-type.talk)     { background-color: #f6f7ff; border-color: #c7d2fe; }
+.talk-card:has(.talk-type.workshop) { background-color: #f0f6ff; border-color: #bfdbfe; }
+.talk-card:has(.talk-type.poster)   { background-color: #f8f5ff; border-color: #e9d5ff; }
+.talk-card:has(.talk-type.panel)    { background-color: #f0fdf8; border-color: #a7f3d0; }
 
 /* Hover: lift + type-specific glow */
 .talk-card:hover { transform: translateY(-3px); }
@@ -548,96 +508,19 @@ a.talk-card:hover .talk-title { color: var(--accent); }
   text-decoration: none;
 }
 
-/* Large corner glow */
-.project-card::after {
-  content: '';
-  position: absolute;
-  bottom: -55px;
-  right: -55px;
-  width: 190px;
-  height: 190px;
-  border-radius: 50%;
-  opacity: 0.09;
-  pointer-events: none;
-}
+/* Cards WITH a photo: plain white */
+.project-card:has(.project-card-photo) { background: #ffffff; }
 
-/* Cards WITH a photo: plain white (photo provides all the visual interest) */
-.project-card:has(.project-card-photo) {
-  background: #ffffff;
-}
-
-/* Cards WITHOUT a photo: flat tint + dot-grid texture */
-.project-card:not(:has(.project-card-photo)):has(.project-tag.open-source) {
-  background-color: #ebf5ff;
-  background-image: radial-gradient(circle, rgba(37,99,235,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #bfdbfe;
-}
-.project-card:has(.project-tag.open-source)::after { background: #2563eb; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.certification) {
-  background-color: #f4edff;
-  background-image: radial-gradient(circle, rgba(126,34,206,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #e9d5ff;
-}
-.project-card:has(.project-tag.certification)::after { background: #7e22ce; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.standards) {
-  background-color: #fff0f1;
-  background-image: radial-gradient(circle, rgba(225,29,72,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #fecdd3;
-}
-.project-card:has(.project-tag.standards)::after { background: #e11d48; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.case-study) {
-  background-color: #fefce8;
-  background-image: radial-gradient(circle, rgba(202,138,4,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #fde68a;
-}
-.project-card:has(.project-tag.case-study)::after { background: #ca8a04; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.workshop) {
-  background-color: #ecfdf5;
-  background-image: radial-gradient(circle, rgba(15,118,110,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #a7f3d0;
-}
-.project-card:has(.project-tag.workshop)::after { background: #0f766e; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.video) {
-  background-color: #fffbeb;
-  background-image: radial-gradient(circle, rgba(217,119,6,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #fcd34d;
-}
-.project-card:has(.project-tag.video)::after { background: #d97706; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.blog) {
-  background-color: #f0f9ff;
-  background-image: radial-gradient(circle, rgba(2,132,199,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #bae6fd;
-}
-.project-card:has(.project-tag.blog)::after { background: #0284c7; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.talk) {
-  background-color: #edf0ff;
-  background-image: radial-gradient(circle, rgba(79,70,229,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #c7d2fe;
-}
-.project-card:has(.project-tag.talk)::after { background: #4f46e5; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.research) {
-  background-color: #fff7ed;
-  background-image: radial-gradient(circle, rgba(234,88,12,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #fed7aa;
-}
-.project-card:has(.project-tag.research)::after { background: #ea580c; }
+/* Cards WITHOUT a photo: very subtle tint + border only */
+.project-card:not(:has(.project-card-photo)):has(.project-tag.open-source)   { background-color: #f0f6ff; border-color: #bfdbfe; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.certification)  { background-color: #f8f5ff; border-color: #e9d5ff; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.standards)      { background-color: #fff5f6; border-color: #fecdd3; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.case-study)     { background-color: #fefdf0; border-color: #fde68a; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.workshop)       { background-color: #f0fdf8; border-color: #a7f3d0; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.video)          { background-color: #fffdf0; border-color: #fcd34d; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.blog)           { background-color: #f0f9ff; border-color: #bae6fd; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.talk)           { background-color: #f6f7ff; border-color: #c7d2fe; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.research)       { background-color: #fffaf5; border-color: #fed7aa; }
 
 /* Hover: lift + type-specific glow */
 .project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); }
