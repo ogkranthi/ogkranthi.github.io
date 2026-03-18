@@ -401,54 +401,62 @@ nav a:hover::after { width: 100%; }
   color: inherit;
   position: relative;
   overflow: hidden;
-  background: #ffffff;
+  min-height: 140px;
   border: 1px solid var(--border);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-/* Decorative blob — top-right corner */
+/* Large corner glow */
 .talk-card::after {
   content: '';
   position: absolute;
-  top: -28px;
-  right: -28px;
-  width: 96px;
-  height: 96px;
+  top: -55px;
+  right: -55px;
+  width: 190px;
+  height: 190px;
   border-radius: 50%;
-  opacity: 0.07;
+  opacity: 0.1;
   pointer-events: none;
 }
 
-/* Type-based gradient backgrounds + border tints */
+/* Type-based: flat tint + dot-grid texture */
 .talk-card:has(.talk-type.talk) {
-  background: linear-gradient(145deg, #eef2ff 0%, #f5f7ff 45%, #ffffff 100%);
+  background-color: #edf0ff;
+  background-image: radial-gradient(circle, rgba(79,70,229,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #c7d2fe;
 }
 .talk-card:has(.talk-type.talk)::after { background: #4f46e5; }
 
 .talk-card:has(.talk-type.workshop) {
-  background: linear-gradient(145deg, #eff6ff 0%, #f0f8ff 45%, #ffffff 100%);
+  background-color: #ebf5ff;
+  background-image: radial-gradient(circle, rgba(37,99,235,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #bfdbfe;
 }
 .talk-card:has(.talk-type.workshop)::after { background: #2563eb; }
 
 .talk-card:has(.talk-type.poster) {
-  background: linear-gradient(145deg, #faf5ff 0%, #f5f0ff 45%, #ffffff 100%);
+  background-color: #f4edff;
+  background-image: radial-gradient(circle, rgba(126,34,206,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #e9d5ff;
 }
 .talk-card:has(.talk-type.poster)::after { background: #7e22ce; }
 
 .talk-card:has(.talk-type.panel) {
-  background: linear-gradient(145deg, #f0fdf4 0%, #f0fbf8 45%, #ffffff 100%);
+  background-color: #ecfdf5;
+  background-image: radial-gradient(circle, rgba(15,118,110,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #a7f3d0;
 }
 .talk-card:has(.talk-type.panel)::after { background: #0f766e; }
 
 /* Hover: lift + type-specific glow */
 .talk-card:hover { transform: translateY(-3px); }
-.talk-card:has(.talk-type.talk):hover    { border-color: #818cf8; box-shadow: 0 12px 36px rgba(99,102,241,0.14); }
-.talk-card:has(.talk-type.workshop):hover { border-color: #60a5fa; box-shadow: 0 12px 36px rgba(37,99,235,0.14); }
-.talk-card:has(.talk-type.poster):hover   { border-color: #c084fc; box-shadow: 0 12px 36px rgba(126,34,206,0.14); }
+.talk-card:has(.talk-type.talk):hover    { border-color: #818cf8; box-shadow: 0 12px 36px rgba(99,102,241,0.18); }
+.talk-card:has(.talk-type.workshop):hover { border-color: #60a5fa; box-shadow: 0 12px 36px rgba(37,99,235,0.18); }
+.talk-card:has(.talk-type.poster):hover   { border-color: #c084fc; box-shadow: 0 12px 36px rgba(126,34,206,0.18); }
 
 a.talk-card:hover .talk-title { color: var(--accent); }
 
@@ -540,76 +548,97 @@ a.talk-card:hover .talk-title { color: var(--accent); }
   text-decoration: none;
 }
 
-/* Decorative blob — bottom-right corner */
+/* Large corner glow */
 .project-card::after {
   content: '';
   position: absolute;
-  bottom: -24px;
-  right: -24px;
-  width: 80px;
-  height: 80px;
+  bottom: -55px;
+  right: -55px;
+  width: 190px;
+  height: 190px;
   border-radius: 50%;
-  opacity: 0.06;
+  opacity: 0.09;
   pointer-events: none;
 }
 
-/* Type-based gradient backgrounds */
-.project-card:has(.project-tag.open-source) {
-  background: linear-gradient(145deg, #eff6ff 0%, #f5f8ff 45%, #ffffff 100%);
+/* Cards WITH a photo: plain white (photo provides all the visual interest) */
+.project-card:has(.project-card-photo) {
+  background: #ffffff;
+}
+
+/* Cards WITHOUT a photo: flat tint + dot-grid texture */
+.project-card:not(:has(.project-card-photo)):has(.project-tag.open-source) {
+  background-color: #ebf5ff;
+  background-image: radial-gradient(circle, rgba(37,99,235,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #bfdbfe;
 }
 .project-card:has(.project-tag.open-source)::after { background: #2563eb; }
 
-.project-card:has(.project-tag.certification) {
-  background: linear-gradient(145deg, #faf5ff 0%, #f8f0ff 45%, #ffffff 100%);
+.project-card:not(:has(.project-card-photo)):has(.project-tag.certification) {
+  background-color: #f4edff;
+  background-image: radial-gradient(circle, rgba(126,34,206,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #e9d5ff;
 }
 .project-card:has(.project-tag.certification)::after { background: #7e22ce; }
 
-.project-card:has(.project-tag.standards) {
-  background: linear-gradient(145deg, #fff1f2 0%, #fff5f5 45%, #ffffff 100%);
+.project-card:not(:has(.project-card-photo)):has(.project-tag.standards) {
+  background-color: #fff0f1;
+  background-image: radial-gradient(circle, rgba(225,29,72,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #fecdd3;
 }
 .project-card:has(.project-tag.standards)::after { background: #e11d48; }
 
-.project-card:has(.project-tag.case-study) {
-  background: linear-gradient(145deg, #fefce8 0%, #fffbeb 45%, #ffffff 100%);
+.project-card:not(:has(.project-card-photo)):has(.project-tag.case-study) {
+  background-color: #fefce8;
+  background-image: radial-gradient(circle, rgba(202,138,4,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #fde68a;
 }
 .project-card:has(.project-tag.case-study)::after { background: #ca8a04; }
 
-.project-card:has(.project-tag.workshop) {
-  background: linear-gradient(145deg, #f0fdf4 0%, #f0fbf8 45%, #ffffff 100%);
+.project-card:not(:has(.project-card-photo)):has(.project-tag.workshop) {
+  background-color: #ecfdf5;
+  background-image: radial-gradient(circle, rgba(15,118,110,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #a7f3d0;
 }
 .project-card:has(.project-tag.workshop)::after { background: #0f766e; }
 
-.project-card:has(.project-tag.video) {
-  background: linear-gradient(145deg, #fffbeb 0%, #fef9ec 45%, #ffffff 100%);
+.project-card:not(:has(.project-card-photo)):has(.project-tag.video) {
+  background-color: #fffbeb;
+  background-image: radial-gradient(circle, rgba(217,119,6,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #fcd34d;
 }
 .project-card:has(.project-tag.video)::after { background: #d97706; }
 
-.project-card:has(.project-tag.blog) {
-  background: linear-gradient(145deg, #f0f9ff 0%, #f0f8ff 45%, #ffffff 100%);
+.project-card:not(:has(.project-card-photo)):has(.project-tag.blog) {
+  background-color: #f0f9ff;
+  background-image: radial-gradient(circle, rgba(2,132,199,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #bae6fd;
 }
 .project-card:has(.project-tag.blog)::after { background: #0284c7; }
 
-.project-card:has(.project-tag.talk) {
-  background: linear-gradient(145deg, #eef2ff 0%, #f5f7ff 45%, #ffffff 100%);
+.project-card:not(:has(.project-card-photo)):has(.project-tag.talk) {
+  background-color: #edf0ff;
+  background-image: radial-gradient(circle, rgba(79,70,229,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   border-color: #c7d2fe;
 }
 .project-card:has(.project-tag.talk)::after { background: #4f46e5; }
 
 /* Hover: lift + type-specific glow */
 .project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); }
-.project-card:has(.project-tag.open-source):hover  { border-color: #60a5fa; box-shadow: 0 12px 36px rgba(37,99,235,0.10); }
-.project-card:has(.project-tag.certification):hover { border-color: #c084fc; box-shadow: 0 12px 36px rgba(126,34,206,0.10); }
-.project-card:has(.project-tag.standards):hover    { border-color: #fb7185; box-shadow: 0 12px 36px rgba(225,29,72,0.10); }
-.project-card:has(.project-tag.case-study):hover   { border-color: #fbbf24; box-shadow: 0 12px 36px rgba(202,138,4,0.10); }
-.project-card:has(.project-tag.workshop):hover     { border-color: #34d399; box-shadow: 0 12px 36px rgba(15,118,110,0.10); }
-.project-card:has(.project-tag.talk):hover         { border-color: #818cf8; box-shadow: 0 12px 36px rgba(99,102,241,0.10); }
+.project-card:has(.project-tag.open-source):hover  { border-color: #60a5fa; box-shadow: 0 12px 36px rgba(37,99,235,0.14); }
+.project-card:has(.project-tag.certification):hover { border-color: #c084fc; box-shadow: 0 12px 36px rgba(126,34,206,0.14); }
+.project-card:has(.project-tag.standards):hover    { border-color: #fb7185; box-shadow: 0 12px 36px rgba(225,29,72,0.14); }
+.project-card:has(.project-tag.case-study):hover   { border-color: #fbbf24; box-shadow: 0 12px 36px rgba(202,138,4,0.14); }
+.project-card:has(.project-tag.workshop):hover     { border-color: #34d399; box-shadow: 0 12px 36px rgba(15,118,110,0.14); }
+.project-card:has(.project-tag.talk):hover         { border-color: #818cf8; box-shadow: 0 12px 36px rgba(99,102,241,0.14); }
 
 .project-card-header {
   display: flex;
