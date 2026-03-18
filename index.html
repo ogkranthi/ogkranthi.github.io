@@ -363,16 +363,27 @@ nav a:hover::after { width: 100%; }
 /* ── TALK CARDS ── */
 .talk-category {
   grid-column: 1 / -1;
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.5rem;
-  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.75rem 0 0.5rem;
 }
-.talk-category:first-child { margin-top: 0; }
+.talk-category::before {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.talk-category:first-child { padding-top: 0; }
 
 .talk-grid {
   display: grid;
@@ -382,9 +393,7 @@ nav a:hover::after { width: 100%; }
 }
 
 .talk-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -392,27 +401,62 @@ nav a:hover::after { width: 100%; }
   color: inherit;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  min-height: 140px;
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.talk-card::before {
+/* Large corner glow */
+.talk-card::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: #e8e8e5;
+  top: -55px;
+  right: -55px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  opacity: 0.1;
+  pointer-events: none;
 }
 
-.talk-card:has(.talk-type.workshop)::before { background: #2563eb; }
-.talk-card:has(.talk-type.talk)::before { background: var(--accent); }
-.talk-card:has(.talk-type.poster)::before { background: #7e22ce; }
-.talk-card:has(.talk-type.panel)::before { background: #0f766e; }
-
-.talk-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+/* Type-based: flat tint + dot-grid texture */
+.talk-card:has(.talk-type.talk) {
+  background-color: #edf0ff;
+  background-image: radial-gradient(circle, rgba(79,70,229,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #c7d2fe;
 }
+.talk-card:has(.talk-type.talk)::after { background: #4f46e5; }
+
+.talk-card:has(.talk-type.workshop) {
+  background-color: #ebf5ff;
+  background-image: radial-gradient(circle, rgba(37,99,235,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #bfdbfe;
+}
+.talk-card:has(.talk-type.workshop)::after { background: #2563eb; }
+
+.talk-card:has(.talk-type.poster) {
+  background-color: #f4edff;
+  background-image: radial-gradient(circle, rgba(126,34,206,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #e9d5ff;
+}
+.talk-card:has(.talk-type.poster)::after { background: #7e22ce; }
+
+.talk-card:has(.talk-type.panel) {
+  background-color: #ecfdf5;
+  background-image: radial-gradient(circle, rgba(15,118,110,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #a7f3d0;
+}
+.talk-card:has(.talk-type.panel)::after { background: #0f766e; }
+
+/* Hover: lift + type-specific glow */
+.talk-card:hover { transform: translateY(-3px); }
+.talk-card:has(.talk-type.talk):hover    { border-color: #818cf8; box-shadow: 0 12px 36px rgba(99,102,241,0.18); }
+.talk-card:has(.talk-type.workshop):hover { border-color: #60a5fa; box-shadow: 0 12px 36px rgba(37,99,235,0.18); }
+.talk-card:has(.talk-type.poster):hover   { border-color: #c084fc; box-shadow: 0 12px 36px rgba(126,34,206,0.18); }
 
 a.talk-card:hover .talk-title { color: var(--accent); }
 
@@ -434,7 +478,7 @@ a.talk-card:hover .talk-title { color: var(--accent); }
   align-items: center;
   gap: 0.5rem;
   padding-top: 0.75rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(0,0,0,0.06);
 }
 
 .talk-event {
@@ -450,16 +494,16 @@ a.talk-card:hover .talk-title { color: var(--accent); }
   font-size: 0.6rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 600;
   padding: 3px 8px;
   border-radius: 4px;
   flex-shrink: 0;
 }
 
-.talk-type.workshop { color: #1e40af; background: #dbeafe; }
-.talk-type.talk { color: #374151; background: #f3f4f6; }
-.talk-type.panel { color: #0f766e; background: #ccfbf1; }
-.talk-type.poster { color: #7e22ce; background: #f3e8ff; }
+.talk-type.workshop { color: #1e40af; background: rgba(219,234,254,0.9); }
+.talk-type.talk     { color: #4338ca; background: rgba(238,242,255,1);    }
+.talk-type.panel    { color: #0f766e; background: #ccfbf1; }
+.talk-type.poster   { color: #7e22ce; background: rgba(243,232,255,1);    }
 
 /* ── SPEAKING TOPICS ── */
 .speaking-topics {
@@ -490,22 +534,111 @@ a.talk-card:hover .talk-title { color: var(--accent); }
 }
 
 .project-card {
-  background: var(--bg-card);
+  background: #ffffff;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   color: inherit;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
 }
 
-.project-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+/* Large corner glow */
+.project-card::after {
+  content: '';
+  position: absolute;
+  bottom: -55px;
+  right: -55px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  opacity: 0.09;
+  pointer-events: none;
 }
+
+/* Cards WITH a photo: plain white (photo provides all the visual interest) */
+.project-card:has(.project-card-photo) {
+  background: #ffffff;
+}
+
+/* Cards WITHOUT a photo: flat tint + dot-grid texture */
+.project-card:not(:has(.project-card-photo)):has(.project-tag.open-source) {
+  background-color: #ebf5ff;
+  background-image: radial-gradient(circle, rgba(37,99,235,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #bfdbfe;
+}
+.project-card:has(.project-tag.open-source)::after { background: #2563eb; }
+
+.project-card:not(:has(.project-card-photo)):has(.project-tag.certification) {
+  background-color: #f4edff;
+  background-image: radial-gradient(circle, rgba(126,34,206,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #e9d5ff;
+}
+.project-card:has(.project-tag.certification)::after { background: #7e22ce; }
+
+.project-card:not(:has(.project-card-photo)):has(.project-tag.standards) {
+  background-color: #fff0f1;
+  background-image: radial-gradient(circle, rgba(225,29,72,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #fecdd3;
+}
+.project-card:has(.project-tag.standards)::after { background: #e11d48; }
+
+.project-card:not(:has(.project-card-photo)):has(.project-tag.case-study) {
+  background-color: #fefce8;
+  background-image: radial-gradient(circle, rgba(202,138,4,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #fde68a;
+}
+.project-card:has(.project-tag.case-study)::after { background: #ca8a04; }
+
+.project-card:not(:has(.project-card-photo)):has(.project-tag.workshop) {
+  background-color: #ecfdf5;
+  background-image: radial-gradient(circle, rgba(15,118,110,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #a7f3d0;
+}
+.project-card:has(.project-tag.workshop)::after { background: #0f766e; }
+
+.project-card:not(:has(.project-card-photo)):has(.project-tag.video) {
+  background-color: #fffbeb;
+  background-image: radial-gradient(circle, rgba(217,119,6,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #fcd34d;
+}
+.project-card:has(.project-tag.video)::after { background: #d97706; }
+
+.project-card:not(:has(.project-card-photo)):has(.project-tag.blog) {
+  background-color: #f0f9ff;
+  background-image: radial-gradient(circle, rgba(2,132,199,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #bae6fd;
+}
+.project-card:has(.project-tag.blog)::after { background: #0284c7; }
+
+.project-card:not(:has(.project-card-photo)):has(.project-tag.talk) {
+  background-color: #edf0ff;
+  background-image: radial-gradient(circle, rgba(79,70,229,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #c7d2fe;
+}
+.project-card:has(.project-tag.talk)::after { background: #4f46e5; }
+
+/* Hover: lift + type-specific glow */
+.project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); }
+.project-card:has(.project-tag.open-source):hover  { border-color: #60a5fa; box-shadow: 0 12px 36px rgba(37,99,235,0.14); }
+.project-card:has(.project-tag.certification):hover { border-color: #c084fc; box-shadow: 0 12px 36px rgba(126,34,206,0.14); }
+.project-card:has(.project-tag.standards):hover    { border-color: #fb7185; box-shadow: 0 12px 36px rgba(225,29,72,0.14); }
+.project-card:has(.project-tag.case-study):hover   { border-color: #fbbf24; box-shadow: 0 12px 36px rgba(202,138,4,0.14); }
+.project-card:has(.project-tag.workshop):hover     { border-color: #34d399; box-shadow: 0 12px 36px rgba(15,118,110,0.14); }
+.project-card:has(.project-tag.talk):hover         { border-color: #818cf8; box-shadow: 0 12px 36px rgba(99,102,241,0.14); }
 
 .project-card-header {
   display: flex;
@@ -525,13 +658,14 @@ a.talk-card:hover .talk-title { color: var(--accent); }
   flex-shrink: 0;
 }
 
-.project-tag.open-source { color: #1e40af; background: #dbeafe; }
-.project-tag.workshop { color: #0f766e; background: #ccfbf1; }
-.project-tag.case-study { color: #854d0e; background: #fef9c3; }
-.project-tag.certification { color: #7e22ce; background: #f3e8ff; }
-.project-tag.standards { color: #991b1b; background: #fee2e2; }
-.project-tag.video { color: #b45309; background: #fef3c7; }
-.project-tag.blog { color: #0369a1; background: #e0f2fe; }
+.project-tag.open-source  { color: #1e40af; background: #dbeafe; }
+.project-tag.workshop     { color: #0f766e; background: #ccfbf1; }
+.project-tag.case-study   { color: #854d0e; background: #fef9c3; }
+.project-tag.certification{ color: #7e22ce; background: #f3e8ff; }
+.project-tag.standards    { color: #991b1b; background: #fee2e2; }
+.project-tag.video        { color: #b45309; background: #fef3c7; }
+.project-tag.blog         { color: #0369a1; background: #e0f2fe; }
+.project-tag.talk         { color: #4338ca; background: #eef2ff; }
 
 .project-title {
   font-family: var(--serif);
