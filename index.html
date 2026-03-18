@@ -631,6 +631,14 @@ a.talk-card:hover .talk-title { color: var(--accent); }
 }
 .project-card:has(.project-tag.talk)::after { background: #4f46e5; }
 
+.project-card:not(:has(.project-card-photo)):has(.project-tag.research) {
+  background-color: #fff7ed;
+  background-image: radial-gradient(circle, rgba(234,88,12,0.1) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  border-color: #fed7aa;
+}
+.project-card:has(.project-tag.research)::after { background: #ea580c; }
+
 /* Hover: lift + type-specific glow */
 .project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); }
 .project-card:has(.project-tag.open-source):hover  { border-color: #60a5fa; box-shadow: 0 12px 36px rgba(37,99,235,0.14); }
@@ -639,6 +647,7 @@ a.talk-card:hover .talk-title { color: var(--accent); }
 .project-card:has(.project-tag.case-study):hover   { border-color: #fbbf24; box-shadow: 0 12px 36px rgba(202,138,4,0.14); }
 .project-card:has(.project-tag.workshop):hover     { border-color: #34d399; box-shadow: 0 12px 36px rgba(15,118,110,0.14); }
 .project-card:has(.project-tag.talk):hover         { border-color: #818cf8; box-shadow: 0 12px 36px rgba(99,102,241,0.14); }
+.project-card:has(.project-tag.research):hover     { border-color: #fb923c; box-shadow: 0 12px 36px rgba(234,88,12,0.14); }
 
 .project-card-header {
   display: flex;
@@ -666,6 +675,7 @@ a.talk-card:hover .talk-title { color: var(--accent); }
 .project-tag.video        { color: #b45309; background: #fef3c7; }
 .project-tag.blog         { color: #0369a1; background: #e0f2fe; }
 .project-tag.talk         { color: #4338ca; background: #eef2ff; }
+.project-tag.research     { color: #9a3412; background: #ffedd5; }
 
 .project-title {
   font-family: var(--serif);
@@ -1288,6 +1298,15 @@ footer p {
     <p class="section-intro">Production systems shipped across cloud, AI, and blockchain. Open-source contributions, industry standards work, and original research.</p>
 
     <div class="project-grid">
+
+      <a href="https://www.kaggle.com/benchmarks/ogkranthi22/cogcontrol-stakes-metacognition" target="_blank" rel="noopener" class="project-card">
+        <div class="project-card-header">
+          <span class="project-tag research">Research</span>
+        </div>
+        <div class="project-title">CogControl-Stakes: Metacognition</div>
+        <div class="project-desc">A behavioral benchmark for measuring LLM metacognitive monitoring and control — grounded in Nelson &amp; Narens (1990). Wagering paradigm for calibration, asymmetric-payoff abstention under stakes. Submitted to Google DeepMind's AGI progress evaluation challenge. Evaluated on Gemini 2.5 Flash: systematic overconfidence (ECE 0.21) and catastrophic metacognitive control failure in specialist-required domains.</div>
+        <span class="project-link">View benchmark on Kaggle ↗</span>
+      </a>
 
       <a href="https://github.com/Azure/gpt-rag" target="_blank" rel="noopener" class="project-card">
         <div class="project-card-header">
