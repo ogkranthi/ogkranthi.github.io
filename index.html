@@ -406,51 +406,11 @@ nav a:hover::after { width: 100%; }
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-/* Large corner glow */
-.talk-card::after {
-  content: '';
-  position: absolute;
-  top: -55px;
-  right: -55px;
-  width: 190px;
-  height: 190px;
-  border-radius: 50%;
-  opacity: 0.1;
-  pointer-events: none;
-}
-
-/* Type-based: flat tint + dot-grid texture */
-.talk-card:has(.talk-type.talk) {
-  background-color: #edf0ff;
-  background-image: radial-gradient(circle, rgba(79,70,229,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #c7d2fe;
-}
-.talk-card:has(.talk-type.talk)::after { background: #4f46e5; }
-
-.talk-card:has(.talk-type.workshop) {
-  background-color: #ebf5ff;
-  background-image: radial-gradient(circle, rgba(37,99,235,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #bfdbfe;
-}
-.talk-card:has(.talk-type.workshop)::after { background: #2563eb; }
-
-.talk-card:has(.talk-type.poster) {
-  background-color: #f4edff;
-  background-image: radial-gradient(circle, rgba(126,34,206,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #e9d5ff;
-}
-.talk-card:has(.talk-type.poster)::after { background: #7e22ce; }
-
-.talk-card:has(.talk-type.panel) {
-  background-color: #ecfdf5;
-  background-image: radial-gradient(circle, rgba(15,118,110,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #a7f3d0;
-}
-.talk-card:has(.talk-type.panel)::after { background: #0f766e; }
+/* Type-based: very subtle background tint + border */
+.talk-card:has(.talk-type.talk)     { background-color: #f6f7ff; border-color: #c7d2fe; }
+.talk-card:has(.talk-type.workshop) { background-color: #f0f6ff; border-color: #bfdbfe; }
+.talk-card:has(.talk-type.poster)   { background-color: #f8f5ff; border-color: #e9d5ff; }
+.talk-card:has(.talk-type.panel)    { background-color: #f0fdf8; border-color: #a7f3d0; }
 
 /* Hover: lift + type-specific glow */
 .talk-card:hover { transform: translateY(-3px); }
@@ -548,96 +508,19 @@ a.talk-card:hover .talk-title { color: var(--accent); }
   text-decoration: none;
 }
 
-/* Large corner glow */
-.project-card::after {
-  content: '';
-  position: absolute;
-  bottom: -55px;
-  right: -55px;
-  width: 190px;
-  height: 190px;
-  border-radius: 50%;
-  opacity: 0.09;
-  pointer-events: none;
-}
+/* Cards WITH a photo: plain white */
+.project-card:has(.project-card-photo) { background: #ffffff; }
 
-/* Cards WITH a photo: plain white (photo provides all the visual interest) */
-.project-card:has(.project-card-photo) {
-  background: #ffffff;
-}
-
-/* Cards WITHOUT a photo: flat tint + dot-grid texture */
-.project-card:not(:has(.project-card-photo)):has(.project-tag.open-source) {
-  background-color: #ebf5ff;
-  background-image: radial-gradient(circle, rgba(37,99,235,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #bfdbfe;
-}
-.project-card:has(.project-tag.open-source)::after { background: #2563eb; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.certification) {
-  background-color: #f4edff;
-  background-image: radial-gradient(circle, rgba(126,34,206,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #e9d5ff;
-}
-.project-card:has(.project-tag.certification)::after { background: #7e22ce; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.standards) {
-  background-color: #fff0f1;
-  background-image: radial-gradient(circle, rgba(225,29,72,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #fecdd3;
-}
-.project-card:has(.project-tag.standards)::after { background: #e11d48; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.case-study) {
-  background-color: #fefce8;
-  background-image: radial-gradient(circle, rgba(202,138,4,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #fde68a;
-}
-.project-card:has(.project-tag.case-study)::after { background: #ca8a04; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.workshop) {
-  background-color: #ecfdf5;
-  background-image: radial-gradient(circle, rgba(15,118,110,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #a7f3d0;
-}
-.project-card:has(.project-tag.workshop)::after { background: #0f766e; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.video) {
-  background-color: #fffbeb;
-  background-image: radial-gradient(circle, rgba(217,119,6,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #fcd34d;
-}
-.project-card:has(.project-tag.video)::after { background: #d97706; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.blog) {
-  background-color: #f0f9ff;
-  background-image: radial-gradient(circle, rgba(2,132,199,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #bae6fd;
-}
-.project-card:has(.project-tag.blog)::after { background: #0284c7; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.talk) {
-  background-color: #edf0ff;
-  background-image: radial-gradient(circle, rgba(79,70,229,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #c7d2fe;
-}
-.project-card:has(.project-tag.talk)::after { background: #4f46e5; }
-
-.project-card:not(:has(.project-card-photo)):has(.project-tag.research) {
-  background-color: #fff7ed;
-  background-image: radial-gradient(circle, rgba(234,88,12,0.1) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border-color: #fed7aa;
-}
-.project-card:has(.project-tag.research)::after { background: #ea580c; }
+/* Cards WITHOUT a photo: very subtle tint + border only */
+.project-card:not(:has(.project-card-photo)):has(.project-tag.open-source)   { background-color: #f0f6ff; border-color: #bfdbfe; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.certification)  { background-color: #f8f5ff; border-color: #e9d5ff; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.standards)      { background-color: #fff5f6; border-color: #fecdd3; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.case-study)     { background-color: #fefdf0; border-color: #fde68a; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.workshop)       { background-color: #f0fdf8; border-color: #a7f3d0; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.video)          { background-color: #fffdf0; border-color: #fcd34d; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.blog)           { background-color: #f0f9ff; border-color: #bae6fd; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.talk)           { background-color: #f6f7ff; border-color: #c7d2fe; }
+.project-card:not(:has(.project-card-photo)):has(.project-tag.research)       { background-color: #fffaf5; border-color: #fed7aa; }
 
 /* Hover: lift + type-specific glow */
 .project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); }
@@ -1248,32 +1131,6 @@ footer p {
         </div>
       </a>
 
-      <div class="talk-category">Cloud &amp; Other</div>
-
-      <a href="https://reinvent.awsevents.com/" target="_blank" rel="noopener" class="talk-card">
-        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
-        <div class="talk-card-footer">
-          <span class="talk-event">AWS re:Invent · 2022</span>
-          <span class="talk-type workshop">Workshop</span>
-        </div>
-      </a>
-
-      <a href="https://aws.amazon.com/events/summits/" target="_blank" rel="noopener" class="talk-card">
-        <div class="talk-title">Amazon Managed Blockchain — Workshop</div>
-        <div class="talk-card-footer">
-          <span class="talk-event">AWS Summits · 2022–2023</span>
-          <span class="talk-type workshop">Workshop</span>
-        </div>
-      </a>
-
-      <div class="talk-card">
-        <div class="talk-title">Perimeterless Security</div>
-        <div class="talk-card-footer">
-          <span class="talk-event">Midwest Architecture Talk</span>
-          <span class="talk-type talk">Talk</span>
-        </div>
-      </div>
-
     </div>
 
     <div class="speaking-topics">
@@ -1281,7 +1138,6 @@ footer p {
       <span class="speaking-topic">Enterprise AI Strategy</span>
       <span class="speaking-topic">Cloud + AI Integration</span>
       <span class="speaking-topic">Responsible AI</span>
-      <span class="speaking-topic">Blockchain &amp; Web3</span>
     </div>
 
     <div class="section-cta">
@@ -1295,7 +1151,7 @@ footer p {
 <section class="brand-section reveal" id="projects">
   <div class="brand-section-inner">
     <div class="section-label">Projects &amp; Contributions</div>
-    <p class="section-intro">Production systems shipped across cloud, AI, and blockchain. Open-source contributions, industry standards work, and original research.</p>
+    <p class="section-intro">Open-source contributions, industry standards work, and original research in AI architecture and agentic systems.</p>
 
     <div class="project-grid">
 
@@ -1325,33 +1181,6 @@ footer p {
         <div class="project-desc">End-to-end LLM operations framework.</div>
       </div>
 
-      <a href="https://catalog.us-east-1.prod.workshops.aws/workshops/fa60245b-9832-4910-8183-0616997a9ebf/en-US" target="_blank" rel="noopener" class="project-card">
-        <div class="project-card-header">
-          <span class="project-tag workshop">Workshop</span>
-        </div>
-        <div class="project-title">AWS Managed Blockchain Workshop</div>
-        <div class="project-desc">Co-authored and presented at re:Invent &amp; AWS Summits.</div>
-        <span class="project-link">View workshop ↗</span>
-      </a>
-
-      <a href="https://github.com/oracle/ballerina-oci" target="_blank" rel="noopener" class="project-card">
-        <div class="project-card-header">
-          <span class="project-tag open-source">Open Source</span>
-        </div>
-        <div class="project-title">Ballerina OCI</div>
-        <div class="project-desc">Public cloud module for open source — spearheaded ideation to implementation.</div>
-        <span class="project-link">View on GitHub ↗</span>
-      </a>
-
-      <a href="https://blogs.oracle.com/cloud-infrastructure/post/oracle-blockchain-commits-to-wine-distribution-integrity" target="_blank" rel="noopener" class="project-card">
-        <div class="project-card-header">
-          <span class="project-tag case-study">Case Study</span>
-        </div>
-        <div class="project-title">Oracle Blockchain — Wine Distribution</div>
-        <div class="project-desc">Built and led the blockchain integrity system for wine distribution.</div>
-        <span class="project-link">Read case study ↗</span>
-      </a>
-
       <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-foundation-model-evaluate.html" target="_blank" rel="noopener" class="project-card">
         <div class="project-card-header">
           <span class="project-tag open-source">Open Source</span>
@@ -1361,18 +1190,6 @@ footer p {
         <span class="project-link">View docs ↗</span>
       </a>
 
-      <a href="https://training.linuxfoundation.org/training/hyperledger-fabric-for-developers-lfd272/" target="_blank" rel="noopener" class="project-card">
-        <div class="project-card-photo">
-          <img src="images/cert_dev_kk.jpg" alt="Hyperledger Fabric Certified Developer" style="object-fit: contain; background: #f0f9ff; padding: 1rem;">
-        </div>
-        <div class="project-card-header">
-          <span class="project-tag certification">Certification</span>
-        </div>
-        <div class="project-title">Linux Foundation Courses</div>
-        <div class="project-desc">Co-authored LFD272 (Hyperledger Fabric for Developers) + HFCP certification exam.</div>
-        <span class="project-link">View course ↗</span>
-      </a>
-
       <div class="project-card">
         <div class="project-card-header">
           <span class="project-tag standards">Standards</span>
@@ -1380,23 +1197,6 @@ footer p {
         <div class="project-title">NIST AI Agents Response</div>
         <div class="project-desc">Practices for Automated Benchmark Evaluations of LLMs.</div>
       </div>
-
-      <div class="project-card">
-        <div class="project-card-header">
-          <span class="project-tag standards">Standards</span>
-        </div>
-        <div class="project-title">Cloud Security Alliance</div>
-        <div class="project-desc">Quantum Computing &amp; Artificial Intelligence.</div>
-      </div>
-
-      <a href="https://catalog.workshops.aws/buildweb3/en-US/module2" target="_blank" rel="noopener" class="project-card">
-        <div class="project-card-header">
-          <span class="project-tag talk">Talk</span>
-        </div>
-        <div class="project-title">GenAI in Web3</div>
-        <div class="project-desc">Thought leadership talk on integrating generative AI into Web3 and blockchain architectures.</div>
-        <span class="project-link">View module ↗</span>
-      </a>
 
       <div class="project-card">
         <div class="project-card-header">
@@ -1418,15 +1218,6 @@ footer p {
         <span class="project-link">Watch on YouTube ↗</span>
       </a>
 
-      <a href="https://blogs.oracle.com/cloud-infrastructure/deploying-sisense-on-oracle-cloud-infrastructure-part-1" target="_blank" rel="noopener" class="project-card">
-        <div class="project-card-header">
-          <span class="project-tag blog">Blog</span>
-        </div>
-        <div class="project-title">Deploying Sisense on Oracle Cloud Infrastructure</div>
-        <div class="project-desc">Technical guide for deploying Sisense analytics platform on OCI — published on the Oracle Cloud Infrastructure blog.</div>
-        <span class="project-link">Read on Oracle Blog ↗</span>
-      </a>
-
     </div>
 
     <div class="section-cta">
@@ -1443,84 +1234,14 @@ footer p {
   </div>
 </section>
 
+<div class="section-header reveal" style="border-top: none; padding-top: 1.5rem;">
+  <h2>All Writing</h2>
+  <span class="count">16 Posts</span>
+</div>
+
 <div class="posts-grid">
 
   <article class="post-card reveal" data-category="cloud" data-date="2026-03-16" onclick="window.location.href='openclaw-control-plane-agents.html'">
-    <span class="post-tag cloud">AI Agents</span>
-    <h3>OpenClaw Isn't the Default: Why AI Coworkers Tied to Your Control Plane Usually Win</h3>
-    <p class="post-excerpt">The most important difference between OpenClaw and its alternatives is not model quality — it is execution model. A selection framework for enterprise AI coworkers by control-plane fit.</p>
-    <div class="post-footer">
-      <span class="post-date">Mar 2026 · 20 min</span>
-      <span class="post-read">Read →</span>
-    </div>
-  </article>
-
-  <article class="post-card reveal" data-category="llm" data-date="2026-03-14" onclick="window.location.href='claude-certified-architect-domains.html'">
-    <span class="post-tag cert">Certification</span>
-    <h3>Breaking Down the Five Domains of the Claude Certified Architect Exam</h3>
-    <p class="post-excerpt">A domain-by-domain technical analysis of what the exam actually tests, what the architectural patterns look like in practice, and a 12-week study roadmap to get you from zero to 720.</p>
-    <div class="post-footer">
-      <span class="post-date">Mar 2026 · 18 min</span>
-      <span class="post-read">Read →</span>
-    </div>
-  </article>
-
-  <article class="post-card reveal" data-category="llm" data-date="2026-03-13" onclick="window.location.href='claude-certified-architect-strategy.html'">
-    <span class="post-tag cert">Certification</span>
-    <h3>Why the Claude Certified Architect Matters More Than You Think</h3>
-    <p class="post-excerpt">Anthropic is the first frontier AI lab to launch a professional architect-level certification. What it signals about industry maturity, career strategy, and the future of AI architecture.</p>
-    <div class="post-footer">
-      <span class="post-date">Mar 2026 · 13 min</span>
-      <span class="post-read">Read →</span>
-    </div>
-  </article>
-
-  <article class="post-card reveal" data-category="llm" data-date="2026-03-12" onclick="window.location.href='claude-certified-architect-guide.html'">
-    <span class="post-tag cert">Certification</span>
-    <h3>Everything You Need to Know About the Claude Certified Architect Exam</h3>
-    <p class="post-excerpt">Complete guide to Anthropic's Claude Certified Architect — Foundations certification: exam format, five content domains, six scenarios, preparation strategy, and free resources.</p>
-    <div class="post-footer">
-      <span class="post-date">Mar 2026 · 15 min</span>
-      <span class="post-read">Read →</span>
-    </div>
-  </article>
-
-  <article class="post-card reveal" data-category="cloud" data-date="2026-03-08" onclick="window.location.href='governed-agent-distribution.html'">
-    <span class="post-tag cloud">AI Agents</span>
-    <h3>Governed Agent Distribution Is Becoming the Enterprise Battleground</h3>
-    <p class="post-excerpt">The next phase of enterprise AI adoption is not about model capability. It is about governed distribution: connectors, permissions, marketplaces, and admin controls that make agents deployable inside real enterprises.</p>
-    <div class="post-footer">
-      <span class="post-date">Mar 2026 · 15 min</span>
-      <span class="post-read">Read →</span>
-    </div>
-  </article>
-
-  <article class="post-card reveal" data-category="cloud" data-date="2026-03-05" onclick="window.location.href='autoresearch-harness-engineering.html'">
-    <span class="post-tag cloud">AI Agents</span>
-    <h3>AutoResearch, Harness Engineering, and the Next Layer of Agentic AI</h3>
-    <p class="post-excerpt">The real innovation in AutoResearch isn't autonomy — it's the constraints. Bounded loops, narrow write surfaces, fixed evaluation budgets, and rollback discipline. The scaffolding pattern enterprises should study for production agentic AI.</p>
-    <div class="post-footer">
-      <span class="post-date">Mar 2026 · 14 min</span>
-      <span class="post-read">Read →</span>
-    </div>
-  </article>
-
-</div>
-
-<div class="view-all-writing">
-  <a href="#all-writing">View all writing →</a>
-</div>
-
-<!-- ALL WRITING (full archive) -->
-<div id="all-writing">
-  <div class="section-header reveal">
-    <h2>All Writing</h2>
-    <span class="count">16 Posts</span>
-  </div>
-
-  <div class="posts-grid">
-
-    <article class="post-card reveal" data-category="cloud" data-date="2026-03-16" onclick="window.location.href='openclaw-control-plane-agents.html'">
       <span class="post-tag cloud">AI Agents</span>
       <h3>OpenClaw Isn't the Default: Why AI Coworkers Tied to Your Control Plane Usually Win</h3>
       <p class="post-excerpt">The most important difference between OpenClaw and its alternatives is not model quality — it is execution model. A selection framework for enterprise AI coworkers by control-plane fit.</p>
@@ -1528,9 +1249,9 @@ footer p {
         <span class="post-date">Mar 2026 · 20 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="llm" data-date="2026-03-14" onclick="window.location.href='claude-certified-architect-domains.html'">
+  <article class="post-card reveal" data-category="llm" data-date="2026-03-14" onclick="window.location.href='claude-certified-architect-domains.html'">
       <span class="post-tag cert">Certification</span>
       <h3>Breaking Down the Five Domains of the Claude Certified Architect Exam</h3>
       <p class="post-excerpt">A domain-by-domain technical analysis of what the exam actually tests, what the architectural patterns look like in practice, and a 12-week study roadmap to get you from zero to 720.</p>
@@ -1538,9 +1259,9 @@ footer p {
         <span class="post-date">Mar 2026 · 18 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="llm" data-date="2026-03-13" onclick="window.location.href='claude-certified-architect-strategy.html'">
+  <article class="post-card reveal" data-category="llm" data-date="2026-03-13" onclick="window.location.href='claude-certified-architect-strategy.html'">
       <span class="post-tag cert">Certification</span>
       <h3>Why the Claude Certified Architect Matters More Than You Think</h3>
       <p class="post-excerpt">Anthropic is the first frontier AI lab to launch a professional architect-level certification. What it signals about industry maturity, career strategy, and the future of AI architecture.</p>
@@ -1548,9 +1269,9 @@ footer p {
         <span class="post-date">Mar 2026 · 13 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="llm" data-date="2026-03-12" onclick="window.location.href='claude-certified-architect-guide.html'">
+  <article class="post-card reveal" data-category="llm" data-date="2026-03-12" onclick="window.location.href='claude-certified-architect-guide.html'">
       <span class="post-tag cert">Certification</span>
       <h3>Everything You Need to Know About the Claude Certified Architect Exam</h3>
       <p class="post-excerpt">Complete guide to Anthropic's Claude Certified Architect — Foundations certification: exam format, five content domains, six scenarios, preparation strategy, and free resources.</p>
@@ -1558,9 +1279,9 @@ footer p {
         <span class="post-date">Mar 2026 · 15 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="cloud" data-date="2026-03-08" onclick="window.location.href='governed-agent-distribution.html'">
+  <article class="post-card reveal" data-category="cloud" data-date="2026-03-08" onclick="window.location.href='governed-agent-distribution.html'">
       <span class="post-tag cloud">AI Agents</span>
       <h3>Governed Agent Distribution Is Becoming the Enterprise Battleground</h3>
       <p class="post-excerpt">The next phase of enterprise AI adoption is not about model capability. It is about governed distribution: connectors, permissions, marketplaces, and admin controls that make agents deployable inside real enterprises.</p>
@@ -1568,9 +1289,9 @@ footer p {
         <span class="post-date">Mar 2026 · 15 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="cloud" data-date="2026-03-05" onclick="window.location.href='autoresearch-harness-engineering.html'">
+  <article class="post-card reveal" data-category="cloud" data-date="2026-03-05" onclick="window.location.href='autoresearch-harness-engineering.html'">
       <span class="post-tag cloud">AI Agents</span>
       <h3>AutoResearch, Harness Engineering, and the Next Layer of Agentic AI</h3>
       <p class="post-excerpt">The real innovation in AutoResearch isn't autonomy — it's the constraints. Bounded loops, narrow write surfaces, fixed evaluation budgets, and rollback discipline. The scaffolding pattern enterprises should study for production agentic AI.</p>
@@ -1578,9 +1299,9 @@ footer p {
         <span class="post-date">Mar 2026 · 14 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="safety" data-date="2026-02-20" onclick="window.location.href='distillation-rl-guardrails.html'">
+  <article class="post-card reveal" data-category="safety" data-date="2026-02-20" onclick="window.location.href='distillation-rl-guardrails.html'">
       <span class="post-tag safety">AI Safety</span>
       <h3>Your API Is a Training Dataset: How Distillation Attacks Work and How to Stop Them</h3>
       <p class="post-excerpt">DeepSeek, Moonshot, and MiniMax ran 16M+ exchanges to steal Claude's capabilities. How distillation attacks work mechanically — and a layered guardrail checklist for API and model builders.</p>
@@ -1588,9 +1309,9 @@ footer p {
         <span class="post-date">Feb 2026 · 16 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="llm" data-date="2026-02-15" onclick="window.location.href='pediatric-disaster-edge-ai.html'">
+  <article class="post-card reveal" data-category="llm" data-date="2026-02-15" onclick="window.location.href='pediatric-disaster-edge-ai.html'">
       <span class="post-tag hitl">Edge AI</span>
       <h3>Fine-Tuning a 1.2B LLM for Pediatric Disaster Response on the Edge</h3>
       <p class="post-excerpt">How we fine-tuned LiquidAI's LFM2.5-1.2B on JumpSTART triage protocols using Unsloth + Hugging Face Jobs — and built a model that runs under 1GB RAM with zero internet connectivity on field devices.</p>
@@ -1598,9 +1319,9 @@ footer p {
         <span class="post-date">Feb 2026 · 18 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="cloud" onclick="window.location.href='#'">
+  <article class="post-card reveal" data-category="cloud" onclick="window.location.href='#'">
       <span class="post-tag cloud">AI Agents</span>
       <h3>The Enterprise AI Agent Stack: Orchestration, Memory, and Tool Use in Production</h3>
       <p class="post-excerpt">A structured look at the layers that make enterprise AI agents reliable: orchestration frameworks, short and long-term memory patterns, tool integration strategies, and the architectural decisions that separate demos from deployments.</p>
@@ -1608,9 +1329,9 @@ footer p {
         <span class="post-date">Feb 2026 · 8 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="llm" onclick="window.location.href='#'">
+  <article class="post-card reveal" data-category="llm" onclick="window.location.href='#'">
       <span class="post-tag llm">AI Architectures</span>
       <h3>SFT vs. DPO: Choosing the Right Fine-Tuning Strategy for Enterprise AI Applications</h3>
       <p class="post-excerpt">Supervised fine-tuning handles simple tasks well. But for complex reasoning and domain-specific applications, DPO after SFT consistently delivers meaningful accuracy gains. A practical decision framework for your fine-tuning strategy.</p>
@@ -1618,9 +1339,9 @@ footer p {
         <span class="post-date">Feb 2026 · 10 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="robotics" onclick="window.location.href='#'">
+  <article class="post-card reveal" data-category="robotics" onclick="window.location.href='#'">
       <span class="post-tag robotics">Reinforcement Learning</span>
       <h3>RLHF in Practice: Training Reward Models for Enterprise AI Applications</h3>
       <p class="post-excerpt">How reinforcement learning from human feedback translates from research papers to production systems. Breaking down reward model design, preference data collection, and the feedback loops that align models with real-world requirements.</p>
@@ -1628,9 +1349,9 @@ footer p {
         <span class="post-date">Mar 2026 · 14 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="safety" onclick="window.location.href='#'">
+  <article class="post-card reveal" data-category="safety" onclick="window.location.href='#'">
       <span class="post-tag safety">AI Safety</span>
       <h3>HITL Frameworks: Why Human Oversight Is Non-Negotiable in Agentic AI Systems</h3>
       <p class="post-excerpt">As AI agents take on more autonomous decision-making, the design of human-in-the-loop checkpoints becomes the difference between trustworthy and dangerous systems. Exploring oversight patterns, escalation logic, and quality validation architectures.</p>
@@ -1638,9 +1359,9 @@ footer p {
         <span class="post-date">Mar 2026 · 9 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="cloud" onclick="window.location.href='#'">
+  <article class="post-card reveal" data-category="cloud" onclick="window.location.href='#'">
       <span class="post-tag cloud">AI Agents</span>
       <h3>Multi-Agent Systems: Designing Collaborative AI Pipelines That Scale</h3>
       <p class="post-excerpt">Single agents hit capability ceilings fast. Multi-agent architectures unlock parallelism, specialization, and fault tolerance — but introduce new coordination challenges. The patterns that work in production across high-stakes enterprise environments.</p>
@@ -1648,9 +1369,9 @@ footer p {
         <span class="post-date">Mar 2026 · 11 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="llm" onclick="window.location.href='#'">
+  <article class="post-card reveal" data-category="llm" onclick="window.location.href='#'">
       <span class="post-tag llm">AI Architectures</span>
       <h3>Compound AI Systems: Why Orchestrated Pipelines Outperform Monolithic Models</h3>
       <p class="post-excerpt">From banking automation to document intelligence — why production AI is evolving from single large models to orchestrated pipelines of specialized components. The architecture patterns driving this shift and when to apply them.</p>
@@ -1658,9 +1379,9 @@ footer p {
         <span class="post-date">Apr 2026 · 13 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="robotics" onclick="window.location.href='#'">
+  <article class="post-card reveal" data-category="robotics" onclick="window.location.href='#'">
       <span class="post-tag robotics">Reinforcement Learning</span>
       <h3>Reinforcement Learning at Enterprise Scale: Beyond Games and Into Production Systems</h3>
       <p class="post-excerpt">RL has moved well beyond Atari and board games. Exploring how reinforcement learning is being applied to real enterprise problems — from process optimization to autonomous decision systems — and the infrastructure required to make it work.</p>
@@ -1668,9 +1389,9 @@ footer p {
         <span class="post-date">Apr 2026 · 15 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-    <article class="post-card reveal" data-category="safety" onclick="window.location.href='#'">
+  <article class="post-card reveal" data-category="safety" onclick="window.location.href='#'">
       <span class="post-tag safety">AI Safety</span>
       <h3>AI Guardrails in Production: Designing Safety Layers for Agentic and LLM Systems</h3>
       <p class="post-excerpt">A practical guide to implementing AI safety mechanisms that hold up under real-world conditions. Input validation, output filtering, behavioral constraints, and the monitoring architecture that catches failures before they become incidents.</p>
@@ -1678,10 +1399,9 @@ footer p {
         <span class="post-date">Apr 2026 · 10 min</span>
         <span class="post-read">Read →</span>
       </div>
-    </article>
+  </article>
 
-  </div>
-</div>
+  </div></div>
 
 <!-- NEWSLETTER -->
 <section class="subscribe reveal">
