@@ -522,6 +522,74 @@ a.talk-card:hover .talk-title { color: var(--accent); }
 .project-card:not(:has(.project-card-photo)):has(.project-tag.talk)           { background-color: #f6f7ff; border-color: #c7d2fe; }
 .project-card:not(:has(.project-card-photo)):has(.project-tag.research)       { background-color: #fffaf5; border-color: #fed7aa; }
 
+/* ── FEATURED PROJECT CARD (full-width hero) ── */
+.project-card-featured {
+  grid-column: 1 / -1;
+  background: #0f172a !important;
+  border-color: #1e3a5f !important;
+  padding: 2rem 2.5rem;
+  gap: 1rem;
+  color: #f1f5f9;
+}
+.project-card-featured .project-tag {
+  color: #93c5fd;
+  background: rgba(37,99,235,0.2);
+}
+.project-card-featured .project-title {
+  font-size: 1.55rem;
+  color: #f1f5f9;
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.3;
+}
+.project-card-featured .project-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.7; }
+.project-card-featured .project-install {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: #7dd3fc;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 0.45rem 0.85rem;
+  display: inline-block;
+}
+.project-card-featured .project-frameworks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.project-framework-badge {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.07);
+  color: #cbd5e1;
+  border: 1px solid rgba(255,255,255,0.11);
+}
+.project-card-featured .project-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #2563eb;
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
+  border-radius: 7px;
+  align-self: flex-start;
+  transition: background 0.15s;
+}
+.project-card-featured:hover {
+  border-color: #2563eb !important;
+  box-shadow: 0 16px 48px rgba(37,99,235,0.22);
+  transform: translateY(-2px);
+}
+.project-card-featured:hover .project-cta { background: #1d4ed8; }
+
 /* Hover: lift + type-specific glow */
 .project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); }
 .project-card:has(.project-tag.open-source):hover  { border-color: #60a5fa; box-shadow: 0 12px 36px rgba(37,99,235,0.14); }
@@ -1180,6 +1248,25 @@ footer p {
     <p class="section-intro">Open-source contributions, industry standards work, and original research in AI architecture and agentic systems.</p>
 
     <div class="project-grid">
+
+      <a href="https://github.com/ogkranthi/agentshift" target="_blank" rel="noopener" class="project-card project-card-featured">
+        <div class="project-card-header">
+          <span class="project-tag open-source">Open Source</span>
+        </div>
+        <div class="project-title">AgentShift</div>
+        <div class="project-desc">Convert AI agents between frameworks. Define once, run anywhere. A universal converter that parses agent and skill definitions into a portable intermediate representation, then emits platform-specific configurations — no rework required when switching stacks.</div>
+        <div class="project-frameworks">
+          <span class="project-framework-badge">OpenClaw</span>
+          <span class="project-framework-badge">Claude Code</span>
+          <span class="project-framework-badge">Copilot — soon</span>
+          <span class="project-framework-badge">Bedrock — soon</span>
+          <span class="project-framework-badge">Vertex AI — soon</span>
+          <span class="project-framework-badge">LangGraph — soon</span>
+          <span class="project-framework-badge">CrewAI — soon</span>
+        </div>
+        <code class="project-install">pip install agentshift</code>
+        <span class="project-cta">View on GitHub ↗</span>
+      </a>
 
       <a href="https://www.kaggle.com/benchmarks/ogkranthi22/cogcontrol-stakes-metacognition" target="_blank" rel="noopener" class="project-card">
         <div class="project-card-header">
