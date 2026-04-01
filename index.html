@@ -1027,6 +1027,144 @@ footer p {
   transform: translateY(0);
 }
 
+/* ── ASK MY WRITING — SEARCH ── */
+.writing-search-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2.5rem 1.75rem;
+}
+
+.writing-search-bar {
+  position: relative;
+}
+
+.writing-search-bar input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fafafa;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+.writing-search-bar input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(30,64,175,0.08);
+  background: #fff;
+}
+
+.writing-search-bar input::placeholder { color: #a0a0a8; }
+
+.search-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a0a0a8;
+  pointer-events: none;
+  display: flex;
+}
+
+.search-results {
+  margin-top: 0.75rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.search-results.active { display: flex; }
+
+.search-result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.search-result-item:hover {
+  border-color: #c7d2fe;
+  box-shadow: 0 4px 16px rgba(30,64,175,0.08);
+}
+
+.search-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-result-source {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.search-result-source.article {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.search-result-source.substack {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.search-result-title {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.search-result-snippet {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.search-result-item mark {
+  background: #fef9c3;
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.search-no-results {
+  padding: 0.85rem 1rem;
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: 9px;
+}
+
+.search-hint {
+  font-size: 0.73rem;
+  color: #b0b0b8;
+  margin-top: 0.4rem;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   header { padding: 1rem 1.5rem; }
@@ -1401,6 +1539,17 @@ footer p {
   <span class="count">17 Posts</span>
 </div>
 
+<div class="writing-search-wrap">
+  <div class="writing-search-bar">
+    <span class="search-icon">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" id="writing-search" placeholder="Ask my writing — try 'RAG evaluation', 'agentic governance', 'edge AI'…" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="search-hint">Searches across 9 articles + 7 Substack posts</div>
+  <div class="search-results" id="search-results"></div>
+</div>
+
 <div class="posts-grid">
 
   <article class="post-card reveal" data-category="cloud" data-date="2026-03-16" onclick="window.location.href='openclaw-control-plane-agents.html'">
@@ -1628,6 +1777,111 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+<!-- Ask My Writing — Search -->
+<script>
+(function() {
+  const STOPWORDS = new Set(['a','an','the','and','or','but','in','on','at','to','for','of','with','by','from','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','could','should','may','might','that','this','these','those','it','its','i','you','we','they','he','she','what','how','when','where','why','which','who','not','no','can','about','into','than','then','as','if','so','just','also','more','my','your','their','our','all','any','some']);
+
+  let index = null;
+
+  function tokenize(text) {
+    return text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(t => t.length > 2 && !STOPWORDS.has(t));
+  }
+
+  function highlight(text, tokens) {
+    if (!tokens.length) return text;
+    const re = new RegExp('(' + tokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'gi');
+    return text.replace(re, '<mark>$1</mark>');
+  }
+
+  function score(article, queryTokens) {
+    let s = 0;
+    const titleTokens = tokenize(article.title);
+    const excerptTokens = tokenize(article.excerpt);
+    queryTokens.forEach(qt => {
+      // Title match: high weight
+      if (titleTokens.some(t => t.includes(qt) || qt.includes(t))) s += 8;
+      // Tag match
+      article.tags.forEach(tag => { if (tag.toLowerCase().includes(qt)) s += 4; });
+      // Excerpt match
+      if (excerptTokens.some(t => t.includes(qt) || qt.includes(t))) s += 3;
+      // Chunk match
+      article.chunks.forEach(chunk => {
+        const ct = tokenize(chunk);
+        const matches = ct.filter(t => t.includes(qt) || qt.includes(t)).length;
+        s += matches * 1;
+      });
+    });
+    return s;
+  }
+
+  function bestChunk(article, queryTokens) {
+    let best = article.excerpt;
+    let bestScore = 0;
+    article.chunks.forEach(chunk => {
+      const ct = tokenize(chunk);
+      const s = ct.filter(t => queryTokens.some(qt => t.includes(qt) || qt.includes(t))).length;
+      if (s > bestScore) { bestScore = s; best = chunk; }
+    });
+    return best;
+  }
+
+  function render(results, queryTokens) {
+    const container = document.getElementById('search-results');
+    if (!results.length) {
+      container.innerHTML = '<div class="search-no-results">No results found — try different keywords</div>';
+      container.classList.add('active');
+      return;
+    }
+    container.innerHTML = results.map(a => {
+      const snippet = bestChunk(a, queryTokens);
+      const snippetHtml = highlight(snippet.length > 180 ? snippet.slice(0, 177) + '…' : snippet, queryTokens);
+      const titleHtml = highlight(a.title, queryTokens);
+      const isExternal = a.url.startsWith('http');
+      return `<a href="${a.url}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="search-result-item">
+        <div class="search-result-header">
+          <span class="search-result-source ${a.source}">${a.source === 'substack' ? 'Substack' : 'Article'}</span>
+          <span class="search-result-title">${titleHtml}</span>
+        </div>
+        <div class="search-result-snippet">${snippetHtml}</div>
+      </a>`;
+    }).join('');
+    container.classList.add('active');
+  }
+
+  function search(query) {
+    const container = document.getElementById('search-results');
+    if (!query.trim()) { container.classList.remove('active'); container.innerHTML = ''; return; }
+    if (!index) return;
+    const queryTokens = tokenize(query);
+    if (!queryTokens.length) { container.classList.remove('active'); return; }
+    const scored = index.articles
+      .map(a => ({ article: a, score: score(a, queryTokens) }))
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map(x => x.article);
+    render(scored, queryTokens);
+  }
+
+  // Load index and wire input
+  fetch('search-index.json')
+    .then(r => r.json())
+    .then(data => {
+      index = data;
+      const input = document.getElementById('writing-search');
+      if (!input) return;
+      let debounce;
+      input.addEventListener('input', e => {
+        clearTimeout(debounce);
+        debounce = setTimeout(() => search(e.target.value), 180);
+      });
+      input.addEventListener('keydown', e => { if (e.key === 'Escape') { input.value = ''; search(''); input.blur(); } });
+    })
+    .catch(() => {}); // fail silently if index not found
+})();
 </script>
 
 </body>
