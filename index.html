@@ -1027,75 +1027,119 @@ footer p {
   transform: translateY(0);
 }
 
-/* ── ASK MY WRITING — SEARCH ── */
-.writing-search-wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 2.5rem 1.75rem;
-}
-
-.writing-search-bar {
-  position: relative;
-}
-
-.writing-search-bar input {
-  width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.75rem;
-  font-family: var(--sans);
-  font-size: 0.88rem;
+/* ── SEARCH ── */
+.nav-search-btn {
+  background: none;
   border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #fafafa;
-  color: var(--text-primary);
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-  box-sizing: border-box;
-}
-
-.writing-search-bar input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(30,64,175,0.08);
-  background: #fff;
-}
-
-.writing-search-bar input::placeholder { color: #a0a0a8; }
-
-.search-icon {
-  position: absolute;
-  left: 0.85rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #a0a0a8;
-  pointer-events: none;
+  border-radius: 7px;
+  padding: 0.35rem 0.55rem;
+  cursor: pointer;
+  color: var(--text-secondary);
   display: flex;
+  align-items: center;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  margin-left: 0.25rem;
+}
+.nav-search-btn:hover { border-color: var(--accent); color: var(--accent); background: #eef2ff; }
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(15,15,15,0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 10vh;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+.search-overlay.open { opacity: 1; pointer-events: all; }
+
+.search-overlay-inner {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 1.5rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+  overflow: hidden;
+  transform: translateY(-12px);
+  transition: transform 0.18s ease;
+}
+.search-overlay.open .search-overlay-inner { transform: translateY(0); }
+
+.search-overlay-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-overlay-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: var(--sans);
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: transparent;
+}
+.search-overlay-bar input::placeholder { color: #a0a0a8; }
+
+.search-close-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  transition: border-color 0.15s;
+}
+.search-close-btn:hover { border-color: #9ca3af; }
+
+.search-overlay-hint {
+  padding: 0.55rem 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  color: #b0b0b8;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
 }
 
 .search-results {
-  margin-top: 0.75rem;
+  padding: 0.75rem;
   display: none;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  max-height: 60vh;
+  overflow-y: auto;
 }
-
 .search-results.active { display: flex; }
 
 .search-result-item {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 0.9rem 1rem;
+  padding: 0.85rem 1rem;
   border: 1px solid var(--border);
   border-radius: 9px;
   background: #fff;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, background 0.15s;
 }
-
-.search-result-item:hover {
-  border-color: #c7d2fe;
-  box-shadow: 0 4px 16px rgba(30,64,175,0.08);
-}
+.search-result-item:hover { border-color: #c7d2fe; background: #fafbff; }
 
 .search-result-header {
   display: flex;
@@ -1112,16 +1156,10 @@ footer p {
   border-radius: 4px;
   flex-shrink: 0;
 }
-
-.search-result-source.article {
-  background: #eef2ff;
-  color: #4338ca;
-}
-
-.search-result-source.substack {
-  background: #fff7ed;
-  color: #c2410c;
-}
+.search-result-source.article  { background: #eef2ff; color: #4338ca; }
+.search-result-source.substack { background: #fff7ed; color: #c2410c; }
+.search-result-source.talk     { background: #f0fdf4; color: #15803d; }
+.search-result-source.project  { background: #0f172a; color: #93c5fd; }
 
 .search-result-title {
   font-family: var(--serif);
@@ -1141,28 +1179,13 @@ footer p {
   overflow: hidden;
 }
 
-.search-result-item mark {
-  background: #fef9c3;
-  color: inherit;
-  border-radius: 2px;
-  padding: 0 1px;
-}
+.search-result-item mark { background: #fef9c3; color: inherit; border-radius: 2px; padding: 0 1px; }
 
 .search-no-results {
-  padding: 0.85rem 1rem;
+  padding: 2rem 1rem;
   font-size: 0.83rem;
   color: var(--text-secondary);
   text-align: center;
-  border: 1px dashed var(--border);
-  border-radius: 9px;
-}
-
-.search-hint {
-  font-size: 0.73rem;
-  color: #b0b0b8;
-  margin-top: 0.4rem;
-  font-family: var(--mono);
-  letter-spacing: 0.02em;
 }
 
 /* ── RESPONSIVE ── */
@@ -1204,8 +1227,27 @@ footer p {
     <a href="#writing">Writing</a>
     <a href="https://aiengineerweekly.substack.com" target="_blank" class="nav-cta">Newsletter →</a>
     <a href="#connect">Contact</a>
+    <button class="nav-search-btn" id="search-open" aria-label="Search" title="Search everything">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
   </nav>
 </header>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="search-overlay" aria-hidden="true">
+  <div class="search-overlay-inner">
+    <div class="search-overlay-bar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:#6b7280"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="writing-search" placeholder="Search talks, projects, articles, newsletter…" autocomplete="off" spellcheck="false">
+      <button class="search-close-btn" id="search-close" aria-label="Close search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <span>ESC</span>
+      </button>
+    </div>
+    <div class="search-overlay-hint">Searches across articles, Substack posts, talks, and projects</div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -1539,16 +1581,6 @@ footer p {
   <span class="count">17 Posts</span>
 </div>
 
-<div class="writing-search-wrap">
-  <div class="writing-search-bar">
-    <span class="search-icon">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    </span>
-    <input type="text" id="writing-search" placeholder="Ask my writing — try 'RAG evaluation', 'agentic governance', 'edge AI'…" autocomplete="off" spellcheck="false">
-  </div>
-  <div class="search-hint">Searches across 9 articles + 7 Substack posts</div>
-  <div class="search-results" id="search-results"></div>
-</div>
 
 <div class="posts-grid">
 
@@ -1779,12 +1811,34 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
-<!-- Ask My Writing — Search -->
+<!-- Search -->
 <script>
 (function() {
   const STOPWORDS = new Set(['a','an','the','and','or','but','in','on','at','to','for','of','with','by','from','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','could','should','may','might','that','this','these','those','it','its','i','you','we','they','he','she','what','how','when','where','why','which','who','not','no','can','about','into','than','then','as','if','so','just','also','more','my','your','their','our','all','any','some']);
 
   let index = null;
+  const overlay = document.getElementById('search-overlay');
+  const input = document.getElementById('writing-search');
+  const resultsEl = document.getElementById('search-results');
+
+  function openSearch() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => input && input.focus(), 80);
+  }
+
+  function closeSearch() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (input) { input.value = ''; }
+    if (resultsEl) { resultsEl.classList.remove('active'); resultsEl.innerHTML = ''; }
+  }
+
+  document.getElementById('search-open').addEventListener('click', openSearch);
+  document.getElementById('search-close').addEventListener('click', closeSearch);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeSearch(); });
 
   function tokenize(text) {
     return text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(t => t.length > 2 && !STOPWORDS.has(t));
@@ -1796,30 +1850,24 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     return text.replace(re, '<mark>$1</mark>');
   }
 
-  function score(article, queryTokens) {
+  function scoreArticle(article, queryTokens) {
     let s = 0;
     const titleTokens = tokenize(article.title);
     const excerptTokens = tokenize(article.excerpt);
     queryTokens.forEach(qt => {
-      // Title match: high weight
       if (titleTokens.some(t => t.includes(qt) || qt.includes(t))) s += 8;
-      // Tag match
       article.tags.forEach(tag => { if (tag.toLowerCase().includes(qt)) s += 4; });
-      // Excerpt match
       if (excerptTokens.some(t => t.includes(qt) || qt.includes(t))) s += 3;
-      // Chunk match
       article.chunks.forEach(chunk => {
         const ct = tokenize(chunk);
-        const matches = ct.filter(t => t.includes(qt) || qt.includes(t)).length;
-        s += matches * 1;
+        s += ct.filter(t => t.includes(qt) || qt.includes(t)).length;
       });
     });
     return s;
   }
 
   function bestChunk(article, queryTokens) {
-    let best = article.excerpt;
-    let bestScore = 0;
+    let best = article.excerpt; let bestScore = 0;
     article.chunks.forEach(chunk => {
       const ct = tokenize(chunk);
       const s = ct.filter(t => queryTokens.some(qt => t.includes(qt) || qt.includes(t))).length;
@@ -1828,59 +1876,60 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     return best;
   }
 
+  const SOURCE_LABELS = { article: 'Article', substack: 'Substack', talk: 'Talk', project: 'Project' };
+
   function render(results, queryTokens) {
-    const container = document.getElementById('search-results');
     if (!results.length) {
-      container.innerHTML = '<div class="search-no-results">No results found — try different keywords</div>';
-      container.classList.add('active');
+      resultsEl.innerHTML = '<div class="search-no-results">No results — try different keywords</div>';
+      resultsEl.classList.add('active');
       return;
     }
-    container.innerHTML = results.map(a => {
+    resultsEl.innerHTML = results.map(a => {
       const snippet = bestChunk(a, queryTokens);
-      const snippetHtml = highlight(snippet.length > 180 ? snippet.slice(0, 177) + '…' : snippet, queryTokens);
+      const snippetHtml = highlight(snippet.length > 200 ? snippet.slice(0, 197) + '…' : snippet, queryTokens);
       const titleHtml = highlight(a.title, queryTokens);
       const isExternal = a.url.startsWith('http');
-      return `<a href="${a.url}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="search-result-item">
+      return `<a href="${a.url || '#'}" ${isExternal ? 'target="_blank" rel="noopener"' : ''} class="search-result-item" onclick="closeSearch && setTimeout(closeSearch,80)">
         <div class="search-result-header">
-          <span class="search-result-source ${a.source}">${a.source === 'substack' ? 'Substack' : 'Article'}</span>
+          <span class="search-result-source ${a.source}">${SOURCE_LABELS[a.source] || a.source}</span>
           <span class="search-result-title">${titleHtml}</span>
         </div>
         <div class="search-result-snippet">${snippetHtml}</div>
       </a>`;
     }).join('');
-    container.classList.add('active');
+    resultsEl.classList.add('active');
   }
 
   function search(query) {
-    const container = document.getElementById('search-results');
-    if (!query.trim()) { container.classList.remove('active'); container.innerHTML = ''; return; }
+    if (!query.trim()) { resultsEl.classList.remove('active'); resultsEl.innerHTML = ''; return; }
     if (!index) return;
     const queryTokens = tokenize(query);
-    if (!queryTokens.length) { container.classList.remove('active'); return; }
+    if (!queryTokens.length) { resultsEl.classList.remove('active'); return; }
     const scored = index.articles
-      .map(a => ({ article: a, score: score(a, queryTokens) }))
+      .map(a => ({ article: a, score: scoreArticle(a, queryTokens) }))
       .filter(x => x.score > 0)
       .sort((a, b) => b.score - a.score)
-      .slice(0, 5)
+      .slice(0, 7)
       .map(x => x.article);
     render(scored, queryTokens);
   }
 
-  // Load index and wire input
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeSearch(); return; }
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+  });
+
   fetch('search-index.json')
     .then(r => r.json())
     .then(data => {
       index = data;
-      const input = document.getElementById('writing-search');
-      if (!input) return;
       let debounce;
       input.addEventListener('input', e => {
         clearTimeout(debounce);
-        debounce = setTimeout(() => search(e.target.value), 180);
+        debounce = setTimeout(() => search(e.target.value), 160);
       });
-      input.addEventListener('keydown', e => { if (e.key === 'Escape') { input.value = ''; search(''); input.blur(); } });
     })
-    .catch(() => {}); // fail silently if index not found
+    .catch(() => {});
 })();
 </script>
 
