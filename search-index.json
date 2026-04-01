@@ -1,0 +1,227 @@
+{
+  "articles": [
+    {
+      "id": "openclaw",
+      "title": "OpenClaw Isn't the Default: Why AI Coworkers Tied to Your Control Plane Usually Win",
+      "url": "openclaw-control-plane-agents.html",
+      "source": "article",
+      "tags": ["AI Agents", "Enterprise Architecture"],
+      "date": "Mar 2026",
+      "excerpt": "A practical selection framework for enterprise teams choosing between AI coworker categories — by control-plane fit, privilege scope, and reviewability.",
+      "chunks": [
+        "The market has split into five distinct AI coworker categories, each inheriting a different control plane: personal assistant agents like OpenClaw, repo-native coding agents like GitHub Copilot, terminal and editor-native agents like Claude Code and Cursor, browser and computer-use agents, and scheduled task agents. The best alternative to OpenClaw is not the strongest model — it is the agent whose execution surface already lives where your work lives.",
+        "The right question is: what execution surface should this agent inherit? If the task belongs in a pull request, an agent that runs in chat will always be fighting its own architecture to get there. If the task belongs in a terminal loop with explicit approval gates, a browser-based agent is solving the wrong problem.",
+        "The model quality gap between leading tools is narrowing fast. The control-plane gap is not. Enterprise teams that anchor their agent selection to execution surface — not benchmark scores — will ship faster and debug less.",
+        "Control plane fit determines privilege scope, reviewability, and auditability. An agent that inherits your repo's permission model can be audited like code. An agent that inherits a chat interface cannot. For regulated industries, this distinction is not architectural preference — it is compliance."
+      ]
+    },
+    {
+      "id": "governed-agent",
+      "title": "Governed Agent Distribution Is Becoming the Enterprise Battleground",
+      "url": "governed-agent-distribution.html",
+      "source": "article",
+      "tags": ["AI Agents", "Enterprise Architecture", "Governance"],
+      "date": "Mar 2026",
+      "excerpt": "The next phase of enterprise AI is not about model capability — it is about governed distribution: connectors, permissions, marketplaces, and admin controls.",
+      "chunks": [
+        "The barrier to enterprise AI adoption is distribution — not in the logistics sense, but in the governance sense. Can this agent be deployed inside my enterprise without violating data residency requirements? Can I restrict which business units have access? Can my security team audit what it touched? Can I revoke access instantly if something goes wrong?",
+        "Recent enterprise AI platform launches — from Microsoft Copilot Studio's expanded connector catalog, to Salesforce AgentForce's permission model, to ServiceNow's agent governance controls — all point in the same direction. The vendors that understand this are building distribution infrastructure, not just model capability.",
+        "Governed agent distribution requires four architectural layers: identity and permission propagation, connector governance, behavioral audit trails, and marketplace controls that allow enterprises to curate which agents employees can access.",
+        "The enterprise that controls the agent distribution layer controls the AI adoption stack. This is why Microsoft, Salesforce, and ServiceNow are investing heavily in agent marketplaces and admin consoles — the battle for enterprise AI is being fought at the distribution layer, not the model layer."
+      ]
+    },
+    {
+      "id": "autoresearch",
+      "title": "AutoResearch, Harness Engineering, and the Next Layer of Agentic AI",
+      "url": "autoresearch-harness-engineering.html",
+      "source": "article",
+      "tags": ["AI Agents", "Agentic AI", "Harness Engineering"],
+      "date": "Mar 2026",
+      "excerpt": "The real innovation in AutoResearch isn't autonomy — it's the constraints. Bounded loops, narrow write surfaces, fixed evaluation budgets, and rollback discipline.",
+      "chunks": [
+        "AutoResearch doesn't give an agent a blank canvas. It operates inside a tightly engineered harness: fixed compute budgets, narrow code mutation surfaces, automated evaluation against explicit metrics, and rollback rules that prevent the system from drifting into unrecoverable states. The agent is powerful because it is constrained, not despite it.",
+        "Harness engineering is the discipline of building the scaffolding around an agent that makes its autonomy safe and productive. A well-designed harness defines the agent's write surface — what it can touch — its evaluation budget — how many iterations before it stops — and its rollback discipline — how it recovers from failure.",
+        "The pattern generalizes beyond ML experiments. Every production agentic system that works reliably at enterprise scale has three properties: a narrow, well-defined write surface; an evaluation loop with explicit exit criteria; and a rollback or undo mechanism for every irreversible action.",
+        "The gap between impressive demos and reliable production agents is almost always a harness engineering gap, not a model capability gap. Teams that ship reliable agents spend more time on scaffolding design than on model selection."
+      ]
+    },
+    {
+      "id": "distillation",
+      "title": "Your API Is a Training Dataset: How Distillation Attacks Work and How to Stop Them",
+      "url": "distillation-rl-guardrails.html",
+      "source": "article",
+      "tags": ["AI Safety", "Security", "Model Defense"],
+      "date": "Feb 2026",
+      "excerpt": "DeepSeek, Moonshot, and MiniMax ran 16M+ exchanges to steal Claude's capabilities. How distillation attacks work and a layered guardrail checklist.",
+      "chunks": [
+        "In late 2024 and early 2025, three AI labs ran an industrial-scale campaign to steal Claude's capabilities — not by hacking servers, but by talking to it. Across 24,000 fraudulent accounts, they generated over 16 million exchanges to build a dataset of Claude's reasoning traces, agentic behaviors, and chain-of-thought patterns.",
+        "This is knowledge distillation as an attack vector. The target model becomes an involuntary teacher. Every response it generates — every reasoning trace, every step-by-step explanation — can be used as training signal. The attacker does not need access to the model weights. They only need API access.",
+        "A layered guardrail system for distillation defense includes: output fingerprinting to detect systematic pattern harvesting; rate limiting with behavioral anomaly detection; reasoning trace suppression for API responses; account cluster detection to identify coordinated extraction campaigns.",
+        "The uncomfortable implication: every API you expose is also a potential training dataset for your competitors. Guardrail design is no longer just about preventing harmful outputs — it is about protecting your model's intellectual property from extraction at scale."
+      ]
+    },
+    {
+      "id": "pediatric-edge",
+      "title": "Fine-Tuning a 1.2B LLM for Pediatric Disaster Response on the Edge",
+      "url": "pediatric-disaster-edge-ai.html",
+      "source": "article",
+      "tags": ["Edge AI", "Fine-Tuning", "Healthcare AI"],
+      "date": "Feb 2026",
+      "excerpt": "How we fine-tuned LiquidAI's LFM2.5-1.2B on JumpSTART triage protocols — a model that runs under 1GB RAM with zero internet connectivity on field devices.",
+      "chunks": [
+        "In a mass casualty event — an earthquake, a flood, a building collapse — first responders face decisions that kill or save children in seconds. JumpSTART triage asks: is the child breathing? What is the respiratory rate? Is the radial pulse present? These protocols are well-established. The problem is the gap between protocol knowledge and field availability.",
+        "In disaster zones, connectivity collapses. There is no 4G. There is no cloud API to call. The field device may be a ruggedized Android tablet or an older laptop. RAM is constrained. Battery is limited. The model must run locally, instantly, with enough medical accuracy to guide triage decisions without expert oversight.",
+        "We used Unsloth with 4-bit QLoRA quantization to fine-tune LiquidAI's LFM2.5-1.2B on JumpSTART, PALS, SALT, and Broselow protocols. The resulting model runs under 1GB RAM and achieves 94.2% accuracy on held-out pediatric triage scenarios — compared to 71.3% for the untuned base model.",
+        "The technical choices compound: Liquid Foundation Models use a state-space architecture that is more parameter-efficient than transformers at sub-2B scale. QLoRA quantization reduces memory footprint without significant accuracy loss. The combination produces a model that runs offline, fits on low-end hardware, and outperforms general-purpose LLMs on domain-specific triage tasks."
+      ]
+    },
+    {
+      "id": "engram",
+      "title": "DeepSeek Engram: Why the Future of AI Memory Starts Inside the Model",
+      "url": "engram.html",
+      "source": "article",
+      "tags": ["AI Architectures", "Memory Systems", "LLM Research"],
+      "date": "Feb 2026",
+      "excerpt": "A deep dive into the architectural breakthrough that challenges how we store knowledge in LLMs — and what it means for Zep, Mem0, Letta.",
+      "chunks": [
+        "Engram forces a fundamental question: where should knowledge live in an AI system, and at what level of the stack should memory be solved? Right now we have two dominant paradigms — bake all knowledge into model weights during training, or build memory systems at the application layer like Zep, Mem0, and Letta. Engram proposes a third path at the hardware-adjacent, architecture level.",
+        "Conditional Memory via Scalable Lookup introduces a new axis of sparsity. Instead of activating the full parameter space for every token, Engram routes each query to a small, dynamically selected subset of memory blocks. The selection is learned, not hand-engineered. This changes the fundamental economics of knowledge storage in transformers.",
+        "If memory can be solved at the architecture level — efficiently, without application-layer scaffolding — the entire category of external memory systems built on RAG and vector databases faces a deeper challenge than any benchmark comparison. Not obsolescence, but repositioning.",
+        "The Engram architecture separates episodic from semantic memory at the weight level. This is not a retrieval trick — it is a fundamentally different approach to the knowledge organization problem that application-layer memory systems have been solving from the outside."
+      ]
+    },
+    {
+      "id": "claude-cert-guide",
+      "title": "Everything You Need to Know About the Claude Certified Architect Exam",
+      "url": "claude-certified-architect-guide.html",
+      "source": "article",
+      "tags": ["Certification", "Claude", "Agentic Architecture"],
+      "date": "Mar 2026",
+      "excerpt": "Complete guide to Anthropic's Claude Certified Architect — Foundations: exam format, five domains, six scenarios, preparation strategy, and free resources.",
+      "chunks": [
+        "The Claude Certified Architect — Foundations is a proctored, scenario-based exam that tests whether you can design production AI systems using Claude's architecture stack. It is the first credential in the industry that validates the ability to build real agentic systems — not just prompt a chatbot, but architect multi-agent workflows, design tool integrations, and engineer for reliability at scale.",
+        "The certification covers five domains: agentic system design and orchestration, tool use and integration patterns, production environment configuration, safety and reliability engineering, and evaluation and monitoring architectures. Each scenario presents a realistic enterprise deployment challenge.",
+        "The exam consists of 60 scenario-based questions. Four scenarios are drawn from a pool of six. Passing score is 720 out of 1,000. It is currently available to Anthropic partner organizations as part of the $100 million Claude Partner Network investment for 2026.",
+        "Preparation strategy: spend 40% of study time on agentic system design patterns, 25% on tool integration, 20% on safety and reliability, and 15% on evaluation. The scenario-based format rewards systems thinking over factual recall — build mental models, not memorization."
+      ]
+    },
+    {
+      "id": "claude-cert-domains",
+      "title": "Breaking Down the Five Domains of the Claude Certified Architect Exam",
+      "url": "claude-certified-architect-domains.html",
+      "source": "article",
+      "tags": ["Certification", "Study Guide", "Claude Architecture"],
+      "date": "Mar 2026",
+      "excerpt": "Domain-by-domain technical analysis of what the Claude Certified Architect exam tests, with a 12-week study roadmap.",
+      "chunks": [
+        "Domain 1 — Agentic System Design (32% of exam): covers multi-agent orchestration, tool chaining, memory architecture, and agent lifecycle management. This is the largest domain because Anthropic is positioning Claude as an agentic platform — they want architects who understand what that means in production.",
+        "Domain 2 — Tool Use and Integration (23%): covers MCP server design, tool schema definition, error handling in tool loops, and permission models for tool access. Tests whether you can build agents that interact with real systems reliably.",
+        "Domain 3 — Safety and Reliability (20%): covers Constitutional AI principles in practice, output filtering, human-in-the-loop checkpoint design, and behavioral constraints for production deployments.",
+        "12-week study roadmap: Weeks 1-4 on agentic system design patterns using the Anthropic cookbook; Weeks 5-7 on tool integration with hands-on MCP server builds; Weeks 8-9 on safety engineering; Weeks 10-11 on evaluation and monitoring; Week 12 on practice scenarios and gap review."
+      ]
+    },
+    {
+      "id": "claude-cert-strategy",
+      "title": "Why the Claude Certified Architect Matters More Than You Think",
+      "url": "claude-certified-architect-strategy.html",
+      "source": "article",
+      "tags": ["AI Strategy", "Certification", "Career"],
+      "date": "Mar 2026",
+      "excerpt": "Anthropic is the first frontier AI lab to launch a professional certification — a market maturity signal that mirrors what AWS Solutions Architect did for cloud.",
+      "chunks": [
+        "Every major platform shift follows the same pattern: early adopters build, enterprises evaluate, the vendor launches a certification to formalize expertise, and the certification becomes a hiring filter. AWS launched Solutions Architect in 2013. By 2016, it was table stakes for cloud architect roles. Anthropic just did the same for AI architecture.",
+        "The Claude Certified Architect signals something important about market maturity: Anthropic believes the AI architecture market is large enough — and the demand for certified professionals acute enough — to justify investing in certification infrastructure. This is not a confidence signal about today's market. It is a bet on 2027 and 2028.",
+        "For enterprise AI teams, the certification creates a common vocabulary and a baseline competency standard. For individual architects, it creates differentiation in a market where 'AI experience' is becoming table stakes but 'production-grade agentic system design' is still rare.",
+        "The parallel to AWS SA is not superficial. Within 18 months of the AWS SA launch, it became the fastest-growing technical certification in history. The market for certified cloud architects ballooned. The same dynamic is likely to play out in AI architecture — and the window to be an early certified architect is short."
+      ]
+    },
+    {
+      "id": "substack-aifolio",
+      "title": "Your Portfolio Website Won't Get You Hired. Your AIfolio Will.",
+      "url": "https://aiengineerweekly.substack.com/p/your-portfolio-website-wont-get-you",
+      "source": "substack",
+      "tags": ["Newsletter", "AI Career", "Portfolio"],
+      "date": "Mar 2026",
+      "excerpt": "The traditional developer portfolio is dead. AI can generate CRUD apps in minutes. Here's the new portfolio playbook for developers entering the AI era.",
+      "chunks": [
+        "The traditional developer portfolio — a personal website showcasing CRUD apps and weather dashboards — is functionally dead. AI can generate those projects in minutes, which means they prove nothing about your engineering judgment. Hiring managers at AI-native companies are looking for a different signal: can you build with AI, not just build things?",
+        "An AIfolio is 3-5 deployed projects that demonstrate you can architect AI systems: RAG pipelines with real retrieval quality metrics, multi-agent systems with meaningful coordination logic, MCP integrations that solve actual workflow problems, and persistent memory systems using tools like Mem0.",
+        "The gap between AI demos and AIfolio projects is evaluation rigor. A demo shows it works once. An AIfolio project shows you measured how well it works, where it fails, and how you improved it. Hiring managers from Formlabs, Runway Labs, and Polymarket consistently cite evaluation discipline as the differentiator.",
+        "The AIfolio playbook: pick one production-grade problem, build it with current tools, measure it with proper evals, write up what you learned, and deploy it publicly. One project done deeply beats five projects done shallowly."
+      ]
+    },
+    {
+      "id": "substack-permissions",
+      "title": "The Permission Paradox: How Claude Code Auto Mode Solved a Problem Humans Made Worse",
+      "url": "https://aiengineerweekly.substack.com/p/the-permission-paradox-how-claude",
+      "source": "substack",
+      "tags": ["Newsletter", "Claude Code", "AI Safety"],
+      "date": "Mar 2026",
+      "excerpt": "Claude Code users approve 93% of permission prompts without reading them. Auto mode replaces rubber-stamping with a two-stage classifier.",
+      "chunks": [
+        "Claude Code users approve 93% of permission prompts, which means they have stopped reading them. The human oversight that permission prompts were designed to provide had been replaced by reflexive approval — permission theater rather than permission control. Auto mode was designed to fix this.",
+        "Auto mode uses a two-stage classifier: a fast paranoid filter that catches 8.5% of actions as potentially dangerous, followed by chain-of-thought reasoning that drops false positives to 0.4%. The result is 83% of genuinely dangerous actions caught with zero interruptions for routine operations.",
+        "The permission paradox is a general pattern in human-AI collaboration: oversight mechanisms designed to keep humans in the loop can become so frequent that they train humans to ignore them. The solution is not more prompts — it is smarter filtering that reserves human attention for decisions that actually require it.",
+        "This has direct implications for enterprise agentic AI governance: interrupt humans rarely, but interrupt them well. The HITL checkpoints that matter are the ones where human judgment adds signal that the agent cannot provide itself."
+      ]
+    },
+    {
+      "id": "substack-governance",
+      "title": "Anthropic Just Proved That Agentic AI Needs Governance Harnesses — Not Just Better Models",
+      "url": "https://aiengineerweekly.substack.com/p/anthropic-just-proved-that-agentic",
+      "source": "substack",
+      "tags": ["Newsletter", "Agentic AI", "Governance"],
+      "date": "Mar 2026",
+      "excerpt": "Anthropic's three-agent harness (Planner/Generator/Evaluator) demonstrates that the gap between coding agent correctness and enterprise deployability is a governance gap.",
+      "chunks": [
+        "Anthropic's three-agent harness uses a GAN-inspired loop: a Planner decomposes the problem, a Generator produces solutions, and an Evaluator scores them against explicit criteria. The Evaluator's output feeds back into the Planner. This is not just better model architecture — it is governance architecture baked into the agent loop itself.",
+        "The event featured Robert Brennan (CEO, OpenHands) and Nick Arcolano (Head of Research, Jellyfish) exploring how autonomous AI agents are redefining software development. The consensus: coding agent correctness is a solved problem at narrow scope. Enterprise deployability is not.",
+        "The gap between what is technically possible with agentic AI and what is responsibly deployable in enterprise environments is where the hardest work happens. Audit trails, accountability chains, and human override mechanisms are not product features — they are architectural requirements for regulated industries.",
+        "Governance harnesses are not constraints on agent capability. They are the infrastructure that makes agent capability usable in environments where consequences matter. The enterprises that build governance harnesses first will deploy agents faster — not slower."
+      ]
+    },
+    {
+      "id": "substack-landscape",
+      "title": "The AI Engineer Landscape: Where the Jobs Actually Are",
+      "url": "https://aiengineerweekly.substack.com/p/issue-2-the-ai-engineer-landscape",
+      "source": "substack",
+      "tags": ["Newsletter", "AI Career", "Job Market"],
+      "date": "Mar 2026",
+      "excerpt": "Stop applying on LinkedIn. Here's where AI Engineers are actually getting hired in 2026 — salary ranges, industry breakdown, and where to look.",
+      "chunks": [
+        "AI Engineer salaries by industry in 2026: Tech and SaaS average $167K, Media $191K, Finance $180K-$400K+, Healthcare $147K, Consulting $157K, Startups $120K-$180K plus equity. The highest compensation is in finance and media, not big tech — a shift from the previous decade's patterns.",
+        "The jobs are not where most people are looking. LinkedIn is oversaturated. The signal-to-noise ratio on traditional job boards is collapsing. Where AI Engineers are actually getting hired: company engineering blogs, AI-specific job boards, founder networks, and direct outreach to teams shipping products you use.",
+        "Three categories of AI Engineer roles in 2026: builders who design and implement AI systems end-to-end, integrators who connect AI capabilities to existing enterprise workflows, and evaluators who build the measurement infrastructure that tells you whether your AI system is actually working."
+      ]
+    },
+    {
+      "id": "substack-claude-code-internals",
+      "title": "What Actually Happens When You Type claude in Your Terminal",
+      "url": "https://aiengineerweekly.substack.com/p/what-actually-happens-when-you-type",
+      "source": "substack",
+      "tags": ["Newsletter", "Claude Code", "Internals"],
+      "date": "Mar 2026",
+      "excerpt": "The 6-phase Claude Code startup sequence: authentication, CLAUDE.md sweep, memory loading, tool registration, system prompt assembly, and the agentic loop.",
+      "chunks": [
+        "Claude Code executes six phases on startup: authentication check against stored credentials, CLAUDE.md configuration sweep through directory hierarchy, memory loading from MEMORY.md (first 200 lines), tool and MCP server registration, system prompt assembly (6K-18K tokens depending on context), and initialization of the agentic loop.",
+        "The system prompt assembly phase is where most of the cost is. A fully loaded Claude Code session with multiple CLAUDE.md files, loaded memory, and registered MCP servers can assemble a system prompt of 15K-18K tokens before you type a single character. At Sonnet pricing, this is approximately $0.05-0.09 per session start.",
+        "The CLAUDE.md sweep is hierarchical: Claude Code reads from the current directory up to the git root and then to the user's home directory. Lower files override higher files on key conflicts. This gives you project-level, workspace-level, and user-level configuration with clear precedence rules.",
+        "Understanding the startup sequence matters for cost optimization: keep MEMORY.md under 200 lines (everything after is truncated anyway), minimize CLAUDE.md inheritance chains, and register only the MCP servers you actually use in a given session."
+      ]
+    },
+    {
+      "id": "substack-what-is-ai-engineer",
+      "title": "What Even Is an AI Engineer?",
+      "url": "https://aiengineerweekly.substack.com/p/what-even-is-an-ai-engineer",
+      "source": "substack",
+      "tags": ["Newsletter", "AI Career", "Learning"],
+      "date": "Mar 2026",
+      "excerpt": "AI Engineer is the #1 fastest-growing job of 2026. Here's what it actually means and how to become one.",
+      "chunks": [
+        "AI Engineer is not Data Scientist, not ML Engineer, not Software Engineer with an AI sprinkle. The role sits at the intersection of systems design and applied AI: you build production systems that use AI capabilities, you evaluate whether those systems work, and you iterate on them based on real usage data.",
+        "The fastest path to AI Engineer from different starting points: Software Engineers should build one end-to-end RAG system and one multi-agent workflow, then measure both rigorously. Data Scientists should learn to deploy models as APIs and build evaluation pipelines. Career switchers should focus on the LLM application layer — RAG, agents, evals — not on model training.",
+        "Five self-assessment questions to know if you are ready to call yourself an AI Engineer: Can you build a RAG pipeline from scratch? Can you write evals for an LLM output? Can you deploy a model as an API? Can you debug a multi-agent workflow? Can you explain why your AI system fails on specific inputs?"
+      ]
+    }
+  ]
+}
