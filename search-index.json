@@ -211,6 +211,23 @@
       ]
     },
     {
+      "id": "talk-safe-framework",
+      "title": "SAFE: Designing Responsible Agentic Systems",
+      "url": "https://docsend.com/view/s/as7g2qxhj2yc4euz",
+      "source": "talk",
+      "tags": ["AI Safety", "Agentic AI", "Research", "Responsible AI"],
+      "date": "Apr 2026",
+      "excerpt": "Original framework for governing autonomous agents: Scope, Anchored Decisions, Flow Integrity, Escalation — turning AI safety principles into operational controls.",
+      "chunks": [
+        "SAFE is a framework for designing responsible agentic systems, built on four principles: Scope (boundary of authority), Anchored Decisions (evidence before action), Flow Integrity (evaluate the trajectory, not just the output), and Escalation (autonomy contracts under stress).",
+        "Agents shift risk from wrong outputs to wrong actions. Risk accumulates during the run, not just at the final output. Silent scope creep, weak-evidence action, and trajectory drift are the three core failure modes in agentic systems.",
+        "Evaluation cannot remain retrospective — it must be a control signal that shapes autonomy in real time. The autonomy response spectrum: Proceed, Slow down, Defer, Refuse, Stop/Escalate.",
+        "Fluency is not evidence. A confident explanation without a supporting record is a guess wearing a uniform. Anchored decisions require retrieved, validated, or user-confirmed inputs.",
+        "SAFE fits inside Responsible AI practice: RAI frames the expectations (Fairness, Reliability, Privacy, Transparency, Accountability). SAFE provides the operational mechanism for agents.",
+        "Presented at AI Developers & Entrepreneurs, April 2026."
+      ]
+    },
+    {
       "id": "talk-msft-ecosystem",
       "title": "From AI Pilots to Enterprise Intelligence: Microsoft Agentic Ecosystem Workshop",
       "url": "https://www.linkedin.com/posts/kranthimanchikanti_agenticai-enterpriseai-aigovernance-activity-7443313880149327872-6Vxa",
